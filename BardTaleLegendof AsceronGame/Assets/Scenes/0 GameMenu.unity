@@ -5926,28 +5926,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360335b02427a4e8bb7d5694f2e354c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPosition: {x: 0, y: 0, z: 0}
-  levelPlayer1: 0
-  currentExpPlayer1: 0
-  healthPlayer1: 0
-  maxHealthPlayer1: 0
-  manaPlayer1: 0
-  maxManaPlayer1: 0
-  attackPlayer1: 0
-  magicPlayer1: 0
-  defensePlayer1: 0
-  speedPlayer1: 0
-  levelPlayer2: 0
-  currentExpPlayer2: 0
-  healthPlayer2: 0
-  maxHealthPlayer2: 0
-  manaPlayer2: 0
-  maxManaPlayer2: 0
-  attackPlayer2: 0
-  magicPlayer2: 0
-  defensePlayer2: 0
-  speedPlayer2: 0
-  gameLevel: 0
 --- !u!1 &975136784
 GameObject:
   m_ObjectHideFlags: 0
@@ -8233,6 +8211,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 1315207784}
+  loadingScreenArtwork: {fileID: 1766365086}
+  artworkSprites:
+  - {fileID: 21300000, guid: b80f4c31f2cc99640a8d43c86dc599b1, type: 3}
+  - {fileID: 21300000, guid: 1637572fbc39bf84f8c8c6b818a7178c, type: 3}
+  - {fileID: 21300000, guid: c0fe3ab50346e9a48a6901361706bb6f, type: 3}
+  - {fileID: 21300000, guid: 15fdf1868b3a6e047a59e855f5121687, type: 3}
+  - {fileID: 21300000, guid: d8c957926823b8948be51a43e1efcdc2, type: 3}
+  - {fileID: 21300000, guid: d1a2106a769eac1438ecb77f754b420a, type: 3}
+  - {fileID: 21300000, guid: db0dfe62e53748a42a655c47840386c9, type: 3}
 --- !u!1 &1321524765
 GameObject:
   m_ObjectHideFlags: 0
@@ -10422,7 +10409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19215688, g: 0.19215688, b: 0.19215688, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

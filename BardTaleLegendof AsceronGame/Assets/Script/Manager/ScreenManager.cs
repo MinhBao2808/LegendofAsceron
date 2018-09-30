@@ -6,6 +6,13 @@ using UnityEngine.UI;
 public class ScreenManager : MonoBehaviour {
 
     public Animator anim;
+    public Image loadingScreenArtwork;
+    public Sprite[] artworkSprites;
+
+    private bool isLoading = false;
+
+    private float countTimer = 5;
+    private float intervalTime = 5;
 
     private static ScreenManager _instance;
     private int level;
@@ -29,15 +36,35 @@ public class ScreenManager : MonoBehaviour {
         }
     }
 
+    private void Update()
+    {
+        if (isLoading)
+        {
+            if (countTimer < intervalTime)
+            {
+                countTimer += Time.deltaTime;
+            }
+            else
+            {
+                countTimer = 0;
+                intervalTime = Random.Range(5f, 10f);
+                int randomSpriteIndex = Random.Range(0, artworkSprites.Length);
+                loadingScreenArtwork.sprite = artworkSprites[randomSpriteIndex];
+            }
+        }
+    }
+
     public void TriggerLoadingFadeOut(int screenIndex)
     {
         anim.SetTrigger("LoadingFadeOut");
         level = screenIndex;
+        isLoading = true;
     }
 
     void TriggerIdle()
     {
         anim.SetTrigger("Idle");
+        isLoading = false;
     }
 
     public void TriggerBattleFadeOut()
@@ -57,11 +84,17 @@ public class ScreenManager : MonoBehaviour {
 
         while (!operation.isDone)
         {
-            Debug.Log(operation.progress);
             yield return null;
         }
         anim.SetTrigger(trigger);
-        AudioManager.Instance.ChangeBgm(AudioManager.Instance.normalBgms[1]);
+        if (level == 2)
+        {
+            AudioManager.Instance.ChangeBgm(AudioManager.Instance.battleBgms[0]);
+        }
+        else
+        {
+            AudioManager.Instance.ChangeBgm(AudioManager.Instance.normalBgms[1]);
+        }
     }
     
 }
