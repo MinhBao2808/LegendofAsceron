@@ -54,7 +54,7 @@ public class PlayerMovement : MovingObject {
 	void Update() {
 		//GetInput();
 		//Turn();
-		if (Input.GetKeyDown(KeyCode.LeftShift)) {
+		if (Input.GetKey(KeyCode.LeftShift)) {
 			currentSpeed = sprintSpeed;
 		}
 		else {
@@ -68,15 +68,15 @@ public class PlayerMovement : MovingObject {
 			                                                           targetRotation, ref turnSmoothVelocity, turnSmoothTime);
 			Vector3 velocity = transform.forward * currentSpeed;
 			if (currentSpeed == sprintSpeed) {
-				//animation.PlayQueued("Run");
+				animation.Play("Run");
 			}
 			else {
-				//animation.PlayQueued("Walk");
+				animation.Play("Walk");
 			}
 			characterController.Move(velocity * Time.deltaTime);
 		}
 		else {
-			//animation.Play("idle");
+			animation.Play("idle");
 		}
 
 		//currentSpeed = Mathf.SmoothDamp(currentSpeed, speed * inputDir.magnitude, ref speedSmoothVelocity, speedSmoothTime);
