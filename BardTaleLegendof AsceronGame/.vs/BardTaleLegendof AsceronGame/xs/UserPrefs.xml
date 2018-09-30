@@ -5,7 +5,7 @@
       <File FileName="Assets/Script/Utilities/LoadgameScripts.cs" Line="1" Column="1" />
       <File FileName="Assets/Script/Behaviors/GameManager.cs" Line="181" Column="5" />
       <File FileName="Assets/Script/Behaviors/Character movement/CameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script/Behaviors/Character movement/PlayerMovement.cs" Line="59" Column="4" />
+      <File FileName="Assets/Script/Behaviors/Character movement/PlayerMovement.cs" Line="57" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

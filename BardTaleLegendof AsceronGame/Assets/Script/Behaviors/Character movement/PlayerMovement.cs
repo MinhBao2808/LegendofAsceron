@@ -54,30 +54,36 @@ public class PlayerMovement : MovingObject {
 	void Update() {
 		//GetInput();
 		//Turn();
-		if (Input.GetKey(KeyCode.LeftShift)) {
-			currentSpeed = sprintSpeed;
+		if (Input.GetKey("a")) {
+			animation.Play("Attack");
 		}
 		else {
-			currentSpeed = walkSpeed;
+			if (Input.GetKey(KeyCode.LeftShift)) {
+                currentSpeed = sprintSpeed;
+            }
+            else {
+                currentSpeed = walkSpeed;
+            }
+            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            Vector2 inputDir = input.normalized;
+            if (inputDir != Vector2.zero) {
+                float targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
+                transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y,
+                                                                           targetRotation, ref turnSmoothVelocity, turnSmoothTime);
+                Vector3 velocity = transform.forward * currentSpeed;
+                if (currentSpeed == sprintSpeed) {
+                    animation.Play("Run");
+                }
+                else {
+                    animation.Play("Walk");
+                }
+                characterController.Move(velocity * Time.deltaTime);
+            }
+            else {
+				animation.PlayQueued("idle",QueueMode.PlayNow);
+            }
 		}
-		Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-		Vector2 inputDir = input.normalized;
-		if (inputDir != Vector2.zero) {
-			float targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
-			transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, 
-			                                                           targetRotation, ref turnSmoothVelocity, turnSmoothTime);
-			Vector3 velocity = transform.forward * currentSpeed;
-			if (currentSpeed == sprintSpeed) {
-				animation.Play("Run");
-			}
-			else {
-				animation.Play("Walk");
-			}
-			characterController.Move(velocity * Time.deltaTime);
-		}
-		else {
-			animation.Play("idle");
-		}
+
 
 		//currentSpeed = Mathf.SmoothDamp(currentSpeed, speed * inputDir.magnitude, ref speedSmoothVelocity, speedSmoothTime);
 
