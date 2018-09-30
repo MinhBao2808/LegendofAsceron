@@ -12,24 +12,10 @@ MonoBehaviour:
   m_Name: EditorData
   m_EditorClassIdentifier: 
   lastProject: {fileID: 11400000, guid: 78c77bb956d6e17419757eda2c68fa69, type: 2}
-<<<<<<< HEAD
   section: 8
   subSection: 1
   tabIndex: 0
   scrollY: 401.91223
-=======
-<<<<<<< HEAD
-  section: 6
-  subSection: 5
-  tabIndex: 3
-  scrollY: 2206.012
-=======
-  section: 8
-  subSection: 1
-  tabIndex: 0
-  scrollY: 0
->>>>>>> 837ac71b9e536431bec2c512bedd9543ba17495d
->>>>>>> 444cff95ad36747b325eff7ebd05315b7bd00e88
   helpDrag: 220
   subSectionDrag: 200
   tabListDrag: 300

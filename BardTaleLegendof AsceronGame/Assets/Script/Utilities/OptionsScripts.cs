@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-<<<<<<< HEAD
 using UnityEngine.UI;
 
 public class OptionsScripts : MonoBehaviour {
@@ -65,38 +64,20 @@ public class OptionsScripts : MonoBehaviour {
     public void SetMasterVolume (float volume)
     {
         SetVolume("masterVol", volume);
-=======
-
-public class OptionsScripts : MonoBehaviour {
-    public AudioMixer audioMixer;
-
-    public void SetMasterVolume (float volume)
-    {
-        audioMixer.SetFloat("masterVol", volume);
->>>>>>> 837ac71b9e536431bec2c512bedd9543ba17495d
     }
 
     public void SetMusicVolume(float volume)
     {
-<<<<<<< HEAD
         SetVolume("musicVol", volume);
-=======
-        audioMixer.SetFloat("musicVol", volume);
->>>>>>> 837ac71b9e536431bec2c512bedd9543ba17495d
     }
 
     public void SetVoiceVolume(float volume)
     {
-<<<<<<< HEAD
         SetVolume("voiceVol", volume);
-=======
-        audioMixer.SetFloat("voiceVol", volume);
->>>>>>> 837ac71b9e536431bec2c512bedd9543ba17495d
     }
 
     public void SetSFXVolume(float volume)
     {
-<<<<<<< HEAD
         SetVolume("sfxVol", volume);
     }
 
@@ -124,8 +105,5 @@ public class OptionsScripts : MonoBehaviour {
         Resolution selectedResolution = resolutions[resolutionIndex];
         Screen.SetResolution(selectedResolution.width, selectedResolution.height, fullscreenToggle.isOn);
         PlayerPrefs.SetInt("resolutionIndex", resolutionIndex);
-=======
-        audioMixer.SetFloat("sfxVol", volume);
->>>>>>> 837ac71b9e536431bec2c512bedd9543ba17495d
     }
 }
