@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class PlayerMovement : MovingObject {
     public static PlayerMovement instance = null;
-	[SerializeField] private GameObject StatPanel;
 	private Rigidbody rigid;
-	private Animation animation;
+	private Animation ani;
 	private CharacterController characterController;
-	[SerializeField] private Transform cameraT;
+	//[SerializeField] private Transform cameraT;
 	[SerializeField] private float inputDelay = 0.1f;
 	[SerializeField] private float forwardVel = 12;
 	[SerializeField] private float rotateVel = 100;
@@ -34,7 +33,7 @@ public class PlayerMovement : MovingObject {
 	private void Start() {
 		targetRotation = transform.rotation;
 		rigid = GetComponent<Rigidbody>();
-		animation = GetComponent<Animation>();
+		ani = GetComponent<Animation>();
 		//animation.Play("idle");
 		characterController = GetComponent<CharacterController>();
 		forwardInput = turnInput = 0;
@@ -55,7 +54,7 @@ public class PlayerMovement : MovingObject {
 		//GetInput();
 		//Turn();
 		if (Input.GetKey("a")) {
-			animation.Play("Attack");
+			ani.Play("Attack");
 		}
 		else {
 			if (Input.GetKey(KeyCode.LeftShift)) {
@@ -72,15 +71,15 @@ public class PlayerMovement : MovingObject {
                                                                            targetRotation, ref turnSmoothVelocity, turnSmoothTime);
                 Vector3 velocity = transform.forward * currentSpeed;
                 if (currentSpeed == sprintSpeed) {
-                    animation.Play("Run");
+                    ani.Play("Run");
                 }
                 else {
-                    animation.Play("Walk");
+                    ani.Play("Walk");
                 }
                 characterController.Move(velocity * Time.deltaTime);
             }
             else {
-				animation.PlayQueued("idle",QueueMode.PlayNow);
+				ani.PlayQueued("idle",QueueMode.PlayNow);
             }
 		}
 
@@ -89,13 +88,6 @@ public class PlayerMovement : MovingObject {
 
         
 		//currentSpeed = new Vector2(characterController.velocity.x, characterController.velocity.z).magnitude;
-		if (Input.GetKeyDown("e")) {
-			StatPanel.SetActive(true);
-        }
-
-		if (Input.GetKeyDown("escape")) {
-			StatPanel.SetActive(false);
-        }
 	}
 
 	//private void FixedUpdate() {

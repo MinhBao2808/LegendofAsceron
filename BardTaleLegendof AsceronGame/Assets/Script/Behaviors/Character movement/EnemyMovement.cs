@@ -11,9 +11,9 @@ public class EnemyMovement : MovingObject {
 	[SerializeField] private Light spotLight;
 	[SerializeField] private float enemyViewDistance;
 	[SerializeField] private LayerMask viewMask;
-	[SerializeField] private float frontSideSensorPosition = 0.2f;
-	[SerializeField] private float frontSensorAngle = 30f;
+	//private bool isEnemyAttackPlayer = false;
 	private bool avoiding = false;
+	private Animator animator;
 	private float navigationTime = 0;
 	float viewAngle;
 	private GameObject player;
@@ -27,6 +27,7 @@ public class EnemyMovement : MovingObject {
 
 	// Use this for initialization
 	void Start () {
+		animator = GetComponent<Animator>();
 		currentTimeEnemyFollowPlayer = timeToFollowPlayer;
 		enemy = GetComponent<Transform>();
 		viewAngle = spotLight.spotAngle;
@@ -96,36 +97,31 @@ public class EnemyMovement : MovingObject {
 		else {
 			spotLight.color = originalSpotLightColor;
 		}
-		if (enemySeePlayer == true && currentTimeEnemyFollowPlayer >= 0) {
-			currentTimeEnemyFollowPlayer -= Time.deltaTime;
-			Debug.Log(currentTimeEnemyFollowPlayer);
-			currentSpeed = sprintSpeed;
-			enemyTarget = player.transform.position;
+		if(GameManager.instance.isEnemyAttackPlayer == true) {
+			Debug.Log("a");
+			animator.Play("Attack");
 		}
 		else {
-			currentTimeEnemyFollowPlayer = timeToFollowPlayer;
-			currentSpeed = walkSpeed;
-			enemyTarget = checkpoints[checkpoint].transform.position;
-			enemySeePlayer = false;
-		}
-		ObjectAvoidance(enemyTarget);
-		//if (avoiding == false) {
-		//	Vector3 lookAt = enemyTarget;
-		//	lookAt.y = enemyTarget.y;
-		//	enemy.LookAt(lookAt);
-		//	//navigationTime += Time.deltaTime;
-		//	enemy.position = Vector3.MoveTowards(enemy.position,
-		//	                                     enemyTarget,
-		//	                                     currentSpeed * Time.deltaTime);
-		//}
-		//var target = player.transform.position;
-		//if (enemySeePlayer == true && timeToFollowPlayer >=0) {
-		//	//move to player
-		//	Vector3 lookAt = player.transform.position;
-  //          lookAt.y = transform.position.y;
-  //          transform.LookAt(lookAt);
-		//	transform.position = Vector3.MoveTowards(transform.position, target, sprintSpeed * Time.deltaTime);
-		//}
+			if (enemySeePlayer == true && currentTimeEnemyFollowPlayer >= 0) {
+                currentTimeEnemyFollowPlayer -= Time.deltaTime;
+                currentSpeed = sprintSpeed;
+                animator.SetBool("isWalk", false);
+                enemyTarget = player.transform.position;
+            }
+            else {
+                currentTimeEnemyFollowPlayer = timeToFollowPlayer;
+                currentSpeed = walkSpeed;
+                enemyTarget = checkpoints[checkpoint].transform.position;
+                animator.SetBool("isWalk", true);
+                enemySeePlayer = false;
+            }
+			ObjectAvoidance(enemyTarget);
+        }
+	}
+
+	public void attackEvent() {
+		Destroy(this.gameObject);
+		GameManager.instance.GoToBattle();
 	}
 
 	//private void OnTriggerEnter(Collider collision) {
@@ -139,9 +135,10 @@ public class EnemyMovement : MovingObject {
 
 	private void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.tag == "Player") {
-			Destroy(this.gameObject);
+			GameManager.instance.isEnemyAttackPlayer = true;
+			//Destroy(this.gameObject);
 			//GameManager.instance.GoToBattle();
-			ScreenManager.Instance.TriggerBattleFadeOut();
+			//ScreenManager.Instance.TriggerBattleFadeOut();
 		}
 	}
 
