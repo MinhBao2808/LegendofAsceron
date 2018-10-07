@@ -75,6 +75,7 @@ public class ScreenManager : MonoBehaviour {
 
     void OnLoadComplete(string trigger)
     {
+		Debug.Log(trigger);
         StartCoroutine(LoadAsynchronously(level, trigger));
     }
 
@@ -86,7 +87,8 @@ public class ScreenManager : MonoBehaviour {
         {
             yield return null;
         }
-        anim.SetTrigger(trigger);
+		anim.SetTrigger(trigger);
+        Debug.Log(level);
         if (level == 2)
         {
             AudioManager.Instance.ChangeBgm(AudioManager.Instance.battleBgms[0]);

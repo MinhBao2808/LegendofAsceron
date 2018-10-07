@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4037713211929808}
   - component: {fileID: 212815859366621948}
   - component: {fileID: 114561054825430002}
-  - component: {fileID: 114463736724681154}
   - component: {fileID: 114405579681357804}
   m_Layer: 0
   m_Name: Enemy1
@@ -56,18 +55,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageText: {fileID: 1481934256279706, guid: 4901c953b5233470e8d35ed7c6b3ec1b, type: 2}
   damageTextOffset: 1.5
---- !u!114 &114463736724681154
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1716112910176024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da779f978f9104464bcc8dafa0f0d02b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyMenuItem: {fileID: 0}
 --- !u!114 &114561054825430002
 MonoBehaviour:
   m_ObjectHideFlags: 1

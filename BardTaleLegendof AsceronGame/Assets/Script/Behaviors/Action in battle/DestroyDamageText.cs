@@ -8,4 +8,8 @@ public class DestroyDamageText : MonoBehaviour {
 	void Start () {
         Destroy(this.gameObject, this.destroyTime);
 	}
+
+	//private void OnDestroy() {
+
+	//}
 }

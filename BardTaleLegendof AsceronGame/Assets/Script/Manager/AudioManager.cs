@@ -6,10 +6,14 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
+
     public AudioSource bgmSource;
     public AudioClip[] normalBgms;
     public AudioClip[] battleBgms;
     public AudioClip[] bossBgms;
+
+    public AudioSource sfxSource;
+    public AudioClip[] buttonSFX;
 
     private static AudioManager _instance;
 
@@ -53,7 +57,7 @@ public class AudioManager : MonoBehaviour
         bgmSource.Play();
     }
 
-    public void BgmPause(bool isPause)
+    public void PauseBGM(bool isPause)
     {
         if (isPause)
         {
@@ -63,5 +67,15 @@ public class AudioManager : MonoBehaviour
         {
             bgmSource.UnPause();
         }
+    }
+
+    public void PlayButtonSFX(int index)
+    {
+        PlaySFX(buttonSFX[index]);
+    }
+
+    private void PlaySFX(AudioClip clip)
+    {
+        sfxSource.PlayOneShot(clip);
     }
 }

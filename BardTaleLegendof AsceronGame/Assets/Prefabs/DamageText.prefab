@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ccd9161d40d4517b75e47c7e74b81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyTime: 2
+  destroyTime: 1
 --- !u!222 &222171760517997208
 CanvasRenderer:
   m_ObjectHideFlags: 1

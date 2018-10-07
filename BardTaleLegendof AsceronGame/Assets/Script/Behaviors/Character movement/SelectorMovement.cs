@@ -12,9 +12,6 @@ public class SelectorMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.Return)) {
-			BattleManager.instance.enemySelectedPositionIndex = selectorCurrentPosition;
-			BattleManager.instance.isPlayerSelectEnemy = true;
-			BattleManager.instance.FristTurn();
 			Destroy(this.gameObject);
 		}
 		if (BattleManager.instance.isPlayerSelectEnemy == false) {
@@ -88,5 +85,16 @@ public class SelectorMovement : MonoBehaviour {
 			}
 
 		}
+	}
+
+	private void OnDestroy() {
+		BattleManager.instance.enemySelectedPositionIndex = selectorCurrentPosition;
+        BattleManager.instance.isPlayerSelectEnemy = true;
+        if (BattleManager.instance.isFirstTurn == true) {
+            BattleManager.instance.FristTurn();
+        }
+        else {
+            BattleManager.instance.nextTurn();
+        }
 	}
 }
