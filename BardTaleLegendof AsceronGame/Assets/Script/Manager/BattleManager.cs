@@ -12,6 +12,10 @@ public class BattleManager : MonoBehaviour {
 	[SerializeField] private GameObject[] playerSpawnPositions;
 	[SerializeField] public GameObject[] enemySpawnPositions;
 	[SerializeField] private GameObject selector;
+	[SerializeField] private GameObject playerSelector;
+	//private GameObject playerSelectorSpawn;
+	[SerializeField] private GameObject[] playerSelectorPositions;
+	private GameObject playerSelectorSpawned;
 	private Combatant[] enemyCombatant = new Combatant[6];
 	private Combatant[] playerCombatant = new Combatant[3];
 	private Group enemyGroup;
@@ -22,7 +26,6 @@ public class BattleManager : MonoBehaviour {
 	public bool isFirstTurn;
 	private List<Combatant> playerList;
     private GameObject playerParty;
-    public GameObject enemyEncounter;
     public float timer;
 	public int enemyPositionIndex;
 	public int enemySelectedPositionIndex;
@@ -59,16 +62,16 @@ public class BattleManager : MonoBehaviour {
 		playerCombatant[0].Spawn(playerSpawnPositions[0].transform.position,
 								 false, playerSpawnPositions[0].transform.rotation.y,
 								 false, playerSpawnPositions[0].transform.localScale);
-		playerCombatant[2] = ORK.Combatants.Create(1, playerGroup);
-		playerCombatant[2].Init();
-		playerCombatant[2].Spawn(playerSpawnPositions[2].transform.position,
-								 false, playerSpawnPositions[2].transform.rotation.y,
-								 false, playerSpawnPositions[2].transform.localScale);
-		playerCombatant[1] = ORK.Combatants.Create(4, playerGroup);
+		playerCombatant[1] = ORK.Combatants.Create(1, playerGroup);
 		playerCombatant[1].Init();
 		playerCombatant[1].Spawn(playerSpawnPositions[1].transform.position,
-												   false, playerSpawnPositions[1].transform.rotation.y,
-												   false, playerSpawnPositions[1].transform.localScale);
+								 false, playerSpawnPositions[1].transform.rotation.y,
+								 false, playerSpawnPositions[1].transform.localScale);
+		playerCombatant[2] = ORK.Combatants.Create(4, playerGroup);
+		playerCombatant[2].Init();
+		playerCombatant[2].Spawn(playerSpawnPositions[2].transform.position,
+												   false, playerSpawnPositions[2].transform.rotation.y,
+												   false, playerSpawnPositions[2].transform.localScale);
 		playerPositionIndex = 3;
 	}
 
@@ -106,6 +109,8 @@ public class BattleManager : MonoBehaviour {
 	}
 
     void Start() {
+		Debug.Log(GameManager.instance.isEnemyAttackPlayer);
+		Debug.Log(GameManager.instance.isPlayerAttackEnemy);
         //this.playerParty = GameObject.Find("PlayerParty");
 		enemyList = new List<Combatant>();
 		playerList = new List<Combatant>();
@@ -170,7 +175,9 @@ public class BattleManager : MonoBehaviour {
         if (remainPlayerUnit.Length == 0) {
             GameManager.instance.LoadGameMenu();
         }
+        
 		isFirstTurn = true;
+        //code for player go first
         //check enemy turn
 		if (playerList.Count == 0) {
 			//go to next turn
@@ -184,7 +191,6 @@ public class BattleManager : MonoBehaviour {
 				unitStats.Sort(delegate (Combatant x, Combatant y) {
                     return y.Status[9].GetValue().CompareTo(x.Status[9].GetValue());
                 });
-				Debug.Log(unitStats.Count);
 				//create queue for next turn
 				isFirstTurn = false;
 				unitLists = new Queue<Combatant>(unitStats);
@@ -199,12 +205,32 @@ public class BattleManager : MonoBehaviour {
 			}
         }
 		else {
-			currentUnit = playerList[0];
+			if (isUnitAction == false) {
+				currentUnit = playerList[0];
+			}
+			Debug.Log(currentUnit.GameObject.name);
+			//spawn player selector
+			if (isPlayerSelectEnemy == false) {
+				if (currentUnit.GameObject.transform.position == playerSpawnPositions[0].transform.position) {
+                    Instantiate(playerSelector, playerSelectorPositions[0].transform.position,
+                                playerSelectorPositions[0].transform.rotation);
+                }
+                else if (currentUnit.GameObject.transform.position == playerSpawnPositions[1].transform.position) {
+                    Instantiate(playerSelector, playerSelectorPositions[1].transform.position,
+                                playerSelectorPositions[1].transform.rotation);
+                }
+                else if (currentUnit.GameObject.transform.position == playerSpawnPositions[2].transform.position) {
+                    Instantiate(playerSelector, playerSelectorPositions[2].transform.position,
+                                playerSelectorPositions[2].transform.rotation);
+                }
+			}
 			//choose enemy
             if (isPlayerSelectEnemy == false) {
                 for (int i = 0; i < enemyPositionIndex; i++) {
                     if (isEnemyDead[enemyPositionIndex] == false) {
-                        Instantiate(selector, enemySpawnPositions[i].transform.position, enemySpawnPositions[i].transform.rotation);
+                        Instantiate(selector, 
+						            enemySpawnPositions[i].transform.position, 
+						            enemySpawnPositions[i].transform.rotation);
                         break;
                     }
                 }
@@ -215,7 +241,7 @@ public class BattleManager : MonoBehaviour {
                 playerList.Remove(currentUnit);
                 currentUnit.GameObject.GetComponent<GetPlayerAction>().
                            AttackTarget(enemyCombatant[enemySelectedPositionIndex].GameObject,
-                                                                                    enemyCombatant[enemySelectedPositionIndex]);
+				                        enemyCombatant[enemySelectedPositionIndex]);
             }
 		}
        
@@ -307,6 +333,21 @@ public class BattleManager : MonoBehaviour {
 			//GameObject currentUnit = currentUnitStat.gameObject;
 			//unitStats.Sort();
 			if (currentUnit.GameObject.tag == "PlayerUnit") {
+				//spawn player selector
+				if (isPlayerSelectEnemy == false) {
+                    if (currentUnit.GameObject.transform.position == playerSpawnPositions[0].transform.position) {
+                        Instantiate(playerSelector, playerSelectorPositions[0].transform.position,
+                                    playerSelectorPositions[0].transform.rotation);
+                    }
+                    else if (currentUnit.GameObject.transform.position == playerSpawnPositions[1].transform.position) {
+                        Instantiate(playerSelector, playerSelectorPositions[1].transform.position,
+                                    playerSelectorPositions[1].transform.rotation);
+                    }
+                    else if (currentUnit.GameObject.transform.position == playerSpawnPositions[2].transform.position) {
+                        Instantiate(playerSelector, playerSelectorPositions[2].transform.position,
+                                    playerSelectorPositions[2].transform.rotation);
+                    }
+                }
 				//choose enemy
 				enemyTurn = false;
 				if (isPlayerSelectEnemy == false && enemyTurn == false && isSelectorSpawn == false) {
@@ -325,7 +366,7 @@ public class BattleManager : MonoBehaviour {
 						unitLists.Enqueue(currentUnit);
 						currentUnit.GameObject.GetComponent<GetPlayerAction>().
 								   AttackTarget(enemyCombatant[enemySelectedPositionIndex].GameObject,
-																							enemyCombatant[enemySelectedPositionIndex]);
+													enemyCombatant[enemySelectedPositionIndex]);
 					}
 				}
 			else {

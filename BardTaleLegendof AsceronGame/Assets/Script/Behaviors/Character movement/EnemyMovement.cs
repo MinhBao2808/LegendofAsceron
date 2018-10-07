@@ -97,11 +97,14 @@ public class EnemyMovement : MovingObject {
 		else {
 			spotLight.color = originalSpotLightColor;
 		}
-		if(GameManager.instance.isEnemyAttackPlayer == true) {
-			Debug.Log("a");
+		if(GameManager.instance.isEnemyAttackPlayer == true && GameManager.instance.isPlayerAttackEnemy == false) {
 			animator.Play("Attack");
 		}
 		else {
+			if (GameManager.instance.isPlayerAttackEnemy == true) {
+				Destroy(this.gameObject);
+				GameManager.instance.GoToBattle();
+			}
 			if (enemySeePlayer == true && currentTimeEnemyFollowPlayer >= 0) {
                 currentTimeEnemyFollowPlayer -= Time.deltaTime;
                 currentSpeed = sprintSpeed;
@@ -135,10 +138,12 @@ public class EnemyMovement : MovingObject {
 
 	private void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.tag == "Player") {
-			GameManager.instance.isEnemyAttackPlayer = true;
-			//Destroy(this.gameObject);
-			//GameManager.instance.GoToBattle();
-			//ScreenManager.Instance.TriggerBattleFadeOut();
+			if (GameManager.instance.isPlayerAttackEnemy == false && enemySeePlayer == true) {
+				GameManager.instance.isEnemyAttackPlayer = true;
+			}
+			else {
+				GameManager.instance.isPlayerAttackEnemy = true;
+			}
 		}
 	}
 

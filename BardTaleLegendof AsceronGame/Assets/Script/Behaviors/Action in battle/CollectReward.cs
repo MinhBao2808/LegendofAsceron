@@ -7,6 +7,6 @@ public class CollectReward : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         GameObject battleManager = GameObject.Find("BattleManager");
-        battleManager.GetComponent<BattleManager>().enemyEncounter = this.gameObject;
+        //battleManager.GetComponent<BattleManager>().enemyEncounter = this.gameObject;
 	}
 }
