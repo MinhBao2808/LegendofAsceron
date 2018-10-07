@@ -175,7 +175,8 @@ public class BattleManager : MonoBehaviour {
         if (remainPlayerUnit.Length == 0) {
             GameManager.instance.LoadGameMenu();
         }
-        
+        //enemy go first
+
 		isFirstTurn = true;
         //code for player go first
         //check enemy turn
