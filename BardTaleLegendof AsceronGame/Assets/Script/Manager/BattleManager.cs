@@ -40,6 +40,7 @@ public class BattleManager : MonoBehaviour {
     private bool playerSelectAttack = false;
     private bool playerAttack = false;
 	private float timeToStartBattle;
+	public bool callTurn;
 	public bool isUnitAction = false;
 //	private float sumExpCanGet = 0.0f;
 	public Combatant currentUnit;
@@ -107,7 +108,8 @@ public class BattleManager : MonoBehaviour {
         if (instance == null) {
             instance = this;
         }
-		timeToStartBattle = 2.0f;
+		timeToStartBattle = 2.5f;
+		callTurn = false;
 		enemyGroup = new Group(1);
 		playerGroup = new Group(0);
 		SpawnEnemy();
@@ -229,10 +231,11 @@ public class BattleManager : MonoBehaviour {
                 k++;
             }
 		}
-		this.FristTurn();
+		//this.FristTurn();
 	}
 
 	public void FristTurn () {
+		callTurn = true;
 		isFirstTurn = true;
         //check is game over
 		GameObject[] remainEnemyUnit = GameObject.FindGameObjectsWithTag("Enemy");
@@ -397,7 +400,8 @@ public class BattleManager : MonoBehaviour {
 
     void Update() {
 		//Debug.Log(timer);
-        if (enemyTurn == false) {
+	
+		if (enemyTurn == false && callTurn == true) {
 			timerSlider.value = time/timer;
 			time -= Time.deltaTime;
             //Debug.Log(time);
@@ -417,11 +421,20 @@ public class BattleManager : MonoBehaviour {
 		if (isPlayerSelectEnemy == true) {
 			time = timer;
 		}
+		if (callTurn == false) {
+            timeToStartBattle -= Time.deltaTime;
+			Debug.Log(timeToStartBattle);
+        }
+		if (timeToStartBattle <= 0 && callTurn == false) {
+			timeToStartBattle = 0;
+			this.FristTurn();
+		}
     }
 
     public void nextTurn() {
 		isFirstTurn = false;
         playerAttack = false;
+		callTurn = true;
 		if (isPlayerSelectEnemy == false && isSelectorSpawn == false && isUnitAction == false) {
 			GameObject[] remainEnemyUnit = GameObject.FindGameObjectsWithTag("Enemy");
             if (remainEnemyUnit.Length == 0) {

@@ -6,13 +6,13 @@
       <File FileName="Assets/Script/Behaviors/GameManager.cs" Line="26" Column="43" />
       <File FileName="Assets/Script/Manager/MapManager.cs" Line="14" Column="3" />
       <File FileName="Assets/Script/Behaviors/Character movement/EnemyMovement.cs" Line="172" Column="49" />
-      <File FileName="Assets/Script/Manager/BattleManager.cs" Line="231" Column="4" />
+      <File FileName="Assets/Script/Manager/BattleManager.cs" Line="111" Column="27" />
       <File FileName="Assets/Script/Manager/ScreenManager.cs" Line="83" Column="67" />
       <File FileName="Assets/Script/Manager/PlayerManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script/Behaviors/Action in battle/EnemyAction.cs" Line="35" Column="1" />
+      <File FileName="Assets/Script/Behaviors/Action in battle/EnemyAction.cs" Line="29" Column="10" />
       <File FileName="Assets/Script/Behaviors/Action in battle/DestroyDamageText.cs" Line="10" Column="3" />
       <File FileName="Assets/Script/Behaviors/Action in battle/GenerateDamageText.cs" Line="32" Column="89" />
-      <File FileName="Assets/Script/Behaviors/Action in battle/GetPlayerAction.cs" Line="66" Column="14" />
+      <File FileName="Assets/Script/Behaviors/Action in battle/GetPlayerAction.cs" Line="71" Column="14" />
       <File FileName="Assets/Script/Behaviors/Action in battle/ChoosePlayer.cs" Line="34" Column="56" />
       <File FileName="Assets/Script/Behaviors/Character movement/SelectorMovement.cs" Line="9" Column="78" />
       <File FileName="Assets/Script/Utilities/Expression.cs" Line="11" Column="12" />

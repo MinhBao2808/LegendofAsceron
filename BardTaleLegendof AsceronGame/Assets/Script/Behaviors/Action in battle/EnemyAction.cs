@@ -30,35 +30,44 @@ public class EnemyAction : MonoBehaviour {
     }
 
 	private void Update() {
-		if (BattleManager.instance.currentUnit.GameObject.name == this.gameObject.name && actionStarted == true) {
-			if(isAttack == false) {
-				targetPosition = new Vector3(target.transform.position.x + 2.0f, target.transform.position.y, target.transform.position.z);
-				if (this.transform.position == targetPosition) {
-                    Hit();
-                    isAttack = true;
+		if (BattleManager.instance.callTurn == true) {
+			if (BattleManager.instance.currentUnit.GameObject.name == this.gameObject.name && actionStarted == true)
+            {
+                if (isAttack == false)
+                {
+                    targetPosition = new Vector3(target.transform.position.x + 2.0f, target.transform.position.y, target.transform.position.z);
+                    if (this.transform.position == targetPosition)
+                    {
+                        Hit();
+                        isAttack = true;
+                    }
                 }
-			}
-			else {
-				targetPosition = startPosition;
-				if (this.transform.position == targetPosition) {
-                    BattleManager.instance.isPlayerSelectEnemy = false;
-                    BattleManager.instance.isUnitAction = false;
-                    //StopAllCoroutines();
-                    if (BattleManager.instance.isFirstTurn == true) {
-                        isAttack = false;
-                        actionStarted = false;
-                        BattleManager.instance.FristTurn();
+                else
+                {
+                    targetPosition = startPosition;
+                    if (this.transform.position == targetPosition)
+                    {
+                        BattleManager.instance.isPlayerSelectEnemy = false;
+                        BattleManager.instance.isUnitAction = false;
+                        //StopAllCoroutines();
+                        if (BattleManager.instance.isFirstTurn == true)
+                        {
+                            isAttack = false;
+                            actionStarted = false;
+                            BattleManager.instance.FristTurn();
 
-                    }
-                    else {
-                        //BattleManager.instance.unitLists.Enqueue(BattleManager.instance.currentUnit);
-                        isAttack = false;
-                        actionStarted = false;
-                        BattleManager.instance.nextTurn();
+                        }
+                        else
+                        {
+                            //BattleManager.instance.unitLists.Enqueue(BattleManager.instance.currentUnit);
+                            isAttack = false;
+                            actionStarted = false;
+                            BattleManager.instance.nextTurn();
+                        }
                     }
                 }
-			}
-			this.transform.position = Vector3.MoveTowards(transform.position, targetPosition, 500.0f * Time.deltaTime);
+                this.transform.position = Vector3.MoveTowards(transform.position, targetPosition, 500.0f * Time.deltaTime);
+            }
 		}
 	}
 
