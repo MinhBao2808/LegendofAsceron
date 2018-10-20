@@ -76,13 +76,13 @@ public class ScreenManager : MonoBehaviour {
     void OnLoadComplete(string trigger)
     {
 		Debug.Log(trigger);
+		GameManager.instance.isBattleSceneAnimationLoaded = true;
         StartCoroutine(LoadAsynchronously(level, trigger));
     }
 
     IEnumerator LoadAsynchronously(int sceneIndex, string trigger)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
-
         while (!operation.isDone)
         {
             yield return null;

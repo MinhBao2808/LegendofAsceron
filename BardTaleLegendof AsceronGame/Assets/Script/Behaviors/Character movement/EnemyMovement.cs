@@ -133,7 +133,7 @@ public class EnemyMovement : MovingObject {
 
 	public void attackEvent() {
 		
-		GameManager.instance.isEnemyAttackPlayer = false;
+		GameManager.instance.isEnemyAttackPlayer = true;
 		GameManager.instance.isPlayerAttackEnemy = false;
 		//for (int i = 0; i < MapManager.instance.enemyInMap.Length; i++) {
 		//	if (MapManager.instance.enemyInMap[i].name == this.gameObject.name) {
@@ -142,8 +142,8 @@ public class EnemyMovement : MovingObject {
 		//		break;
 		//	}
 		//}
-		ScreenManager.Instance.TriggerBattleFadeOut();
-		Destroy(gameObject);
+
+		Destroy(this.gameObject);
 		//GameManager.instance.GoToBattle();
 		//ScreenManager.Instance.TriggerBattleFadeOut();
 	}
@@ -166,6 +166,10 @@ public class EnemyMovement : MovingObject {
 			//	GameManager.instance.isPlayerAttackEnemy = true;
 			//}
 		}
+	}
+
+	private void OnDestroy() {
+		ScreenManager.Instance.TriggerBattleFadeOut();
 	}
 
 	private void OnTriggerEnter(Collider other) {

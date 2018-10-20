@@ -21,7 +21,7 @@ public class EnemyAction : MonoBehaviour {
         GameObject[] possibleTargets = GameObject.FindGameObjectsWithTag(targetsTag);
         if (possibleTargets.Length > 0) {
             int targetIndex = Random.Range(0, possibleTargets.Length);
-            GameObject target = possibleTargets[targetIndex];
+            target = possibleTargets[targetIndex];
             return target;
         }
         else {
@@ -63,8 +63,8 @@ public class EnemyAction : MonoBehaviour {
 	}
 
 	public void Action () {
-        target = FindRandomTarget();
         if (BattleManager.instance.isEnemyTurn() == true) {
+			target = FindRandomTarget();
 			actionStarted = true;
             //StartCoroutine(TimeForAction(target));
         }

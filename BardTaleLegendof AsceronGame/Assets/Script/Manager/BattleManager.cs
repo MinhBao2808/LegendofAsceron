@@ -39,6 +39,7 @@ public class BattleManager : MonoBehaviour {
 	public bool enemyTurn = false;
     private bool playerSelectAttack = false;
     private bool playerAttack = false;
+	private float timeToStartBattle;
 	public bool isUnitAction = false;
 //	private float sumExpCanGet = 0.0f;
 	public Combatant currentUnit;
@@ -106,6 +107,7 @@ public class BattleManager : MonoBehaviour {
         if (instance == null) {
             instance = this;
         }
+		timeToStartBattle = 2.0f;
 		enemyGroup = new Group(1);
 		playerGroup = new Group(0);
 		SpawnEnemy();
@@ -185,24 +187,47 @@ public class BattleManager : MonoBehaviour {
             return y.Status[9].GetValue().CompareTo(x.Status[9].GetValue());
         });
         //if player go first
-		int j = 0;
-		foreach (Combatant player in playerList) {
-			listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
-			j++;
+		if (GameManager.instance.isPlayerAttackEnemy == true) {
+			int j = 0;
+            foreach (Combatant player in playerList) {
+                listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
+                j++;
+            }
+            foreach (Combatant enemy in enemyList) {
+                listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
+                j++;
+            }
+            int k = 0;
+            while (j < 10) {
+                if (k == unitStats.Count) {
+                    k = 0;
+                }
+                Debug.Log(k);
+                listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+                j++;
+                k++;
+            }
 		}
-		foreach (Combatant enemy in enemyList) {
-			listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
-			j++;
-		}
-		int k = 0;
-		while (j < 10) {
-			if (k == unitStats.Count) {
-				k = 0;
+        //if enemy go first 
+		if (GameManager.instance.isEnemyAttackPlayer == true) {
+			int j = 0;
+			foreach (Combatant enemy in enemyList) {
+				listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
+                j++;
 			}
-			Debug.Log(k);
-			listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
-			j++;
-			k++;
+			foreach (Combatant player in playerList) {
+				listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
+                j++;
+			}
+			int k = 0;
+            while (j < 10) {
+                if (k == unitStats.Count) {
+                    k = 0;
+                }
+                listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+                j++;
+                k++;
+            }
 		}
 		this.FristTurn();
 	}
@@ -214,6 +239,7 @@ public class BattleManager : MonoBehaviour {
 		if (remainEnemyUnit.Length == 0) {
 			GameManager.instance.isPlayerAttackEnemy = false;
 			GameManager.instance.isEnemyAttackPlayer = false;
+			GameManager.instance.isBattleSceneAnimationLoaded = false;
 			ScreenManager.Instance.TriggerLoadingFadeOut(1);
 		}
 		GameObject[] remainPlayerUnit = GameObject.FindGameObjectsWithTag("PlayerUnit");
@@ -401,6 +427,7 @@ public class BattleManager : MonoBehaviour {
             if (remainEnemyUnit.Length == 0) {
 				GameManager.instance.isEnemyAttackPlayer = false;
 				GameManager.instance.isPlayerAttackEnemy = false;
+				GameManager.instance.isBattleSceneAnimationLoaded = false;
 				ScreenManager.Instance.TriggerLoadingFadeOut(1);
             }
             GameObject[] remainPlayerUnit = GameObject.FindGameObjectsWithTag("PlayerUnit");
