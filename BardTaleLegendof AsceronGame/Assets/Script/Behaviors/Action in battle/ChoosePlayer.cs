@@ -20,8 +20,6 @@ public class ChoosePlayer : MonoBehaviour {
 
     public void SelectCurrentPlayer (GameObject player,PlayerStat currentPlayerStat) {
         this.currentPlayer = player;
-        BattleManager.instance.GetPlayerSelectAttack();
-        BattleManager.instance.SetPlayerInfoUI(currentPlayerStat);
         this.actionsMenu.SetActive(true);
         this.enemyUnitsMenu.SetActive(false);
     }
@@ -33,9 +31,7 @@ public class ChoosePlayer : MonoBehaviour {
     }
 
     public void PlayerAttackEnemy (GameObject enemy) {
-        BattleManager.instance.SetActivePlayerInfoUI();
         BattleManager.instance.SetPlayerSelectAttack();
-        BattleManager.instance.SetPlayerAttack();
         this.actionsMenu.SetActive(false);
         this.enemyUnitsMenu.SetActive(false);
         //this.currentPlayer.GetComponent<GetPlayerAction>().AttackTarget(enemy);

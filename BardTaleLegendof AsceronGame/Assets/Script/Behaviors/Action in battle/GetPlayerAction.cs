@@ -36,8 +36,8 @@ public class GetPlayerAction : MonoBehaviour {
 			if (isAttack == false) {
 				targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f, targetGameObject.transform.position.y, targetGameObject.transform.position.z);
 				if (this.transform.position == targetPosition) {
-					Hit(targetGameObject,combatantTarget);
 					isAttack = true;
+					Hit(targetGameObject,combatantTarget);
 				}
 			}
 			else {
@@ -50,7 +50,6 @@ public class GetPlayerAction : MonoBehaviour {
 						isAttack = false;
 						actionStarted = false;
                         BattleManager.instance.FristTurn();
-                   
                     }
                     else {
 						//BattleManager.instance.unitLists.Enqueue(BattleManager.instance.currentUnit);

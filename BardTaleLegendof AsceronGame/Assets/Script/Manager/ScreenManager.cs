@@ -88,7 +88,6 @@ public class ScreenManager : MonoBehaviour {
             yield return null;
         }
 		anim.SetTrigger(trigger);
-        Debug.Log(level);
         if (level == 2)
         {
             AudioManager.Instance.ChangeBgm(AudioManager.Instance.battleBgms[0]);

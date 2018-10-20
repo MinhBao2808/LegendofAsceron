@@ -13,6 +13,10 @@ public class BattleManager : MonoBehaviour {
 	[SerializeField] public GameObject[] enemySpawnPositions;
 	[SerializeField] private GameObject selector;
 	[SerializeField] private GameObject playerSelector;
+	[SerializeField] private Slider timerSlider;
+	[SerializeField] private Image[] listImageShowUnitTurn;
+	[SerializeField] private GameObject actionMenu;
+	[SerializeField] private GameObject attack_DefendMenu;
 	//private GameObject playerSelectorSpawn;
 	[SerializeField] private GameObject[] playerSelectorPositions;
 	private GameObject playerSelectorSpawned;
@@ -41,6 +45,29 @@ public class BattleManager : MonoBehaviour {
 	public bool isSelectorSpawn = false;
 	public bool[] isEnemyDead = new bool[6];
 	//private Vector3 selectorPositionY = new Vector3(0, 3, 0);
+
+	public void PressActionButton () {
+		actionMenu.SetActive(true);
+		attack_DefendMenu.SetActive(true);
+	}
+
+	public void PressAttackButton () {
+		//choose enemy
+		attack_DefendMenu.SetActive(false);
+		actionMenu.SetActive(false);
+		isSelectorSpawn = true;
+        if (isPlayerSelectEnemy == false) {
+            for (int i = 0; i < enemyPositionIndex; i++) {
+                if (isEnemyDead[i] == false) {
+					enemySelectedPositionIndex = i;
+                    Instantiate(selector,
+                                enemySpawnPositions[i].transform.position,
+                                enemySpawnPositions[i].transform.rotation);
+                    break;
+                }
+            }
+        }
+	}
 
 	private void SpawnEnemy () {
 		enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);
@@ -103,15 +130,14 @@ public class BattleManager : MonoBehaviour {
         time = timer;
 		//Debug.Log(time);
         playerAttack = false;
-		//enemySelectedPositionIndex = 0;
-        //int index = Random.Range(0, enemyEncouterPrefab.Length);
-        //Instantiate(enemyEncouterPrefab[index], enemyEncouterPrefab[index].transform.position, enemyEncouterPrefab[index].transform.rotation);
+		actionMenu.SetActive(false);
+		attack_DefendMenu.SetActive(false);
 	}
 
     void Start() {
-		Debug.Log(GameManager.instance.isEnemyAttackPlayer);
-		Debug.Log(GameManager.instance.isPlayerAttackEnemy);
-        //this.playerParty = GameObject.Find("PlayerParty");
+		//player go first
+		//Debug.Log(GameManager.instance.isEnemyAttackPlayer);
+		//Debug.Log(GameManager.instance.isPlayerAttackEnemy);
 		enemyList = new List<Combatant>();
 		playerList = new List<Combatant>();
 		unitStats = new List<Combatant>();
@@ -145,195 +171,264 @@ public class BattleManager : MonoBehaviour {
 		playerList.Sort(delegate (Combatant x, Combatant y) {
 			return y.Status[9].GetValue().CompareTo(x.Status[9].GetValue());
 		});
-       // this.actionsMenu.SetActive(false);
-  //      this.playerHealthName.SetActive(false);
-		//this.playerAvatar.SetActive(false);
-        //this.playerManaName.SetActive(false);
-       // this.enemyUnitsMenu.SetActive(false);
+		for (int i = 0; i < playerPositionIndex; i++) {
+            if (playerCombatant[i].GameObject.tag == "PlayerUnit") {
+                unitStats.Add(playerCombatant[i]);
+            }
+        }
+        for (int i = 0; i < enemyPositionIndex; i++) {
+            if (enemyCombatant[i].GameObject.tag == "Enemy") {
+                unitStats.Add(enemyCombatant[i]);
+            }
+        }
+        unitStats.Sort(delegate (Combatant x, Combatant y) {
+            return y.Status[9].GetValue().CompareTo(x.Status[9].GetValue());
+        });
+        //if player go first
+		int j = 0;
+		foreach (Combatant player in playerList) {
+			listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
+			j++;
+		}
+		foreach (Combatant enemy in enemyList) {
+			listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
+			j++;
+		}
+		int k = 0;
+		while (j < 10) {
+			if (k == unitStats.Count) {
+				k = 0;
+			}
+			Debug.Log(k);
+			listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+			j++;
+			k++;
+		}
 		this.FristTurn();
 	}
 
 	public void FristTurn () {
-		//if (enemyList.Count == 0) {
-		//	GameManager.instance.LoadMapScene();
-		//}
-		//if (playerList.Count == 0) {
-		//	GameManager.instance.LoadGameMenu();
-		//}
-		//Combatant currentUnit = playerList[0];
-		//playerList.Remove(currentUnit);
-		//if (currentUnit.Dead != true) {
-		//	GameObject currentUnitObject = currentUnit.GameObject;
-		//	Instantiate(selector, enemySpawnPositions[0].transform.position, enemySpawnPositions[0].transform.rotation);
-		//}
+		isFirstTurn = true;
         //check is game over
 		GameObject[] remainEnemyUnit = GameObject.FindGameObjectsWithTag("Enemy");
 		if (remainEnemyUnit.Length == 0) {
-			GameManager.instance.LoadMapScene();
+			GameManager.instance.isPlayerAttackEnemy = false;
+			GameManager.instance.isEnemyAttackPlayer = false;
+			ScreenManager.Instance.TriggerLoadingFadeOut(1);
 		}
 		GameObject[] remainPlayerUnit = GameObject.FindGameObjectsWithTag("PlayerUnit");
         if (remainPlayerUnit.Length == 0) {
-            GameManager.instance.LoadGameMenu();
+            //GameManager.instance.LoadGameMenu();
         }
         //enemy go first
-
-		isFirstTurn = true;
-        //code for player go first
-        //check enemy turn
-		if (playerList.Count == 0) {
-			//go to next turn
-			if (playerList.Count == 0 && enemyList.Count == 0) {
-				for (int i = 0; i < playerPositionIndex; i++) {
-					unitStats.Add(playerCombatant[i]);
-				}
-				for (int i = 0; i < enemyPositionIndex; i++) {
-					unitStats.Add(enemyCombatant[i]);
-				}
-				unitStats.Sort(delegate (Combatant x, Combatant y) {
-                    return y.Status[9].GetValue().CompareTo(x.Status[9].GetValue());
-                });
-				//create queue for next turn
-				isFirstTurn = false;
-				unitLists = new Queue<Combatant>(unitStats);
-				this.nextTurn();
+		if (GameManager.instance.isEnemyAttackPlayer == true) {
+			int j = 0;
+			foreach (Combatant enemy in enemyList) {
+				listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
+				j++;
 			}
-			//enemy turn
+			foreach (Combatant player in playerList) {
+				listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
+				j++;
+			}
+			int k = 0;
+			while (j < 10) {
+				if (k == unitStats.Count) {
+					k = 0;
+				}
+				listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+				j++;
+				k++;
+			}
+            //check player turn
+			if (enemyList.Count == 0) {
+				actionMenu.SetActive(true);
+                //go to next turn
+				if (playerList.Count == 0 && enemyList.Count == 0) {
+					isFirstTurn = false;
+					unitLists = new Queue<Combatant>(unitStats);
+					this.nextTurn();
+				}
+				else {
+					if (isUnitAction == false) {
+						currentUnit = playerList[0];
+					}
+					//player turn
+					enemyTurn = false;
+					actionMenu.SetActive(true);
+					if (currentUnit.GameObject.tag == "Player") {
+						//spawm player selector 
+                        if (isPlayerSelectEnemy == false) {
+                            if (currentUnit.GameObject.transform.position == playerSpawnPositions[0].transform.position) {
+                                Instantiate(playerSelector, playerSelectorPositions[0].transform.position,
+                                            playerSelectorPositions[0].transform.rotation);
+                            }
+                            else if (currentUnit.GameObject.transform.position == playerSpawnPositions[1].transform.position){
+                                Instantiate(playerSelector, playerSelectorPositions[1].transform.position,
+                                            playerSelectorPositions[1].transform.rotation);
+                            }
+                            else if (currentUnit.GameObject.transform.position == playerSpawnPositions[2].transform.position){
+                                Instantiate(playerSelector, playerSelectorPositions[2].transform.position,
+                                            playerSelectorPositions[2].transform.rotation);
+                            }
+                        }
+                        if (isPlayerSelectEnemy == true){
+                            playerList.Remove(currentUnit);
+                            currentUnit.GameObject.GetComponent<GetPlayerAction>().
+                                       AttackTarget(enemyCombatant[enemySelectedPositionIndex].GameObject,
+                                                    enemyCombatant[enemySelectedPositionIndex]);
+                        }
+					}
+					else {
+						playerList.Remove(currentUnit);
+						this.FristTurn();
+					}
+				}
+			}
 			else {
+				//enemy turn
 				currentUnit = enemyList[0];
-                enemyList.Remove(currentUnit);
-                enemyTurn = true;
-                currentUnit.GameObject.GetComponent<EnemyAction>().Action();
+				enemyList.Remove(currentUnit);
+				enemyTurn = true;
+				currentUnit.GameObject.GetComponent<EnemyAction>().Action();
 			}
-        }
-		else {
-			if (isUnitAction == false) {
-				currentUnit = playerList[0];
-			}
-			Debug.Log(currentUnit.GameObject.name);
-			//spawn player selector
-			if (isPlayerSelectEnemy == false) {
-				if (currentUnit.GameObject.transform.position == playerSpawnPositions[0].transform.position) {
-                    Instantiate(playerSelector, playerSelectorPositions[0].transform.position,
-                                playerSelectorPositions[0].transform.rotation);
+		}
+
+        //code for player go first
+		if (GameManager.instance.isPlayerAttackEnemy == true) {
+			int j = 0;
+            foreach (Combatant player in playerList) {
+                listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
+                j++;
+            }
+            foreach (Combatant enemy in enemyList) {
+                listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
+                j++;
+            }
+            int k = 0;
+            while (j < 10) {
+                if (k == unitStats.Count) {
+                    k = 0;
                 }
-                else if (currentUnit.GameObject.transform.position == playerSpawnPositions[1].transform.position) {
-                    Instantiate(playerSelector, playerSelectorPositions[1].transform.position,
-                                playerSelectorPositions[1].transform.rotation);
+                listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+                j++;
+                k++;
+            }
+            //check enemy turn
+            if (playerList.Count == 0) {
+                actionMenu.SetActive(false);
+                //go to next turn
+                if (playerList.Count == 0 && enemyList.Count == 0) {
+                    isFirstTurn = false;
+                    unitLists = new Queue<Combatant>(unitStats);
+                    this.nextTurn();
                 }
-                else if (currentUnit.GameObject.transform.position == playerSpawnPositions[2].transform.position) {
-                    Instantiate(playerSelector, playerSelectorPositions[2].transform.position,
-                                playerSelectorPositions[2].transform.rotation);
+                //enemy turn
+                else {
+                    currentUnit = enemyList[0];
+					if (currentUnit.GameObject.tag == "Enemy") {
+						enemyList.Remove(currentUnit);
+                        enemyTurn = true;
+                        currentUnit.GameObject.GetComponent<EnemyAction>().Action();
+					}
+					else {
+						enemyList.Remove(currentUnit);
+						this.FristTurn();
+					}
                 }
-			}
-			//choose enemy
-            if (isPlayerSelectEnemy == false) {
-                for (int i = 0; i < enemyPositionIndex; i++) {
-                    if (isEnemyDead[enemyPositionIndex] == false) {
-                        Instantiate(selector, 
-						            enemySpawnPositions[i].transform.position, 
-						            enemySpawnPositions[i].transform.rotation);
-                        break;
+            }
+            else {
+                if (isUnitAction == false) {
+                    currentUnit = playerList[0];
+                }
+                //player turn
+                actionMenu.SetActive(true);
+                enemyTurn = false;
+                //spawn player selector
+                if (isPlayerSelectEnemy == false) {
+                    if (currentUnit.GameObject.transform.position == playerSpawnPositions[0].transform.position) {
+                        Instantiate(playerSelector, playerSelectorPositions[0].transform.position,
+                                    playerSelectorPositions[0].transform.rotation);
+                    }
+                    else if (currentUnit.GameObject.transform.position == playerSpawnPositions[1].transform.position) {
+                        Instantiate(playerSelector, playerSelectorPositions[1].transform.position,
+                                    playerSelectorPositions[1].transform.rotation);
+                    }
+                    else if (currentUnit.GameObject.transform.position == playerSpawnPositions[2].transform.position) {
+                        Instantiate(playerSelector, playerSelectorPositions[2].transform.position,
+                                    playerSelectorPositions[2].transform.rotation);
                     }
                 }
+                if (isPlayerSelectEnemy == true) {
+                    playerList.Remove(currentUnit);
+                    currentUnit.GameObject.GetComponent<GetPlayerAction>().
+                               AttackTarget(enemyCombatant[enemySelectedPositionIndex].GameObject,
+                                            enemyCombatant[enemySelectedPositionIndex]);
+                }
             }
-            //player turn
-            if (isPlayerSelectEnemy == true) {
-                enemyTurn = false;
-                playerList.Remove(currentUnit);
-                currentUnit.GameObject.GetComponent<GetPlayerAction>().
-                           AttackTarget(enemyCombatant[enemySelectedPositionIndex].GameObject,
-				                        enemyCombatant[enemySelectedPositionIndex]);
-            }
-		}
-       
+		} 
 	}
 
     void Update() {
-        if (enemyTurn == false && playerSelectAttack == false) {
+		//Debug.Log(timer);
+        if (enemyTurn == false) {
+			timerSlider.value = time/timer;
 			time -= Time.deltaTime;
             //Debug.Log(time);
             if (time <= 0.0f) {
 				time = timer;
-                this.nextTurn();
+				if (isFirstTurn == true) {
+					this.FristTurn();
+				}
+				else {
+					this.nextTurn();
+				}
             }
         }
-        else if (playerAttack == true && enemyTurn == false) {
-            time = timer;
-        }
-    }
-
-    public void SetPlayerInfoUI(PlayerStat currentPlayerStat) {
-  //      playerHealthName.SetActive(true);
-  //      playerManaName.SetActive(true);
-		//playerAvatar.SetActive(true);
-		//playerAvatarImage.overrideSprite = currentPlayerStat.playerAvatar;
-        //playerHealthText.text = "" + currentPlayerStat.health;
-        //playerManaText.text = "" + currentPlayerStat.mana;
-    }
-
-    public void SetActivePlayerInfoUI () {
-        //playerHealthName.SetActive(false);
-        //playerManaName.SetActive(false);
+		else {
+			time = timer;
+		}
+		if (isPlayerSelectEnemy == true) {
+			time = timer;
+		}
     }
 
     public void nextTurn() {
 		isFirstTurn = false;
-        //this.actionsMenu.SetActive(false);
-  //      this.playerHealthName.SetActive(false);
-		//this.playerAvatar.SetActive(false);
-        //this.playerManaName.SetActive(false);
-        //this.enemyUnitsMenu.SetActive(false);
         playerAttack = false;
 		if (isPlayerSelectEnemy == false && isSelectorSpawn == false && isUnitAction == false) {
 			GameObject[] remainEnemyUnit = GameObject.FindGameObjectsWithTag("Enemy");
             if (remainEnemyUnit.Length == 0) {
-                //        GameObject[] playerObject = GameObject.FindGameObjectsWithTag("PlayerUnit");
-                //        for (var i = 0; i < playerObject.Length; i++) {
-                //if (playerObject[i].gameObject.name == "Player1") {
-                //playerObject[i].gameObject.GetComponent<PlayerStat>().calculateExp(sumExpCanGet / playerObject.Length);
-                //DataManager.instance.maxHealthPlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().maxHealth;
-                //DataManager.instance.currentExpPlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().currentExp;
-                //DataManager.instance.levelPlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().playerLv;
-                //DataManager.instance.maxManaPlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().maxHealth;
-                //               DataManager.instance.attackPlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().attack;
-                //               DataManager.instance.defensePlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().defense;
-                //               DataManager.instance.healthPlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().health;
-                //               DataManager.instance.magicPlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().magic;
-                //               DataManager.instance.manaPlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().mana;
-                //               DataManager.instance.speedPlayer1 = playerObject[i].gameObject.GetComponent<PlayerStat>().speed;
-                //           }
-                //           else if(playerObject[i].gameObject.name == "Player2") {
-                //playerObject[i].gameObject.GetComponent<PlayerStat>().calculateExp(sumExpCanGet / playerObject.Length);
-                //DataManager.instance.maxHealthPlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().maxHealth;
-                //DataManager.instance.currentExpPlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().currentExp;
-                //DataManager.instance.levelPlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().playerLv;
-                //DataManager.instance.maxManaPlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().maxMana;
-                //        DataManager.instance.attackPlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().attack;
-                //        DataManager.instance.defensePlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().defense;
-                //        DataManager.instance.healthPlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().health;
-                //        DataManager.instance.magicPlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().magic;
-                //        DataManager.instance.manaPlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().mana;
-                //        DataManager.instance.speedPlayer2 = playerObject[i].gameObject.GetComponent<PlayerStat>().speed;
-                //    }
-                //}
-                GameManager.instance.LoadMapScene();
+				GameManager.instance.isEnemyAttackPlayer = false;
+				GameManager.instance.isPlayerAttackEnemy = false;
+				ScreenManager.Instance.TriggerLoadingFadeOut(1);
             }
             GameObject[] remainPlayerUnit = GameObject.FindGameObjectsWithTag("PlayerUnit");
             if (remainPlayerUnit.Length == 0) {
-                GameManager.instance.LoadGameMenu();
+				//GameManager.instance.LoadGameMenu();
             }
 		}
-
+		int j = 0;
+        int k = 0;
+        while (j < 10) {
+            if (k == unitStats.Count) {
+                k = 0;
+            }
+			if (unitStats[k].GameObject.tag != "DeadUnit") {
+				listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+			}
+            j++;
+            k++;
+        }
 		if (isPlayerSelectEnemy == false && isSelectorSpawn == false && isUnitAction == false) {
 			//currentUnit = unitStats[0];
-			//unitStats.Remove(currentUnit);
 			currentUnit = unitLists.Dequeue();
 		}
-		Debug.Log(currentUnit.GameObject.name);
 		if (currentUnit.GameObject.tag != "DeadUnit") {
-			//GameObject currentUnit = currentUnitStat.gameObject;
-			//unitStats.Sort();
 			if (currentUnit.GameObject.tag == "PlayerUnit") {
+				//player turn
+				enemyTurn = false;
+				//attack_DefendMenu.SetActive(false);
 				//spawn player selector
 				if (isPlayerSelectEnemy == false) {
                     if (currentUnit.GameObject.transform.position == playerSpawnPositions[0].transform.position) {
@@ -348,42 +443,37 @@ public class BattleManager : MonoBehaviour {
                         Instantiate(playerSelector, playerSelectorPositions[2].transform.position,
                                     playerSelectorPositions[2].transform.rotation);
                     }
+					actionMenu.SetActive(true);
                 }
-				//choose enemy
-				enemyTurn = false;
-				if (isPlayerSelectEnemy == false && enemyTurn == false && isSelectorSpawn == false) {
-					for (int i = 0; i < enemyPositionIndex; i++) {
-						if (isEnemyDead[i] == false) {
-							isSelectorSpawn = true;
-							Instantiate(selector, enemySpawnPositions[i].transform.position,
-						  enemySpawnPositions[i].transform.rotation);
-							break;
-						}
-					}
-				}
-				//player turn
 				if (isPlayerSelectEnemy == true && isSelectorSpawn == true) {
-						//unitStats.Add(currentUnit);
-						unitLists.Enqueue(currentUnit);
-						currentUnit.GameObject.GetComponent<GetPlayerAction>().
+					unitStats.Remove(currentUnit);
+					unitStats.Add(currentUnit);
+					unitLists.Enqueue(currentUnit);
+					currentUnit.GameObject.GetComponent<GetPlayerAction>().
 								   AttackTarget(enemyCombatant[enemySelectedPositionIndex].GameObject,
 													enemyCombatant[enemySelectedPositionIndex]);
 					}
 				}
 			else {
 				if (isSelectorSpawn == false && isUnitAction == false) {
+					//enemy turn
+					actionMenu.SetActive(false);
+					attack_DefendMenu.SetActive(false);
 					isUnitAction = true;
 					enemyTurn = true;
-                    //unitStats.Add(currentUnit);
+					unitStats.Remove(currentUnit);
+                    unitStats.Add(currentUnit);
                     unitLists.Enqueue(currentUnit);
                     currentUnit.GameObject.GetComponent<EnemyAction>().Action();
 				}
 			}
 		}
 		else {
-			Debug.Log("a");
+			actionMenu.SetActive(false);
+			attack_DefendMenu.SetActive(false);
+			unitStats.Remove(currentUnit);
 			unitLists.Enqueue(currentUnit);
-			//unitStats.Add(currentUnit);
+			unitStats.Add(currentUnit);
 			this.nextTurn();
 		}
     }
@@ -394,22 +484,5 @@ public class BattleManager : MonoBehaviour {
 
     public void SetPlayerSelectAttack() {//player choose attack enemy 
         playerSelectAttack = true;
-    }
-
-    public bool isPlayerSelectAttack() {
-        return playerSelectAttack;
-    }
-    public void GetPlayerSelectAttack() {
-        playerSelectAttack = false;
-    }
-
-    public bool isPlayerAttack() {
-        return playerAttack;
-    }
-    public void SetPlayerAttack() {
-        playerAttack = true;
-    }
-    public void GetPlayerAttack() {
-        playerAttack = false;
     }
 }

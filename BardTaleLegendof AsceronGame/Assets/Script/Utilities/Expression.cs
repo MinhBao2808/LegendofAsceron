@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class Expression  {
 	public static float GetExpExpression (float x) {
-		return Mathf.Pow(x, 3.0f) + (25 * Mathf.Pow(x, 2.0f)) - (20 * x) - 6;
+		return ((4/3) * Mathf.Pow(x, 3.0f)) - (15 * Mathf.Pow(x, 2.0f)) + (80 * x) - 102;
+	}
+
+	public static float SkillPATK () {
+		return 1;
 	}
 }

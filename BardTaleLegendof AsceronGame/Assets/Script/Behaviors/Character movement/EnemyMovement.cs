@@ -25,6 +25,14 @@ public class EnemyMovement : MovingObject {
 	private float currentTimeEnemyFollowPlayer;
 	private Vector3 enemyTarget;
 
+	//private void Awake() {
+	//	foreach(int i in GameManager.instance.enemyInMapIndex) {
+	//		if (MapManager.instance.enemyInMap[i].name == this.gameObject.name) {
+	//			Destroy(gameObject);
+	//		}
+	//	}
+	//}
+
 	// Use this for initialization
 	void Start () {
 		animator = GetComponent<Animator>();
@@ -124,9 +132,20 @@ public class EnemyMovement : MovingObject {
 	}
 
 	public void attackEvent() {
-		Destroy(this.gameObject);
-		//GameManager.instance.GoToBattle();
+		
+		GameManager.instance.isEnemyAttackPlayer = false;
+		GameManager.instance.isPlayerAttackEnemy = false;
+		//for (int i = 0; i < MapManager.instance.enemyInMap.Length; i++) {
+		//	if (MapManager.instance.enemyInMap[i].name == this.gameObject.name) {
+		//		Debug.Log(i);
+		//		GameManager.instance.enemyInMapIndex.Add(i);
+		//		break;
+		//	}
+		//}
 		ScreenManager.Instance.TriggerBattleFadeOut();
+		Destroy(gameObject);
+		//GameManager.instance.GoToBattle();
+		//ScreenManager.Instance.TriggerBattleFadeOut();
 	}
 
 	//private void OnTriggerEnter(Collider collision) {
