@@ -6,7 +6,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SavefilesInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class SavefilesInfo : MonoBehaviour, 
+    IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
 
     private FileInfo fileInfo;
@@ -59,6 +60,23 @@ public class SavefilesInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     
     public void OnPointerExit(PointerEventData eventData)
+    {
+        if (thumbnail.IsActive())
+        {
+            thumbnail.gameObject.SetActive(false);
+        }
+    }
+    
+    public void OnSelect(BaseEventData eventData)
+    {
+        if (!thumbnail.IsActive())
+        {
+            thumbnail.gameObject.SetActive(true);
+            ReadPNG();
+        }
+    }
+    
+    public void OnDeselect(BaseEventData eventData)
     {
         if (thumbnail.IsActive())
         {
