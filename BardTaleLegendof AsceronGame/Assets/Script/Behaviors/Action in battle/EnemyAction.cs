@@ -31,7 +31,7 @@ public class EnemyAction : MonoBehaviour {
 
 	private void Update() {
 		if (BattleManager.instance.callTurn == true) {
-			if (BattleManager.instance.currentUnit.GameObject.name == this.gameObject.name && actionStarted == true)
+			if (BattleManager.instance.currentUnit.name == this.gameObject.name && actionStarted == true)
             {
                 if (isAttack == false)
                 {

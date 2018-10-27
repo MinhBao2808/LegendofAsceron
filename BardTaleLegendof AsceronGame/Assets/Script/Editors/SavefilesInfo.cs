@@ -45,7 +45,6 @@ public class SavefilesInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnClick()
     {
         Debug.Log(fileInfo.FullName);
-        ScreenManager.Instance.TriggerLoadingFadeOut(1);
         SaveLoadManager.Instance.Load(fileInfo.FullName);
     }
 

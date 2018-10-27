@@ -7,6 +7,6 @@ public class AttackTarget : MonoBehaviour {
     public void Hit (GameObject target) {
         PlayerStat ownerStat = this.owner.GetComponent<PlayerStat>();
         PlayerStat targetStat = target.GetComponent<PlayerStat>();
-        targetStat.ReceiveDamage(ownerStat.attack);
+        //targetStat.ReceiveDamage(ownerStat.attack);
     }
 }

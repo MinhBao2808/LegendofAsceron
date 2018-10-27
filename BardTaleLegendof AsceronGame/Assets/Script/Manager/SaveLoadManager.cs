@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour {
@@ -83,9 +81,11 @@ public class SaveLoadManager : MonoBehaviour {
             PlayerData data = binaryFormatter.Deserialize(stream) as PlayerData;
             stream.Close();
 
-            PlayerManager.Instance.Difficulty = data.difficulty;
-            PlayerManager.Instance.Currency = data.currency;
-            PlayerManager.Instance.PlayTime = data.playTime;
+            PlayerManager.Instance.SetPlayerData(data);
+            Debug.Log(data.posX + " " + data.posY + " " + data.posZ);
+            Debug.Log(data.characters);
+            ScreenManager.Instance.TriggerLoadingFadeOut("M0002", false);
+            PlayerManager.Instance.SetPlayerPos();
         }
     }
 
@@ -135,54 +135,5 @@ public class SaveLoadManager : MonoBehaviour {
         byte[] bytes = screenShot.EncodeToPNG();
         string filename = path + ".png";
         System.IO.File.WriteAllBytes(filename, bytes);
-    }
-}
-
-[Serializable]
-public class PlayerData
-{
-    public int playTime;
-    public int difficulty;
-    public List<Character> characters;
-    public int currency;
-
-    public PlayerData()
-    {
-        playTime = PlayerManager.Instance.PlayTime;
-        difficulty = PlayerManager.Instance.Difficulty;
-        currency = PlayerManager.Instance.Currency;
-    }
-}
-
-[Serializable]
-public class Character
-{
-    public int level;
-    public int exp;
-    public int maxHP;
-    public int hp;
-    public int maxMP;
-    public int mp;
-    public int strength;
-    public int dexterity;
-    public int intelligence;
-    public int vitality;
-    public int endurance;
-    public int wisdom;
-    public int fireRes;
-    public int lightningRes;
-    public int iceRes;
-    public int cosmosRes;
-    public int chaosRes;
-    public List<int> skillIDs;
-    public List<Equipment> equipments;
-}
-
-[Serializable]
-public class Equipment
-{
-    public Equipment()
-    {
-
     }
 }

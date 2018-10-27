@@ -21,13 +21,13 @@ public class GenerateDamageText : MonoBehaviour {
         GameObject canvas = GameObject.Find("Canvas");
         damageTextObject = Instantiate(this.damageText) as GameObject;
 		damageTextObject.transform.SetParent(canvas.transform, false);
-        damageTextObject.GetComponent<Text>().text = "" + damage;
+        damageTextObject.GetComponent<TMPro.TextMeshProUGUI>().text = "" + damage;
 
 		damageTextObject.transform.position = new Vector3(transform.position.x + damageTextOffset,
 		                                                  transform.position.y + 1.0f,transform.position.z);
 		if (currentHealth <= 0) {
 			if (this.gameObject.tag == "Enemy") {
-				BattleManager.instance.enemyList.Remove(unit);
+				//BattleManager.instance.enemyList.Remove(unit);
 				this.gameObject.tag = "DeadUnit";
 				BattleManager.instance.isEnemyDead[BattleManager.instance.enemySelectedPositionIndex] = true;
 				this.gameObject.SetActive(false);

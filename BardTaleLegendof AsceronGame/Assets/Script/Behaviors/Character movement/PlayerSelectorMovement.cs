@@ -8,5 +8,12 @@ public class PlayerSelectorMovement : MonoBehaviour {
 		if (BattleManager.instance.isPlayerSelectEnemy == true) {
 			Destroy(this.gameObject);
 		}
+		if (BattleManager.instance.isTurnSkip == true) {
+			Destroy(this.gameObject);
+		}
+	}
+
+	private void OnDestroy() {
+		BattleManager.instance.isTurnSkip = false;
 	}
 }

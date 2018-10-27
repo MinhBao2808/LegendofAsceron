@@ -32,7 +32,7 @@ public class GetPlayerAction : MonoBehaviour {
 
 	private void Update() {
 		if (BattleManager.instance.callTurn == true) {
-			if (BattleManager.instance.currentUnit.GameObject.name == this.gameObject.name && actionStarted == true)
+			if (BattleManager.instance.currentUnit.name == this.gameObject.name && actionStarted == true)
             {
                 //Debug.Log(this.gameObject.name);
                 if (isAttack == false)

@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using ORKFramework;
-using ORKFramework.Behaviours;
-using ORKFramework.Events;
 
 public class BattleManager : MonoBehaviour {
     public static BattleManager instance = null;
@@ -17,19 +13,18 @@ public class BattleManager : MonoBehaviour {
 	[SerializeField] private Image[] listImageShowUnitTurn;
 	[SerializeField] private GameObject actionMenu;
 	[SerializeField] private GameObject attack_DefendMenu;
+	[SerializeField] private GameObject[] enemiesUnit;
+	[SerializeField] private GameObject[] playerUnit;
 	//private GameObject playerSelectorSpawn;
 	[SerializeField] private GameObject[] playerSelectorPositions;
 	private GameObject playerSelectorSpawned;
-	private Combatant[] enemyCombatant = new Combatant[6];
-	private Combatant[] playerCombatant = new Combatant[3];
-	private Group enemyGroup;
-	private Group playerGroup;
-	public List<Combatant> unitStats;
-	public List<Combatant> enemyList;
-	public Queue<Combatant> unitLists;
+	//private GameObject[] enemyGameObject = new GameObject[6];
+	//private GameObject[] playerGameObject = new GameObject[3];
+	public List<GameObject> unitStats;
+	public List<GameObject> enemyList;
+	public Queue<GameObject> unitLists;
 	public bool isFirstTurn;
-	private List<Combatant> playerList;
-    private GameObject playerParty;
+	public List<GameObject> playerList;
     public float timer;
 	public int enemyPositionIndex;
 	public int enemySelectedPositionIndex;
@@ -40,10 +35,11 @@ public class BattleManager : MonoBehaviour {
     private bool playerSelectAttack = false;
     private bool playerAttack = false;
 	private float timeToStartBattle;
+	public bool isTurnSkip;
 	public bool callTurn;
 	public bool isUnitAction = false;
 //	private float sumExpCanGet = 0.0f;
-	public Combatant currentUnit;
+	public GameObject currentUnit;
 	public bool isSelectorSpawn = false;
 	public bool[] isEnemyDead = new bool[6];
 	//private Vector3 selectorPositionY = new Vector3(0, 3, 0);
@@ -72,46 +68,56 @@ public class BattleManager : MonoBehaviour {
 	}
 
 	private void SpawnEnemy () {
+		//enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);
+		//int enemyDataIndex;
+		//for (int i = 0; i < enemyPositionIndex; i++) {
+		//	enemyDataIndex = Random.Range(2, 3);
+		//	enemyGameObject[i] = ORK.GameObjects.Create(enemyDataIndex, enemyGroup);
+		//	enemyGameObject[i].Init();
+		//	enemyGameObject[i].Spawn(enemySpawnPositions[i].transform.position, 
+		//	                        false, enemySpawnPositions[i].transform.rotation.y, 
+		//	                        false, enemySpawnPositions[i].transform.localScale);
+		//}
 		enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);
 		int enemyDataIndex;
 		for (int i = 0; i < enemyPositionIndex; i++) {
-			enemyDataIndex = Random.Range(2, 3);
-			enemyCombatant[i] = ORK.Combatants.Create(enemyDataIndex, enemyGroup);
-			enemyCombatant[i].Init();
-			enemyCombatant[i].Spawn(enemySpawnPositions[i].transform.position, 
-			                        false, enemySpawnPositions[i].transform.rotation.y, 
-			                        false, enemySpawnPositions[i].transform.localScale);
+			enemyDataIndex = Random.Range(0, 1);
+			enemiesUnit[enemyDataIndex].GetComponent<EnemyStat>().Init(enemyDataIndex);
+			Instantiate(enemiesUnit[enemyDataIndex], enemySpawnPositions[i].transform.position, enemySpawnPositions[i].transform.rotation);
 		}
 	}
 
 	private void SpawnPlayer () {
 		//use index to spawn player
-		playerCombatant[0] = ORK.Combatants.Create(0, playerGroup);
-		playerCombatant[0].Init();
-		playerCombatant[0].Spawn(playerSpawnPositions[0].transform.position,
-								 false, playerSpawnPositions[0].transform.rotation.y,
-								 false, playerSpawnPositions[0].transform.localScale);
-		playerCombatant[1] = ORK.Combatants.Create(1, playerGroup);
-		playerCombatant[1].Init();
-		playerCombatant[1].Spawn(playerSpawnPositions[1].transform.position,
-								 false, playerSpawnPositions[1].transform.rotation.y,
-								 false, playerSpawnPositions[1].transform.localScale);
-		playerCombatant[2] = ORK.Combatants.Create(4, playerGroup);
-		playerCombatant[2].Init();
-		playerCombatant[2].Spawn(playerSpawnPositions[2].transform.position,
-												   false, playerSpawnPositions[2].transform.rotation.y,
-												   false, playerSpawnPositions[2].transform.localScale);
-		playerPositionIndex = 3;
+		//playerGameObject[0] = ORK.GameObjects.Create(0, playerGroup);
+		//playerGameObject[0].Init();
+		//playerGameObject[0].Spawn(playerSpawnPositions[0].transform.position,
+		//						 false, playerSpawnPositions[0].transform.rotation.y,
+		//						 false, playerSpawnPositions[0].transform.localScale);
+		//playerGameObject[1] = ORK.GameObjects.Create(1, playerGroup);
+		//playerGameObject[1].Init();
+		//playerGameObject[1].Spawn(playerSpawnPositions[1].transform.position,
+		//						 false, playerSpawnPositions[1].transform.rotation.y,
+		//						 false, playerSpawnPositions[1].transform.localScale);
+		//playerGameObject[2] = ORK.GameObjects.Create(4, playerGroup);
+		//playerGameObject[2].Init();
+		//playerGameObject[2].Spawn(playerSpawnPositions[2].transform.position,
+		//										   false, playerSpawnPositions[2].transform.rotation.y,
+		//										   false, playerSpawnPositions[2].transform.localScale);
+		//playerPositionIndex = 3;
+		playerUnit[0].GetComponent<PlayerStat>().Init(0);
+		Instantiate(playerUnit[0], playerSpawnPositions[0].transform.position, playerSpawnPositions[0].transform.rotation);
+		playerPositionIndex = 1;
 	}
 
 	void Awake() {
         if (instance == null) {
             instance = this;
         }
+		//playerUnit[0].GetComponent<PlayerStat>().Init(0);
 		timeToStartBattle = 2.5f;
 		callTurn = false;
-		enemyGroup = new Group(1);
-		playerGroup = new Group(0);
+		isTurnSkip = false;
 		SpawnEnemy();
 		SpawnPlayer();
 		//if (GameManager.instance.level == Level.Passive) {
@@ -139,64 +145,59 @@ public class BattleManager : MonoBehaviour {
 	}
 
     void Start() {
-		//player go first
-		//Debug.Log(GameManager.instance.isEnemyAttackPlayer);
-		//Debug.Log(GameManager.instance.isPlayerAttackEnemy);
-		enemyList = new List<Combatant>();
-		playerList = new List<Combatant>();
-		unitStats = new List<Combatant>();
-		//unitLists = new Queue<Combatant>();
-		//unitTurn = new List<int>();
-		//GameObject[] playerUnits = GameObject.FindGameObjectsWithTag("PlayerUnit");
-		//foreach (GameObject playerUnit in playerUnits) {
-		//    PlayerStat currentStat = playerUnit.GetComponent<PlayerStat>();
-		//    currentStat.CalculateNextTurn(0);
-		//    unitStats.Add(currentStat);
-		//    //unitTurn.Add(currentStat.nextActTurn);
-		//}
-		//     GameObject[] enemyUnits = GameObject.FindGameObjectsWithTag("Enemy");
-		//     foreach (GameObject enemy in enemyUnits) {
-		//         PlayerStat currentStat = enemy.GetComponent<PlayerStat>();
-		//         currentStat.CalculateNextTurn(0);
-		//         unitStats.Add(currentStat);
-		//sumExpCanGet = sumExpCanGet + currentStat.expPoints;
-		//    //unitTurn.Add(currentStat.nextActTurn);
-		//}
-		//unitTurn.Sort();
-		for (int i = 0; i < enemyPositionIndex; i++) {
-			enemyList.Add(enemyCombatant[i]);
+		//player go firstckEnemy);
+		enemyList = new List<GameObject>();
+		playerList = new List<GameObject>();
+		unitStats = new List<GameObject>();
+		for (int i = 0; i < 2; i++) {
+			enemyList.Add(enemiesUnit[i]);
 		}
-		enemyList.Sort(delegate (Combatant x, Combatant y) {
-			return y.Status[9].GetValue().CompareTo(x.Status[9].GetValue());
+		enemyList.Sort(delegate (GameObject x, GameObject y) {
+			return y.GetComponent<EnemyStat>().enemy.baseStat.dexterity
+				    .CompareTo(x.GetComponent<EnemyStat>().enemy.baseStat.dexterity);
 		});
 		for (int i = 0; i < playerPositionIndex; i++ ){
-			playerList.Add(playerCombatant[i]);
+			playerList.Add(playerUnit[i]);
 		}
-		playerList.Sort(delegate (Combatant x, Combatant y) {
-			return y.Status[9].GetValue().CompareTo(x.Status[9].GetValue());
+		playerList.Sort(delegate (GameObject x, GameObject y) {
+			return y.GetComponent<PlayerStat>().player.baseStat.dexterity.
+				    CompareTo(x.GetComponent<PlayerStat>().player.baseStat.dexterity);
 		});
 		for (int i = 0; i < playerPositionIndex; i++) {
-            if (playerCombatant[i].GameObject.tag == "PlayerUnit") {
-                unitStats.Add(playerCombatant[i]);
+			if (playerUnit[i].tag == "PlayerUnit") {
+				unitStats.Add(playerUnit[i]);
             }
         }
-        for (int i = 0; i < enemyPositionIndex; i++) {
-            if (enemyCombatant[i].GameObject.tag == "Enemy") {
-                unitStats.Add(enemyCombatant[i]);
+        for (int i = 0; i < 2; i++) {
+			if (enemiesUnit[i].tag == "Enemy") {
+				unitStats.Add(enemiesUnit[i]);
             }
         }
-        unitStats.Sort(delegate (Combatant x, Combatant y) {
-            return y.Status[9].GetValue().CompareTo(x.Status[9].GetValue());
+        unitStats.Sort(delegate (GameObject x, GameObject y) {
+			if (x.tag == "PlayerUnit" && y.tag == "PlayerUnit") {
+				return y.GetComponent<PlayerStat>().player.baseStat.dexterity
+					    .CompareTo(x.GetComponent<PlayerStat>().player.baseStat.dexterity);
+			}
+			else if (x.tag == "PlayerUnit" && y.tag == "Enemy") {
+				return y.GetComponent<EnemyStat>().enemy.baseStat.dexterity.
+					    CompareTo(x.GetComponent<PlayerStat>().player.baseStat.dexterity);
+			}
+			else if (x.tag == "Enemy" && y.tag == "PlayerUnit") {
+				return y.GetComponent<PlayerStat>().player.baseStat.dexterity.
+						CompareTo(x.GetComponent<EnemyStat>().enemy.baseStat.dexterity);
+			}
+			return y.GetComponent<EnemyStat>().enemy.baseStat.dexterity
+                    .CompareTo(x.GetComponent<EnemyStat>().enemy.baseStat.dexterity);
         });
         //if player go first
 		if (GameManager.instance.isPlayerAttackEnemy == true) {
 			int j = 0;
-            foreach (Combatant player in playerList) {
-                listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
+            foreach (GameObject player in playerList) {
+                listImageShowUnitTurn[j].sprite = player.GetComponent<SpriteRenderer>().sprite;
                 j++;
             }
-            foreach (Combatant enemy in enemyList) {
-                listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
+            foreach (GameObject enemy in enemyList) {
+                listImageShowUnitTurn[j].sprite = enemy.GetComponent<SpriteRenderer>().sprite;
                 j++;
             }
             int k = 0;
@@ -205,7 +206,7 @@ public class BattleManager : MonoBehaviour {
                     k = 0;
                 }
                 Debug.Log(k);
-                listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+                listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
                 j++;
                 k++;
             }
@@ -213,12 +214,12 @@ public class BattleManager : MonoBehaviour {
         //if enemy go first 
 		if (GameManager.instance.isEnemyAttackPlayer == true) {
 			int j = 0;
-			foreach (Combatant enemy in enemyList) {
-				listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
+			foreach (GameObject enemy in enemyList) {
+				listImageShowUnitTurn[j].sprite = enemy.GetComponent<SpriteRenderer>().sprite;
                 j++;
 			}
-			foreach (Combatant player in playerList) {
-				listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
+			foreach (GameObject player in playerList) {
+				listImageShowUnitTurn[j].sprite = player.GetComponent<SpriteRenderer>().sprite;
                 j++;
 			}
 			int k = 0;
@@ -226,7 +227,7 @@ public class BattleManager : MonoBehaviour {
                 if (k == unitStats.Count) {
                     k = 0;
                 }
-                listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+                listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
                 j++;
                 k++;
             }
@@ -243,7 +244,7 @@ public class BattleManager : MonoBehaviour {
 			GameManager.instance.isPlayerAttackEnemy = false;
 			GameManager.instance.isEnemyAttackPlayer = false;
 			GameManager.instance.isBattleSceneAnimationLoaded = false;
-			ScreenManager.Instance.TriggerLoadingFadeOut(1);
+			ScreenManager.Instance.TriggerLoadingFadeOut("M0002",false);
 		}
 		GameObject[] remainPlayerUnit = GameObject.FindGameObjectsWithTag("PlayerUnit");
         if (remainPlayerUnit.Length == 0) {
@@ -252,12 +253,12 @@ public class BattleManager : MonoBehaviour {
         //enemy go first
 		if (GameManager.instance.isEnemyAttackPlayer == true) {
 			int j = 0;
-			foreach (Combatant enemy in enemyList) {
-				listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
+			foreach (GameObject enemy in enemyList) {
+				listImageShowUnitTurn[j].sprite = enemy.GetComponent<SpriteRenderer>().sprite;
 				j++;
 			}
-			foreach (Combatant player in playerList) {
-				listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
+			foreach (GameObject player in playerList) {
+				listImageShowUnitTurn[j].sprite = player.GetComponent<SpriteRenderer>().sprite;
 				j++;
 			}
 			int k = 0;
@@ -265,7 +266,7 @@ public class BattleManager : MonoBehaviour {
 				if (k == unitStats.Count) {
 					k = 0;
 				}
-				listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+				listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
 				j++;
 				k++;
 			}
@@ -275,7 +276,7 @@ public class BattleManager : MonoBehaviour {
                 //go to next turn
 				if (playerList.Count == 0 && enemyList.Count == 0) {
 					isFirstTurn = false;
-					unitLists = new Queue<Combatant>(unitStats);
+					unitLists = new Queue<GameObject>(unitStats);
 					this.nextTurn();
 				}
 				else {
@@ -285,27 +286,27 @@ public class BattleManager : MonoBehaviour {
 					//player turn
 					enemyTurn = false;
 					actionMenu.SetActive(true);
-					if (currentUnit.GameObject.tag == "Player") {
+					if (currentUnit.tag == "Player") {
 						//spawm player selector 
                         if (isPlayerSelectEnemy == false) {
-                            if (currentUnit.GameObject.transform.position == playerSpawnPositions[0].transform.position) {
+                            if (currentUnit.transform.position == playerSpawnPositions[0].transform.position) {
                                 Instantiate(playerSelector, playerSelectorPositions[0].transform.position,
                                             playerSelectorPositions[0].transform.rotation);
                             }
-                            else if (currentUnit.GameObject.transform.position == playerSpawnPositions[1].transform.position){
+                            else if (currentUnit.transform.position == playerSpawnPositions[1].transform.position){
                                 Instantiate(playerSelector, playerSelectorPositions[1].transform.position,
                                             playerSelectorPositions[1].transform.rotation);
                             }
-                            else if (currentUnit.GameObject.transform.position == playerSpawnPositions[2].transform.position){
+                            else if (currentUnit.transform.position == playerSpawnPositions[2].transform.position){
                                 Instantiate(playerSelector, playerSelectorPositions[2].transform.position,
                                             playerSelectorPositions[2].transform.rotation);
                             }
                         }
                         if (isPlayerSelectEnemy == true){
                             playerList.Remove(currentUnit);
-                            currentUnit.GameObject.GetComponent<GetPlayerAction>().
-                                       AttackTarget(enemyCombatant[enemySelectedPositionIndex].GameObject,
-                                                    enemyCombatant[enemySelectedPositionIndex]);
+                            //currentUnit.GetComponent<GetPlayerAction>().
+                                       //AttackTarget(enemyGameObject[enemySelectedPositionIndex].GameObject,
+                                                    //enemyGameObject[enemySelectedPositionIndex]);
                         }
 					}
 					else {
@@ -319,19 +320,19 @@ public class BattleManager : MonoBehaviour {
 				currentUnit = enemyList[0];
 				enemyList.Remove(currentUnit);
 				enemyTurn = true;
-				currentUnit.GameObject.GetComponent<EnemyAction>().Action();
+				currentUnit.GetComponent<EnemyAction>().Action();
 			}
 		}
 
         //code for player go first
 		if (GameManager.instance.isPlayerAttackEnemy == true) {
 			int j = 0;
-            foreach (Combatant player in playerList) {
-                listImageShowUnitTurn[j].sprite = player.GameObject.GetComponent<SpriteRenderer>().sprite;
+            foreach (GameObject player in playerList) {
+                listImageShowUnitTurn[j].sprite = player.GetComponent<SpriteRenderer>().sprite;
                 j++;
             }
-            foreach (Combatant enemy in enemyList) {
-                listImageShowUnitTurn[j].sprite = enemy.GameObject.GetComponent<SpriteRenderer>().sprite;
+            foreach (GameObject enemy in enemyList) {
+                listImageShowUnitTurn[j].sprite = enemy.GetComponent<SpriteRenderer>().sprite;
                 j++;
             }
             int k = 0;
@@ -339,7 +340,7 @@ public class BattleManager : MonoBehaviour {
                 if (k == unitStats.Count) {
                     k = 0;
                 }
-                listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
+                listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
                 j++;
                 k++;
             }
@@ -349,16 +350,16 @@ public class BattleManager : MonoBehaviour {
                 //go to next turn
                 if (playerList.Count == 0 && enemyList.Count == 0) {
                     isFirstTurn = false;
-                    unitLists = new Queue<Combatant>(unitStats);
+                    unitLists = new Queue<GameObject>(unitStats);
                     this.nextTurn();
                 }
                 //enemy turn
                 else {
                     currentUnit = enemyList[0];
-					if (currentUnit.GameObject.tag == "Enemy") {
+					if (currentUnit.tag == "Enemy") {
 						enemyList.Remove(currentUnit);
                         enemyTurn = true;
-                        currentUnit.GameObject.GetComponent<EnemyAction>().Action();
+                        currentUnit.GetComponent<EnemyAction>().Action();
 					}
 					else {
 						enemyList.Remove(currentUnit);
@@ -375,24 +376,24 @@ public class BattleManager : MonoBehaviour {
                 enemyTurn = false;
                 //spawn player selector
                 if (isPlayerSelectEnemy == false) {
-                    if (currentUnit.GameObject.transform.position == playerSpawnPositions[0].transform.position) {
+                    if (currentUnit.transform.position == playerSpawnPositions[0].transform.position) {
                         Instantiate(playerSelector, playerSelectorPositions[0].transform.position,
                                     playerSelectorPositions[0].transform.rotation);
                     }
-                    else if (currentUnit.GameObject.transform.position == playerSpawnPositions[1].transform.position) {
+                    else if (currentUnit.transform.position == playerSpawnPositions[1].transform.position) {
                         Instantiate(playerSelector, playerSelectorPositions[1].transform.position,
                                     playerSelectorPositions[1].transform.rotation);
                     }
-                    else if (currentUnit.GameObject.transform.position == playerSpawnPositions[2].transform.position) {
+                    else if (currentUnit.transform.position == playerSpawnPositions[2].transform.position) {
                         Instantiate(playerSelector, playerSelectorPositions[2].transform.position,
                                     playerSelectorPositions[2].transform.rotation);
                     }
                 }
                 if (isPlayerSelectEnemy == true) {
                     playerList.Remove(currentUnit);
-                    currentUnit.GameObject.GetComponent<GetPlayerAction>().
-                               AttackTarget(enemyCombatant[enemySelectedPositionIndex].GameObject,
-                                            enemyCombatant[enemySelectedPositionIndex]);
+                    //currentUnit.GetComponent<GetPlayerAction>().
+                               //AttackTarget(enemyGameObject[enemySelectedPositionIndex].GameObject,
+                                            //enemyGameObject[enemySelectedPositionIndex]);
                 }
             }
 		} 
@@ -406,11 +407,16 @@ public class BattleManager : MonoBehaviour {
 			time -= Time.deltaTime;
             //Debug.Log(time);
             if (time <= 0.0f) {
+				isTurnSkip = true;
 				time = timer;
 				if (isFirstTurn == true) {
+					playerList.Remove(currentUnit);
 					this.FristTurn();
 				}
 				else {
+					unitStats.Remove(currentUnit);
+					unitStats.Add(currentUnit);
+					unitLists.Enqueue(currentUnit);
 					this.nextTurn();
 				}
             }
@@ -441,7 +447,7 @@ public class BattleManager : MonoBehaviour {
 				GameManager.instance.isEnemyAttackPlayer = false;
 				GameManager.instance.isPlayerAttackEnemy = false;
 				GameManager.instance.isBattleSceneAnimationLoaded = false;
-				ScreenManager.Instance.TriggerLoadingFadeOut(1);
+				ScreenManager.Instance.TriggerLoadingFadeOut("M0002",false);
             }
             GameObject[] remainPlayerUnit = GameObject.FindGameObjectsWithTag("PlayerUnit");
             if (remainPlayerUnit.Length == 0) {
@@ -454,9 +460,7 @@ public class BattleManager : MonoBehaviour {
             if (k == unitStats.Count) {
                 k = 0;
             }
-			if (unitStats[k].GameObject.tag != "DeadUnit") {
-				listImageShowUnitTurn[j].sprite = unitStats[k].GameObject.GetComponent<SpriteRenderer>().sprite;
-			}
+			listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
             j++;
             k++;
         }
@@ -464,22 +468,22 @@ public class BattleManager : MonoBehaviour {
 			//currentUnit = unitStats[0];
 			currentUnit = unitLists.Dequeue();
 		}
-		if (currentUnit.GameObject.tag != "DeadUnit") {
-			if (currentUnit.GameObject.tag == "PlayerUnit") {
+		if (currentUnit.tag != "DeadUnit") {
+			if (currentUnit.tag == "PlayerUnit") {
 				//player turn
 				enemyTurn = false;
 				//attack_DefendMenu.SetActive(false);
 				//spawn player selector
 				if (isPlayerSelectEnemy == false) {
-                    if (currentUnit.GameObject.transform.position == playerSpawnPositions[0].transform.position) {
+                    if (currentUnit.transform.position == playerSpawnPositions[0].transform.position) {
                         Instantiate(playerSelector, playerSelectorPositions[0].transform.position,
                                     playerSelectorPositions[0].transform.rotation);
                     }
-                    else if (currentUnit.GameObject.transform.position == playerSpawnPositions[1].transform.position) {
+                    else if (currentUnit.transform.position == playerSpawnPositions[1].transform.position) {
                         Instantiate(playerSelector, playerSelectorPositions[1].transform.position,
                                     playerSelectorPositions[1].transform.rotation);
                     }
-                    else if (currentUnit.GameObject.transform.position == playerSpawnPositions[2].transform.position) {
+                    else if (currentUnit.transform.position == playerSpawnPositions[2].transform.position) {
                         Instantiate(playerSelector, playerSelectorPositions[2].transform.position,
                                     playerSelectorPositions[2].transform.rotation);
                     }
@@ -489,9 +493,9 @@ public class BattleManager : MonoBehaviour {
 					unitStats.Remove(currentUnit);
 					unitStats.Add(currentUnit);
 					unitLists.Enqueue(currentUnit);
-					currentUnit.GameObject.GetComponent<GetPlayerAction>().
-								   AttackTarget(enemyCombatant[enemySelectedPositionIndex].GameObject,
-													enemyCombatant[enemySelectedPositionIndex]);
+					//currentUnit.GetComponent<GetPlayerAction>().
+								   //AttackTarget(enemyGameObject[enemySelectedPositionIndex].GameObject,
+													//enemyGameObject[enemySelectedPositionIndex]);
 					}
 				}
 			else {
@@ -504,16 +508,14 @@ public class BattleManager : MonoBehaviour {
 					unitStats.Remove(currentUnit);
                     unitStats.Add(currentUnit);
                     unitLists.Enqueue(currentUnit);
-                    currentUnit.GameObject.GetComponent<EnemyAction>().Action();
+                    currentUnit.GetComponent<EnemyAction>().Action();
 				}
 			}
 		}
 		else {
 			actionMenu.SetActive(false);
 			attack_DefendMenu.SetActive(false);
-			unitStats.Remove(currentUnit);
 			unitLists.Enqueue(currentUnit);
-			unitStats.Add(currentUnit);
 			this.nextTurn();
 		}
     }

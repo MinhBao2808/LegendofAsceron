@@ -37,6 +37,7 @@ public class PlayerMovement : MovingObject {
 		characterController = GetComponent<CharacterController>();
 		forwardInput = turnInput = 0;
 		isPlayerPressAttack = false;
+        DontDestroyOnLoad(this);
 	}
 
 	public Quaternion TargetRotation {

@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212815859366621948}
   - component: {fileID: 114561054825430002}
   - component: {fileID: 114405579681357804}
+  - component: {fileID: 114606846566325774}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Enemy
@@ -68,6 +69,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetsTag: PlayerUnit
   owner: {fileID: 1716112910176024}
+--- !u!114 &114606846566325774
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1716112910176024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02fe5e819170a4da591d31245ebee594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy:
+    id: 
+    name: 
+    description: 
+    race: 0
+    type: 0
+    baseStat:
+      level: 0
+      hp: 0
+      mp: 0
+      strength: 0
+      dexterity: 0
+      intelligence: 0
+      vitality: 0
+      endurance: 0
+      wisdom: 0
+      fireRes: 0
+      lightningRes: 0
+      iceRes: 0
+      holyRes: 0
+      darkRes: 0
+    skills: []
+    totalSkills: []
+    growthStat:
+      level: 0
+      hp: 0
+      mp: 0
+      strength: 0
+      dexterity: 0
+      intelligence: 0
+      vitality: 0
+      endurance: 0
+      wisdom: 0
+      fireRes: 0
+      lightningRes: 0
+      iceRes: 0
+      holyRes: 0
+      darkRes: 0
+    baseReward:
+      gold: 0
+      exp: 0
+      item: []
+    growthReward:
+      gold: 0
+      exp: 0
+      item: []
 --- !u!212 &212815859366621948
 SpriteRenderer:
   m_ObjectHideFlags: 1
