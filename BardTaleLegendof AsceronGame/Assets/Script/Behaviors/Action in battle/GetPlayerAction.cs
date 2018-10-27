@@ -31,37 +31,46 @@ public class GetPlayerAction : MonoBehaviour {
     }
 
 	private void Update() {
-		if (BattleManager.instance.currentUnit.GameObject.name == this.gameObject.name && actionStarted == true) {
-			//Debug.Log(this.gameObject.name);
-			if (isAttack == false) {
-				targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f, targetGameObject.transform.position.y, targetGameObject.transform.position.z);
-				if (this.transform.position == targetPosition) {
-					Hit(targetGameObject,combatantTarget);
-					isAttack = true;
-				}
-			}
-			else {
-				targetPosition = startPosition;
-				if (this.transform.position == targetPosition) {
-					BattleManager.instance.isPlayerSelectEnemy = false;
-                    BattleManager.instance.isUnitAction = false;
-                    //StopAllCoroutines();
-                    if (BattleManager.instance.isFirstTurn == true) {
-						isAttack = false;
-						actionStarted = false;
-                        BattleManager.instance.FristTurn();
-                   
+		if (BattleManager.instance.callTurn == true) {
+			if (BattleManager.instance.currentUnit.name == this.gameObject.name && actionStarted == true)
+            {
+                //Debug.Log(this.gameObject.name);
+                if (isAttack == false)
+                {
+                    targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f, targetGameObject.transform.position.y, targetGameObject.transform.position.z);
+                    if (this.transform.position == targetPosition)
+                    {
+                        isAttack = true;
+                        Hit(targetGameObject, combatantTarget);
                     }
-                    else {
-						//BattleManager.instance.unitLists.Enqueue(BattleManager.instance.currentUnit);
-						isAttack = false;
-						actionStarted = false;
-                        BattleManager.instance.nextTurn();
+                }
+                else
+                {
+                    targetPosition = startPosition;
+                    if (this.transform.position == targetPosition)
+                    {
+                        BattleManager.instance.isPlayerSelectEnemy = false;
+                        BattleManager.instance.isUnitAction = false;
+                        //StopAllCoroutines();
+                        if (BattleManager.instance.isFirstTurn == true)
+                        {
+                            isAttack = false;
+                            actionStarted = false;
+                            BattleManager.instance.FristTurn();
+                        }
+                        else
+                        {
+                            //BattleManager.instance.unitLists.Enqueue(BattleManager.instance.currentUnit);
+                            isAttack = false;
+                            actionStarted = false;
+                            BattleManager.instance.nextTurn();
+                        }
                     }
-				}
-			}
-			this.transform.position = Vector3.MoveTowards(transform.position, targetPosition, 500.0f * Time.deltaTime);
+                }
+                this.transform.position = Vector3.MoveTowards(transform.position, targetPosition, 500.0f * Time.deltaTime);
+            }
 		}
+
 	}
 
 	public void AttackTarget (GameObject target, Combatant targetCombatant) {

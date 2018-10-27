@@ -1,0 +1,52 @@
+[
+  {
+    "id": "C0001",
+    "name": "Lars",
+    "description": "Lorem Ipsum",
+    "race": "Humanoid",
+    "type": "Melee",
+    "baseStat": 
+	{
+      "level": 1,
+      "hp": 20,
+      "mp": 10,
+      "strength": 6,
+      "dexterity": 4,
+      "intelligence": 4,
+	  "vitality": 6,
+      "endurance": 6,
+      "wisdom": 4,
+	  "fireRes": 0.1,
+	  "lightningRes": 0.1,
+	  "iceRes": 0.1,
+	  "holyRes": -0.2,
+	  "darkRes": -0.1
+    },
+    "skills": 
+	[
+	],
+    "totalSkills": 
+	[
+	],
+    "growthStat": 
+	{
+      "level": 1,
+      "hp": 6,
+      "mp": 2,
+      "strength": 2,
+      "dexterity": 2,
+      "intelligence": 0,
+	  "vitality": 2,
+      "endurance": 0,
+      "wisdom": 0,
+	  "fireRes": 0.0,
+	  "lightningRes": 0.0,
+	  "iceRes": 0.0,
+	  "holyRes": 0.0,
+	  "darkRes": 0.0
+    },
+	"equipments":
+	[
+	]
+  }
+]

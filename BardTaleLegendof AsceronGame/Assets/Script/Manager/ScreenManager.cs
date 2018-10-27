@@ -9,13 +9,18 @@ public class ScreenManager : MonoBehaviour {
     public Image loadingScreenArtwork;
     public Sprite[] artworkSprites;
 
+    public int PreviousScene { get; set; }
+
+    private bool isAvailable = true;
     private bool isLoading = false;
+    private bool isTransitFromMap = false;
+    private bool isBattle = false;
 
     private float countTimer = 5;
     private float intervalTime = 5;
 
     private static ScreenManager _instance;
-    private int level;
+    private string level;
 
     public static ScreenManager Instance
     {
@@ -32,6 +37,7 @@ public class ScreenManager : MonoBehaviour {
         else
         {
             _instance = this;
+            PreviousScene = 0;
             DontDestroyOnLoad(this);
         }
     }
@@ -54,40 +60,60 @@ public class ScreenManager : MonoBehaviour {
         }
     }
 
-    public void TriggerLoadingFadeOut(int screenIndex)
+    public void TriggerLoadingFadeOut(string screenIndex, bool transitFromMap)
     {
-        anim.SetTrigger("LoadingFadeOut");
-        level = screenIndex;
-        isLoading = true;
+        if (isAvailable)
+        {
+            anim.SetTrigger("LoadingFadeOut");
+            level = screenIndex;
+            isLoading = true;
+            isAvailable = false;
+            isTransitFromMap = transitFromMap;
+        }
     }
 
     void TriggerIdle()
     {
         anim.SetTrigger("Idle");
         isLoading = false;
+        isBattle = false;
+        isTransitFromMap = false;
+        isAvailable = true;
     }
 
     public void TriggerBattleFadeOut()
     {
-        anim.SetTrigger("BattleFadeOut");
-        level = 2;
+        if (isAvailable)
+        {
+            anim.SetTrigger("BattleFadeOut");
+            level = MapManager.Instance.BattleSceneID;
+            isTransitFromMap = false;
+            isBattle = true;
+            isAvailable = false;
+        }
     }
 
     void OnLoadComplete(string trigger)
     {
+		Debug.Log(trigger);
+        PreviousScene = SceneManager.GetActiveScene().buildIndex;
+        if(!isBattle)
+        {
+            PlayerManager.Instance.UpdateCurrentSceneID(level);
+        }
         StartCoroutine(LoadAsynchronously(level, trigger));
     }
 
-    IEnumerator LoadAsynchronously(int sceneIndex, string trigger)
+    IEnumerator LoadAsynchronously(string sceneID, string trigger)
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
-
+        int loadingScene = MapManager.Instance.mapList[sceneID].sceneId;
+        AsyncOperation operation = SceneManager.LoadSceneAsync(loadingScene);
         while (!operation.isDone)
         {
             yield return null;
         }
-        anim.SetTrigger(trigger);
-        if (level == 2)
+		anim.SetTrigger(trigger);
+        if (level == MapManager.Instance.BattleSceneID)
         {
             AudioManager.Instance.ChangeBgm(AudioManager.Instance.battleBgms[0]);
         }

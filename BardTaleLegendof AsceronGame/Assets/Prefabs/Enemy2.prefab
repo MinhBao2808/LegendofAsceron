@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212704367134549242}
   - component: {fileID: 114366552140977364}
   - component: {fileID: 114760629355529736}
+  - component: {fileID: 114687092528999212}
   m_Layer: 0
   m_Name: Enemy2
   m_TagString: Enemy
@@ -55,6 +56,65 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetsTag: PlayerUnit
   owner: {fileID: 1730995686494210}
+--- !u!114 &114687092528999212
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1730995686494210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02fe5e819170a4da591d31245ebee594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy:
+    id: E0001
+    name: Ghoul
+    description: Lorem Ipsum
+    race: 0
+    type: 0
+    baseStat:
+      level: 1
+      hp: 10
+      mp: 0
+      strength: 3
+      dexterity: 2
+      intelligence: 1
+      vitality: 1
+      endurance: 1
+      wisdom: 1
+      fireRes: -0.2
+      lightningRes: 0
+      iceRes: 0.1
+      holyRes: -0.1
+      darkRes: 0
+    skills: []
+    totalSkills: []
+    growthStat:
+      level: 1
+      hp: 5
+      mp: 2
+      strength: 0.75
+      dexterity: 0.25
+      intelligence: 0.1
+      vitality: 0.25
+      endurance: 0.2
+      wisdom: 0.2
+      fireRes: 0
+      lightningRes: 0
+      iceRes: 0
+      holyRes: 0
+      darkRes: 0
+    baseReward:
+      gold: 5
+      exp: 8
+      item:
+      - itemID: 0001
+        procChance: 0.2
+    growthReward:
+      gold: 2
+      exp: 3
+      item: []
 --- !u!114 &114760629355529736
 MonoBehaviour:
   m_ObjectHideFlags: 1

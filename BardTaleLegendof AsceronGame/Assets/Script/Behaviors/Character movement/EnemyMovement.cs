@@ -25,6 +25,14 @@ public class EnemyMovement : MovingObject {
 	private float currentTimeEnemyFollowPlayer;
 	private Vector3 enemyTarget;
 
+	//private void Awake() {
+	//	foreach(int i in GameManager.instance.enemyInMapIndex) {
+	//		if (MapManager.instance.enemyInMap[i].name == this.gameObject.name) {
+	//			Destroy(gameObject);
+	//		}
+	//	}
+	//}
+
 	// Use this for initialization
 	void Start () {
 		animator = GetComponent<Animator>();
@@ -103,7 +111,8 @@ public class EnemyMovement : MovingObject {
 		else {
 			if (GameManager.instance.isPlayerAttackEnemy == true) {
 				Destroy(this.gameObject);
-				GameManager.instance.GoToBattle();
+				//GameManager.instance.GoToBattle();
+				ScreenManager.Instance.TriggerBattleFadeOut();
 			}
 			if (enemySeePlayer == true && currentTimeEnemyFollowPlayer >= 0) {
                 currentTimeEnemyFollowPlayer -= Time.deltaTime;
@@ -123,8 +132,20 @@ public class EnemyMovement : MovingObject {
 	}
 
 	public void attackEvent() {
+		
+		GameManager.instance.isEnemyAttackPlayer = true;
+		GameManager.instance.isPlayerAttackEnemy = false;
+		//for (int i = 0; i < MapManager.instance.enemyInMap.Length; i++) {
+		//	if (MapManager.instance.enemyInMap[i].name == this.gameObject.name) {
+		//		Debug.Log(i);
+		//		GameManager.instance.enemyInMapIndex.Add(i);
+		//		break;
+		//	}
+		//}
+
 		Destroy(this.gameObject);
-		GameManager.instance.GoToBattle();
+		//GameManager.instance.GoToBattle();
+		//ScreenManager.Instance.TriggerBattleFadeOut();
 	}
 
 	//private void OnTriggerEnter(Collider collision) {
@@ -141,10 +162,14 @@ public class EnemyMovement : MovingObject {
 			if (GameManager.instance.isPlayerAttackEnemy == false && enemySeePlayer == true) {
 				GameManager.instance.isEnemyAttackPlayer = true;
 			}
-			else {
-				GameManager.instance.isPlayerAttackEnemy = true;
-			}
+			//else {
+			//	GameManager.instance.isPlayerAttackEnemy = true;
+			//}
 		}
+	}
+
+	private void OnDestroy() {
+		ScreenManager.Instance.TriggerBattleFadeOut();
 	}
 
 	private void OnTriggerEnter(Collider other) {

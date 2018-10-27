@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: -575660022, guid: f4979b3083d349140bb14b6ec7fc999a, type: 3}
   m_Name: ORKProject
   m_EditorClassIdentifier: 
-  time: 10/06/2018 18:18:10
+  time: 10/08/2018 21:20:53
   version: 2.17.1
   keys:
   - editorSettings
@@ -1980,10 +1980,10 @@ MonoBehaviour:
       type=\"0\" initValue=\"1\" formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\"
       />\n\t\t\t\t\t\t</2>\n\t\t\t\t\t\t<3 type=\"0\" initValue=\"1\" formulaID=\"0\"
       >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\" />\n\t\t\t\t\t\t</3>\n\t\t\t\t\t\t<4
-      type=\"0\" initValue=\"5\" formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\"
-      />\n\t\t\t\t\t\t</4>\n\t\t\t\t\t\t<5 type=\"0\" initValue=\"3\" formulaID=\"0\"
-      >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\" />\n\t\t\t\t\t\t</5>\n\t\t\t\t\t\t<6
       type=\"0\" initValue=\"1\" formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\"
+      />\n\t\t\t\t\t\t</4>\n\t\t\t\t\t\t<5 type=\"0\" initValue=\"1\" formulaID=\"0\"
+      >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\" />\n\t\t\t\t\t\t</5>\n\t\t\t\t\t\t<6
+      type=\"0\" initValue=\"3\" formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\"
       />\n\t\t\t\t\t\t</6>\n\t\t\t\t\t\t<7 type=\"0\" initValue=\"1\" formulaID=\"0\"
       >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\" />\n\t\t\t\t\t\t</7>\n\t\t\t\t\t\t<8
       type=\"1\" initValue=\"1\" formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\"
@@ -2020,10 +2020,13 @@ MonoBehaviour:
       minLevel=\"1\" maxLevel=\"10\" >\n\t\t\t\t<_string>\n\t\t\t\t\t<name><![CDATA[Player3
       Development]]></name>\n\t\t\t\t</_string>\n\t\t\t\t<_subarrays>\n\t\t\t\t\t<statusValue>\n\t\t\t\t\t\t<0
       type=\"0\" initValue=\"55\" formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\"
-      />\n\t\t\t\t\t\t</0>\n\t\t\t\t\t\t<1></1>\n\t\t\t\t\t\t<2 type=\"0\" initValue=\"1\"
-      formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\" />\n\t\t\t\t\t\t</2>\n\t\t\t\t\t\t<3></3>\n\t\t\t\t\t\t<4
+      />\n\t\t\t\t\t\t</0>\n\t\t\t\t\t\t<1 type=\"0\" initValue=\"1\" formulaID=\"0\"
+      >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\" />\n\t\t\t\t\t\t</1>\n\t\t\t\t\t\t<2
+      type=\"0\" initValue=\"1\" formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\"
+      />\n\t\t\t\t\t\t</2>\n\t\t\t\t\t\t<3 type=\"0\" initValue=\"1\" formulaID=\"0\"
+      >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\" />\n\t\t\t\t\t\t</3>\n\t\t\t\t\t\t<4
       type=\"0\" initValue=\"5\" formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\"
-      />\n\t\t\t\t\t\t</4>\n\t\t\t\t\t\t<5 type=\"0\" initValue=\"5\" formulaID=\"0\"
+      />\n\t\t\t\t\t\t</4>\n\t\t\t\t\t\t<5 type=\"0\" initValue=\"1\" formulaID=\"0\"
       >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\" />\n\t\t\t\t\t\t</5>\n\t\t\t\t\t\t<6
       type=\"0\" initValue=\"1\" formulaID=\"0\" >\n\t\t\t\t\t\t\t<_float initialValueFormula=\"0\"
       />\n\t\t\t\t\t\t</6>\n\t\t\t\t\t\t<7 type=\"0\" initValue=\"1\" formulaID=\"0\"
@@ -2935,7 +2938,7 @@ MonoBehaviour:
       ownShortcutListCount=\"False\" replaceDefaultShortcuts=\"False\" replaceDefaultAutoAddSlots=\"False\"
       replaceDefaultAutoArrangeSlots=\"False\" useBattleAnims=\"False\" autoMoveAnimation=\"False\"
       useMoveAI=\"False\" useBattleMoveAI=\"False\" />\n\t\t\t\t<_intarrays>\n\t\t\t\t\t<controlMap
-      />\n\t\t\t\t\t<startValue 80 0 5 0 1 22 5 2 15 2 />\n\t\t\t\t\t<defenceAttributeID
+      />\n\t\t\t\t\t<startValue 10 0 5 0 1 22 5 2 15 2 />\n\t\t\t\t\t<defenceAttributeID
       0 1 />\n\t\t\t\t\t<actionCombo />\n\t\t\t\t\t<money 50 />\n\t\t\t\t</_intarrays>\n\t\t\t\t<_floatarrays>\n\t\t\t\t\t<spawnOffset
       0 0 0 />\n\t\t\t\t</_floatarrays>\n\t\t\t\t<_string>\n\t\t\t\t\t<prefabRoot><![CDATA[]]></prefabRoot>\n\t\t\t\t\t<animationCustomName><![CDATA[]]></animationCustomName>\n\t\t\t\t</_string>\n\t\t\t\t<_gameobject
       prefab=\"2\" />\n\t\t\t\t<buyPriceValue type=\"0\" id=\"0\" rounding=\"0\" >\n\t\t\t\t\t<_float
@@ -3012,7 +3015,7 @@ MonoBehaviour:
       ownShortcutListCount=\"False\" replaceDefaultShortcuts=\"False\" replaceDefaultAutoAddSlots=\"False\"
       replaceDefaultAutoArrangeSlots=\"False\" useBattleAnims=\"False\" autoMoveAnimation=\"False\"
       useMoveAI=\"False\" useBattleMoveAI=\"False\" />\n\t\t\t\t<_intarrays>\n\t\t\t\t\t<controlMap
-      />\n\t\t\t\t\t<startValue 75 0 5 0 1 22 5 5 5 1 />\n\t\t\t\t\t<defenceAttributeID
+      />\n\t\t\t\t\t<startValue 10 0 5 0 1 22 5 5 5 1 />\n\t\t\t\t\t<defenceAttributeID
       0 1 />\n\t\t\t\t\t<actionCombo />\n\t\t\t\t\t<money 50 />\n\t\t\t\t</_intarrays>\n\t\t\t\t<_floatarrays>\n\t\t\t\t\t<spawnOffset
       0 0 0 />\n\t\t\t\t</_floatarrays>\n\t\t\t\t<_string>\n\t\t\t\t\t<prefabRoot><![CDATA[]]></prefabRoot>\n\t\t\t\t\t<animationCustomName><![CDATA[]]></animationCustomName>\n\t\t\t\t</_string>\n\t\t\t\t<_gameobject
       prefab=\"3\" />\n\t\t\t\t<buyPriceValue type=\"0\" id=\"0\" rounding=\"0\" >\n\t\t\t\t\t<_float
