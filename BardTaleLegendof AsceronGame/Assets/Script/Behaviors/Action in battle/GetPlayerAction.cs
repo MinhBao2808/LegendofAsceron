@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using ORKFramework;
-using ORKFramework.Behaviours;
+﻿using UnityEngine;
 
 public class GetPlayerAction : MonoBehaviour {
     private bool actionStarted = false;
@@ -11,37 +7,26 @@ public class GetPlayerAction : MonoBehaviour {
 	private bool isAttack = false;
 	private Vector3 targetPosition;
 	private GameObject targetGameObject;
-	private Combatant combatantTarget;
 
 	private void Start() {
 		startPosition = this.transform.position;
 	}
 
-	//private void Start() {
-	//       //startPosition = transform.position;
-	//       Debug.Log(startPosition);
-	//}
-
-	public void updatePlayerUI () {
-        //Get use face
-        GameObject player = GameObject.Find("PlayerUnitInformation") as GameObject;
-        //player.GetComponent<BattleManager>().NewHealthStat(this.gameObject);
-        //player.GetComponent<BattleManager>().NewManaStat(this.gameObject);
-
-    }
-
 	private void Update() {
-		if (BattleManager.instance.callTurn == true) {
-			if (BattleManager.instance.currentUnit.name == this.gameObject.name && actionStarted == true)
+		if (BattleManager.instance.callTurn == true && 
+		    BattleManager.instance.isGameOver == false && BattleManager.instance.isVictory == false) {
+			if (BattleManager.instance.currentUnit.transform.position.x == this.gameObject.transform.position.x 
+			    && actionStarted == true)
             {
-                //Debug.Log(this.gameObject.name);
+				//Debug.Log(this.gameObject.name);
+				Debug.Log("a");
                 if (isAttack == false)
                 {
                     targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f, targetGameObject.transform.position.y, targetGameObject.transform.position.z);
                     if (this.transform.position == targetPosition)
                     {
                         isAttack = true;
-                        Hit(targetGameObject, combatantTarget);
+                        Hit(targetGameObject);
                     }
                 }
                 else
@@ -73,12 +58,9 @@ public class GetPlayerAction : MonoBehaviour {
 
 	}
 
-	public void AttackTarget (GameObject target, Combatant targetCombatant) {
-        //startPosition = player.gameObject.transform.position;
+	public void AttackTarget (GameObject target) {
         if (BattleManager.instance.isEnemyTurn() == false) {
-			//StartCoroutine(TimeForAction(target,targetCombatant));
 			targetGameObject = target;
-			combatantTarget = targetCombatant;
 			actionStarted = true;
 			isAttack = false;
         }
@@ -104,14 +86,12 @@ public class GetPlayerAction : MonoBehaviour {
 		//yield break;
     //}
 
-	private void Hit (GameObject target,Combatant targetCombatant) {
+	private void Hit (GameObject target) {
 		//PlayerStat ownerStat = this.owner.GetComponent<PlayerStat>();
 		//PlayerStat targetStat = target.GetComponent<PlayerStat>();
 		GenerateDamageText targetText = target.GetComponent<GenerateDamageText>();
-		CombatantComponent combatantComponent = gameObject.GetComponent<CombatantComponent>();
-		Combatant combatant = combatantComponent.combatant;
 		BattleManager.instance.isSelectorSpawn = false;
-		targetText.ReceiveDamage(combatant.Status[4].GetValue());
+		targetText.ReceiveDamage(gameObject.GetComponent<PlayerStat>().player.baseStat.strength);
     }
 
     //private bool MoveTowardsTarget(Vector3 target) {

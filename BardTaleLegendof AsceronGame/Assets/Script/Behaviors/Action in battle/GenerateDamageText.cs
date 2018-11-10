@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using ORKFramework;
-using ORKFramework.Behaviours;
 
 public class GenerateDamageText : MonoBehaviour {
 	[SerializeField] private GameObject damageText;
 	[SerializeField] private float damageTextOffset;
 	private GameObject damageTextObject;
-	private int maxHealth;
-	private int currentHealth;
+	private float maxHealth;
+	private float currentHealth;
 
-	public void ReceiveDamage(int damage) {
-		CombatantComponent combatantComponent = gameObject.GetComponent<CombatantComponent>();
-        Combatant unit = combatantComponent.combatant;
-		currentHealth = unit.Status[1].GetValue();
-		currentHealth -= damage;
-		unit.Status[1].InitValue(currentHealth);
+	public void ReceiveDamage(float damage) {
+		if (gameObject.tag == "PlayerUnit") {
+			currentHealth = this.gameObject.GetComponent<PlayerStat>().player.baseStat.hp;
+			currentHealth -= damage;
+			this.gameObject.GetComponent<PlayerStat>().player.baseStat.hp = currentHealth;
+		}
+		else {
+			currentHealth = this.gameObject.GetComponent<EnemyStat>().enemy.baseStat.hp;
+			currentHealth -= damage;
+			this.gameObject.GetComponent<EnemyStat>().enemy.baseStat.hp = currentHealth;
+		}
+
         GameObject canvas = GameObject.Find("Canvas");
         damageTextObject = Instantiate(this.damageText) as GameObject;
 		damageTextObject.transform.SetParent(canvas.transform, false);
@@ -25,7 +29,7 @@ public class GenerateDamageText : MonoBehaviour {
 
 		damageTextObject.transform.position = new Vector3(transform.position.x + damageTextOffset,
 		                                                  transform.position.y + 1.0f,transform.position.z);
-		if (currentHealth <= 0) {
+		if (currentHealth <= 0.0f) {
 			if (this.gameObject.tag == "Enemy") {
 				//BattleManager.instance.enemyList.Remove(unit);
 				this.gameObject.tag = "DeadUnit";

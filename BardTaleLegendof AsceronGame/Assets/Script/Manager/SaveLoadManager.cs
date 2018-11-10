@@ -47,13 +47,9 @@ public class SaveLoadManager : MonoBehaviour {
         int hour = (PlayerManager.Instance.PlayTime / 60) / 60;
         string playTime = hour.ToString("D4") + min.ToString("D2") + sec.ToString("D2") +"_";
 
-        //int changedSaveNumber = saveNumber + 1000;
-        //string hexValue = changedSaveNumber.ToString("X");
-        //int hexNumber = int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber);
-        //string hexNumToString = hexNumber.ToString("X") + "_";
-        //saveNumber++;
+        string difficulty = PlayerManager.Instance.Difficulty + "_";
 
-        string fileName = ((isAutosave) ? saveType[0] : saveType[1]) + playTime + saveTime; //+ hexNumToString;
+        string fileName = ((isAutosave) ? saveType[0] : saveType[1]) + difficulty + playTime + saveTime; //+ hexNumToString;
         string path = savePath + fileName;
         BinaryFormatter bf = new BinaryFormatter();
         FileStream stream = new FileStream(path + FILE_EXTENSION, FileMode.Create);
@@ -110,14 +106,7 @@ public class SaveLoadManager : MonoBehaviour {
             //{
             //    Debug.Log(files[i].FullName);
             //}
-            if (files.Length > 0)
-            {
-                return files;
-            }
-            else
-            {
-                return null;
-            }
+            return files.Length > 0 ? files : null;
         }
     }
 
