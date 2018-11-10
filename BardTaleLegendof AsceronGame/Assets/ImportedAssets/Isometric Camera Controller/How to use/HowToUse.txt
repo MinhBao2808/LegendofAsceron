@@ -1,0 +1,38 @@
+Isometric Camera Controller
+by Jimbob Games 2018.
+
+HOW TO USE!
+To setup just add the 'CameraController' script to your main camera.
+
+Profiles!
+[ Allowing to create new settings and easily swap out anytime! ]
+
++ Designed more for top down or isomectric camera view mode! But can easily be adapted to your needs!
++ Set min / max values on all directions!
++ Drag Mode! Hold key and drag the mouse to move!
++ Keyboard Mode! Control the movement with input keys!
++ Both Mode! Use Drag Mode & Keyboard Mode!
++ Custom Editors! Better visual and clean look!
+
+
+Feel free to ask any Questions!
+
+
+
+UPDATE 1.01 - 26/10/2018
+* Added Param to store Camera, instead of using Camera.Main
+* Changed Horizontal / Vertical names to Forward / Back Left / Right
+* Changed so it will only show orthographic / perspective options if the camera is set to which state
+* Added option to follow target (Target follow speed is set with Speed)
+* Increased default min/max values
+
+
+
+How to Setup!
+1. Add script to your Main Camera, and make sure it's tagged as 'MainCamera'
+2. Create or apply the Demo Camera Profile to the Camera Controller script on your MainCamera (this is so we can set the Camera min, max values at runtime!)
+3. Might be a good idea to set all values to their max values, to allow you freedom of movement while you set the values.
+4. Now run your scene and begin will height, as this is will impact the min, max up/down left/right positions.
+5. Now move all the way to one side and copy the Cameras transform value and enter into the representing min/max range.
+6. once all are set REMEMBER TO SAVE TO PROFILE!
+7. Now next time you load all min/max positions should be correct.

@@ -37,9 +37,10 @@ public class SavefilesInfo : MonoBehaviour,
         {
             saveType.text = "Manual Save";
         }
-        playTime.text = nameSplit[1].Substring(0, 4) + ":" 
-            + nameSplit[1].Substring(4,2) + ":" 
-            + nameSplit[1].Substring(6,2);
+        eventName.text = (nameSplit[1] == "0")? "Passive" : ((nameSplit[1] == "1") ? "Normal" : (nameSplit[1] == "2") ? "Aggressive" : "Hell") ;
+        playTime.text = nameSplit[2].Substring(0, 4) + ":" 
+            + nameSplit[2].Substring(4,2) + ":" 
+            + nameSplit[2].Substring(6,2);
         Debug.Log(date.text);
     }
 

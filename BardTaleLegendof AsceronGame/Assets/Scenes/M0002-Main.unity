@@ -2605,6 +2605,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 393402276}
+  - component: {fileID: 393402277}
   m_Layer: 0
   m_Name: Management
   m_TagString: Untagged
@@ -2627,6 +2628,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &393402277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 393402275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4703c8a239f468d831d101dbe17bea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &403362307
 GameObject:
   m_ObjectHideFlags: 0
@@ -11734,6 +11746,7 @@ GameObject:
   - component: {fileID: 1895184968}
   - component: {fileID: 1895184967}
   - component: {fileID: 1895184973}
+  - component: {fileID: 1895184971}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -11808,13 +11821,52 @@ Transform:
   m_Father: {fileID: 1228173726}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
---- !u!114 &1895184973
+--- !u!114 &1895184971
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1895184966}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424ea51342b0ab243877cd9771857ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Profile: {fileID: 11400000, guid: 86fbc987bb695134ba147b938cc8244f, type: 2}
+  showInputSettings: 1
+  showLimitSettings: 1
+  showHelp: 1
+  InputSystem: 0
+  MoveMode: 3
+  TargetToFollow: {fileID: 0}
+  TargetOffset: {x: 0, y: 10, z: -11}
+  MouseScrollWheelInputName: Mouse ScrollWheel
+  ZoomInKey: 0
+  ZoomOutKey: 0
+  CameraDragKey: 0
+  CameraResetKey: 0
+  CamHeight: 8
+  CamSpeed: 0.3
+  CamHeightSpeedMulti: 2
+  CamZoomMin: 6
+  CamZoomMax: 10
+  OrthNearPlane: -50
+  OrthFarPlane: 50
+  CamFOVMin: 40
+  CamFOVMax: 60
+  PersNearPlane: 0.02
+  PersFarPlane: 100
+  CamVerticalMin: -20
+  CamVerticalMax: 65
+  CamHorizontalMin: -20
+  CamHorizontalMax: 15
+--- !u!114 &1895184973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1895184966}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646df8e1e4e7340bd9d95b984136a62a, type: 3}
   m_Name: 
