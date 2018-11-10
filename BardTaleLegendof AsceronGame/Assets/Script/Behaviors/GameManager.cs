@@ -19,6 +19,7 @@ public class GameManager:MonoBehaviour {
     private Vector3 currentPlayerPosition = new Vector3();
 	private bool isSceneMenu;
 	public List<int> enemyInMapIndex;
+	public bool IsPause { get; set; }
 	//check is player on map scene attack enemy 
 	public bool isPlayerAttackEnemy;
 	//check is enemy on map scene attack player
@@ -33,10 +34,23 @@ public class GameManager:MonoBehaviour {
         else if (instance != null) {
             Destroy(gameObject);
         }
+		IsPause = false;
         DontDestroyOnLoad(gameObject);
 		index = PlayerPrefs.GetInt("c");
 		isSceneMenu = true;
 		isBattleSceneAnimationLoaded = false;
 		enemyInMapIndex = new List<int>();
     }
+
+	private void Update()
+	{
+		if (IsPause)
+		{
+			Time.timeScale = 0;
+		}
+		else 
+		{
+			Time.timeScale = 1;
+		}
+	}
 }
