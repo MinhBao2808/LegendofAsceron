@@ -57,6 +57,7 @@ public class BattleManager : MonoBehaviour {
 	private bool isPlayerPressSkillButton = false;
 	private string playerSkillName;
 	private bool isPlayerUseItem;
+	int count = 0;
 	//private Vector3 selectorPositionY = new Vector3(0, 3, 0);
 
 	public void PressActionButton () {
@@ -132,6 +133,7 @@ public class BattleManager : MonoBehaviour {
 		for (int i = 0; i < enemyPositionIndex; i++) {
 			enemyDataIndex = Random.Range(0, 1);
 			enemiesUnit[i].GetComponent<EnemyStat>().Init(enemyDataIndex);
+			//enemiesUnit[i].GetComponent<EnemyStat>().enemy.stats = enemiesUnit[i].GetComponent<EnemyStat>().enemy.growthStat;
 			enemiesUnit[i] =  Instantiate(enemiesUnit[i], enemySpawnPositions[i].transform.position, 
 			            enemySpawnPositions[i].transform.rotation);
 		}
@@ -218,7 +220,6 @@ public class BattleManager : MonoBehaviour {
 		for (int i = 0; i < enemyPositionIndex; i++) {
 			isEnemyDead[i] = false;
 		}
-		Debug.Log(PlayerManager.Instance.Difficulty);
 		switch (PlayerManager.Instance.Difficulty) {
 			case 0: timer = 20.0f;
 				expModifier = 1.25f;
@@ -418,6 +419,8 @@ public class BattleManager : MonoBehaviour {
         }
         //enemy go first
 		if (GameManager.instance.isEnemyAttackPlayer == true) {
+			count++;
+			Debug.Log(count);
 			int j = 0;
 			foreach (GameObject enemy in enemyList) {
 				listImageShowUnitTurn[j].sprite = enemy.GetComponent<SpriteRenderer>().sprite;
@@ -452,7 +455,7 @@ public class BattleManager : MonoBehaviour {
 					//player turn
 					enemyTurn = false;
 					actionMenu.SetActive(true);
-					if (currentUnit.tag == "Player") {
+					if (currentUnit.tag == "PlayerUnit") {
 						//spawm player selector 
                         if (isPlayerSelectEnemy == false) {
                             if (currentUnit.transform.position == playerSpawnPositions[0].transform.position) {
@@ -488,15 +491,16 @@ public class BattleManager : MonoBehaviour {
 			}
 			else {
 				//enemy turn
+				enemyTurn = true;
 				currentUnit = enemyList[0];
 				enemyList.Remove(currentUnit);
-				enemyTurn = true;
 				currentUnit.GetComponent<EnemyActionBattle>().Action();
 			}
 		}
 
         //code for player go first
 		if (GameManager.instance.isPlayerAttackEnemy == true) {
+			Debug.Log("b");
 			int j = 0;
             foreach (GameObject player in playerList) {
                 listImageShowUnitTurn[j].sprite = player.GetComponent<SpriteRenderer>().sprite;
@@ -582,7 +586,7 @@ public class BattleManager : MonoBehaviour {
 		if (enemyTurn == false && callTurn == true) {
 			timerSlider.value = time/timer;
 			time -= Time.deltaTime;
-            //Debug.Log(time);
+            Debug.Log(time);
             if (time <= 0.0f) {
 				isTurnSkip = true;
 				time = timer;
@@ -627,6 +631,7 @@ public class BattleManager : MonoBehaviour {
 		isFirstTurn = false;
         playerAttack = false;
 		callTurn = true;
+		Debug.Log("c");
 		if (isPlayerSelectEnemy == false && isSelectorSpawn == false && isUnitAction == false) {
 			GameObject[] remainEnemyUnit = GameObject.FindGameObjectsWithTag("Enemy");
             if (remainEnemyUnit.Length == 0) {

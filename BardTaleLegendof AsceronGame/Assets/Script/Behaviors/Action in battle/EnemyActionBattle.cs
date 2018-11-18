@@ -10,6 +10,7 @@ public class EnemyActionBattle : MonoBehaviour {
 	GameObject target;
 	private Vector3 targetPosition;
 	private Vector3 startPosition;
+	int count = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -33,7 +34,7 @@ public class EnemyActionBattle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (BattleManager.instance.callTurn == true && BattleManager.instance.isGameOver == false && BattleManager.instance.isVictory == false) {
+		if (BattleManager.instance.callTurn == true && BattleManager.instance.isGameOver == false && BattleManager.instance.isVictory == false && BattleManager.instance.enemyTurn == true) {
 			if (BattleManager.instance.currentUnit.transform.position.x == this.gameObject.transform.position.x && isActionStarted == true) {
 				if (isAttack == false) {
 					targetPosition = new Vector3(target.transform.position.x + 2.0f, 
@@ -48,15 +49,20 @@ public class EnemyActionBattle : MonoBehaviour {
 					if (this.transform.position == targetPosition) {
 						BattleManager.instance.isPlayerSelectEnemy = false;
 						BattleManager.instance.isUnitAction = false;
+						BattleManager.instance.enemyTurn = false;
 						if (BattleManager.instance.isFirstTurn == true) {
-							isAttack = false;
+							Debug.Log("a");
 							isActionStarted = false;
+							BattleManager.instance.enemyTurn = false;
 							BattleManager.instance.FristTurn();
+
+                            isAttack = false;
 						}
 						else {
-							isAttack = false;
 							isActionStarted = false;
+							BattleManager.instance.enemyTurn = false;
 							BattleManager.instance.nextTurn();
+                            isAttack = false;
 						}
 					}
 				}
@@ -66,9 +72,12 @@ public class EnemyActionBattle : MonoBehaviour {
 	}
 
 	public void Action () {
-		if (BattleManager.instance.isEnemyTurn() == true) {
+		if (BattleManager.instance.enemyTurn==true) {
 			target = FindRandomTarget();
+			count++;
+			Debug.Log(count);
 			isActionStarted = true;
+			//isAttack = false;
 		}
 	}
 
@@ -76,7 +85,7 @@ public class EnemyActionBattle : MonoBehaviour {
 		enemyAudioSource.clip = AudioManager.Instance.battleBgms[3];
         enemyAudioSource.Play();
 		GenerateDamageText targetText = target.GetComponent<GenerateDamageText>();
-		isActionStarted = true;
+		isAttack = true;
 		targetText.ReceiveDamage((int)this.gameObject.GetComponent<EnemyStat>().enemy.stats.strength);
 	}
 }
