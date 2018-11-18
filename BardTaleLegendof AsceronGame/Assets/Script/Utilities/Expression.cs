@@ -13,7 +13,16 @@ public static class Expression  {
         return requiredExp;
 	}
 
-	public static float SkillPATK () {
-		return 1;
+	private static float PATK (float strength, float weaponPATK) {
+		return weaponPATK + strength;
+	}
+
+	private static float Modifier (float CRTD, float resistance) {
+		return CRTD * resistance;
+	}
+
+
+	public static float SkillPATK (float strength, float weaponPATK,float skillDamageScale, float PDEFtarget, float CRTD, float resistance) {
+		return (PATK(strength,weaponPATK) * skillDamageScale) * 100 / (100 + PDEFtarget) * Modifier(CRTD,resistance);
 	}
 }

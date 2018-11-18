@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewGameUIScript : MonoBehaviour {
+public class NewGameUIScript : UiPanelTemplate {
 
     public TextMeshProUGUI infoText;
     protected int difficulty;
@@ -31,5 +31,10 @@ public class NewGameUIScript : MonoBehaviour {
                 MapManager.Instance.NewGameSceneID, true);
             PlayerManager.Instance.SetPlayerPos();
         }
+    }
+
+    protected override void CustomAction()
+    {
+        base.CustomAction();
     }
 }

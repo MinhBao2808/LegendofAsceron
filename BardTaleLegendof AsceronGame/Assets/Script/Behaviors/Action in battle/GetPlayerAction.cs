@@ -3,13 +3,19 @@
 public class GetPlayerAction : MonoBehaviour {
     private bool actionStarted = false;
     private Vector3 startPosition;
-    public GameObject owner;
 	private bool isAttack = false;
+	private bool isPerformSkill = false;
 	private Vector3 targetPosition;
 	private GameObject targetGameObject;
+	private Animator animator;
+	private string skillPlayerName;
+	[SerializeField] private AudioSource playerSource;
+	private float damage;
 
 	private void Start() {
+		animator = GetComponent<Animator>();
 		startPosition = this.transform.position;
+		playerSource = GetComponent<AudioSource>();
 	}
 
 	private void Update() {
@@ -19,13 +25,11 @@ public class GetPlayerAction : MonoBehaviour {
 			    && actionStarted == true)
             {
 				//Debug.Log(this.gameObject.name);
-				Debug.Log("a");
                 if (isAttack == false)
                 {
                     targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f, targetGameObject.transform.position.y, targetGameObject.transform.position.z);
                     if (this.transform.position == targetPosition)
                     {
-                        isAttack = true;
                         Hit(targetGameObject);
                     }
                 }
@@ -66,32 +70,41 @@ public class GetPlayerAction : MonoBehaviour {
         }
     }
 
-	//IEnumerator TimeForAction(GameObject target, Combatant targetCombatant)  {
-  //      Vector3 targetPosition = new Vector3(target.transform.position.x - 2.0f, target.transform.position.y, target.transform.position.z);
-  //      while (MoveTowardsTarget(targetPosition)) {
-  //          yield return null;
-  //      }
-  //      //wait a bit
-  //      yield return new WaitForSeconds(0.5f);
-  //      //do damage
-		//actionStarted = true;
-		//Hit(target,targetCombatant);
-		//yield return new WaitForSeconds(0.01f);
-  //      //owner attack return to start positon
-  //      Vector3 firstPosition = startPosition;
-  //      while (MoveTowardsTarget(firstPosition)) {
-  //          yield return null;
-  //      }
-		//StopCoroutine("TimeForAction");
-		//yield break;
-    //}
+	private void SkillAnimationEnd() {
+		isAttack = true;
+		animator.SetBool(skillPlayerName,false);
+		damage = Expression.SkillPATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk,
+		                              0.0f, 3.0f,
+		                              targetGameObject.GetComponent<EnemyStat>().enemy.stats.vitality,1.0f,1.0f);
+		GenerateDamageText targetText = targetGameObject.GetComponent<GenerateDamageText>();
+        BattleManager.instance.isSelectorSpawn = false;
+		targetText.ReceiveDamage((int)damage);
+		isPerformSkill = false;
+	}
 
+	public void PerformSkill (string skillName, GameObject target) {
+		isPerformSkill = true;
+		isAttack = false;
+		actionStarted = true;
+		skillPlayerName = skillName;
+		targetGameObject = target;
+	}
+    
 	private void Hit (GameObject target) {
-		//PlayerStat ownerStat = this.owner.GetComponent<PlayerStat>();
-		//PlayerStat targetStat = target.GetComponent<PlayerStat>();
-		GenerateDamageText targetText = target.GetComponent<GenerateDamageText>();
-		BattleManager.instance.isSelectorSpawn = false;
-		targetText.ReceiveDamage(gameObject.GetComponent<PlayerStat>().player.baseStat.strength);
+		if (isPerformSkill == true) {
+			animator.SetBool(skillPlayerName,true);
+			playerSource.clip = AudioManager.Instance.battleBgms[1];
+			playerSource.Play();
+		}
+		else {
+			isAttack = true;
+			playerSource.clip = AudioManager.Instance.battleBgms[2];
+            playerSource.Play();
+			GenerateDamageText targetText = target.GetComponent<GenerateDamageText>();
+            BattleManager.instance.isSelectorSpawn = false;
+			targetText.ReceiveDamage((int)gameObject.GetComponent<PlayerStat>().player.battleStats.patk);
+		}
+		//isAttack = true;
     }
 
     //private bool MoveTowardsTarget(Vector3 target) {

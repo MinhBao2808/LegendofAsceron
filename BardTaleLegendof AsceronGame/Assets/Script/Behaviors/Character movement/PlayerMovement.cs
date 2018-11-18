@@ -12,7 +12,6 @@ public class PlayerMovement : MovingObject {
 	[SerializeField] private float forwardVel = 12;
 	[SerializeField] private float rotateVel = 100;
 	private Quaternion targetRotation;
-	private float forwardInput, turnInput; 
 	[SerializeField] private float speed;
 	[SerializeField] private float rotateSpeed = 3.0f;
 	[SerializeField] private float turnSmoothTime;
@@ -35,7 +34,6 @@ public class PlayerMovement : MovingObject {
 		ani = GetComponent<Animation>();
 		//animation.Play("idle");
 		characterController = GetComponent<CharacterController>();
-		forwardInput = turnInput = 0;
 		isPlayerPressAttack = false;
         DontDestroyOnLoad(this);
 	}
@@ -46,40 +44,33 @@ public class PlayerMovement : MovingObject {
 		}
 	}
 
-	void GetInput () {
-		forwardInput = Input.GetAxis("Vertical");
-		turnInput = Input.GetAxis("Horizontal");
-	}
-
 	void Update() {
 		//GetInput();
 		//Turn();
 		if (GameManager.instance.isEnemyAttackPlayer == false) {
-			if (Input.GetKey("a")) {
+			if (hInput.GetButton("Interact")) {
 				isPlayerPressAttack = true;
 				ani.Play("Attack");
 			}
-			else {
-				if (Input.GetKey(KeyCode.LeftShift)) {
+            else
+            {
+				if (hInput.GetButton("Accelerate")) {
 					currentSpeed = sprintSpeed;
-				}
-				else {
+                    ani.Play("Run");
+                }
+				else 
+                {
 					currentSpeed = walkSpeed;
-				}
+                    ani.Play("Walk");
+                }
 				isPlayerPressAttack = false;
-				Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+                Vector2 input = new Vector2(hInput.GetAxis("HorizontalAxis"), hInput.GetAxis("VerticalAxis"));
 				Vector2 inputDir = input.normalized;
 				if (inputDir != Vector2.zero) {
-					float targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
+                    float targetTempRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
 					transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y,
-																			   targetRotation, ref turnSmoothVelocity, turnSmoothTime);
+																			   targetTempRotation, ref turnSmoothVelocity, turnSmoothTime);
 					Vector3 velocity = transform.forward * currentSpeed;
-					if (currentSpeed == sprintSpeed) {
-						ani.Play("Run");
-					}
-					else {
-						ani.Play("Walk");
-					}
 					characterController.Move(velocity * Time.deltaTime);
 				}
 				else {

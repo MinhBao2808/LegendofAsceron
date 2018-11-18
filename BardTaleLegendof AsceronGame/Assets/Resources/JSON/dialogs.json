@@ -1,0 +1,19 @@
+[
+	{
+		"id": "D0001",
+		"dialogType": "Small Talk",
+    "dialogs": 
+    [
+      {
+        "name": "Lars",
+        "context": "Hello, no hello.",
+        "imgPath": "lars"
+      },
+      { 
+        "name": "Brann",
+        "context": "Lorem Ipsum Lorem Ipsum",
+        "imgPath": "brann"
+      }      
+    ]
+	}
+]

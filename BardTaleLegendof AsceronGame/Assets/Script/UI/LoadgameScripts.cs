@@ -4,14 +4,14 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadgameScripts : MonoBehaviour {
+public class LoadgameScripts : UiPanelTemplate {
 
     public GameObject savefilesPrefabs;
     public GameObject viewContent;
     public Image thumbnail;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         FileInfo[] files = SaveLoadManager.Instance.LoadAllSavefile();
         if (files != null)
         {
@@ -34,4 +34,9 @@ public class LoadgameScripts : MonoBehaviour {
             thumbnail.gameObject.SetActive(false);
         }
 	}
+
+    protected override void CustomAction()
+    {
+        base.CustomAction();
+    }
 }

@@ -7,6 +7,7 @@ public class BattleManager : MonoBehaviour {
     public static BattleManager instance = null;
 	[SerializeField] private GameObject[] playerSpawnPositions;
 	[SerializeField] public GameObject[] enemySpawnPositions;
+	[SerializeField] private GameObject[] skillButtons;
 	[SerializeField] private GameObject selector;
 	[SerializeField] private GameObject playerSelector;
 	[SerializeField] private Slider timerSlider;
@@ -17,8 +18,13 @@ public class BattleManager : MonoBehaviour {
 	[SerializeField] private GameObject[] playerUnit;
 	[SerializeField] private GameObject gameOverPanel;
 	[SerializeField] private GameObject victoryPanel;
+	[SerializeField] private GameObject player1LvPanel;
+	[SerializeField] private GameObject player2LvPanel;
+	[SerializeField] private GameObject player3LvPanel;
+	[SerializeField] private GameObject larsSkillPanel;
 	//private GameObject playerSelectorSpawn;
 	[SerializeField] private GameObject[] playerSelectorPositions;
+	[SerializeField] private GameObject itemPanel;
 	private GameObject playerSelectorSpawned;
 	public bool isGameOver;
 	public bool isVictory;
@@ -47,6 +53,10 @@ public class BattleManager : MonoBehaviour {
 	private int sumGilPoint;
 	private int sumExpPoint;
 	private int expPlayerCanGet;
+	private float expModifier;
+	private bool isPlayerPressSkillButton = false;
+	private string playerSkillName;
+	private bool isPlayerUseItem;
 	//private Vector3 selectorPositionY = new Vector3(0, 3, 0);
 
 	public void PressActionButton () {
@@ -57,6 +67,7 @@ public class BattleManager : MonoBehaviour {
 	public void PressAttackButton () {
 		//choose enemy
 		attack_DefendMenu.SetActive(false);
+		isPlayerPressSkillButton = false;
 		actionMenu.SetActive(false);
 		isSelectorSpawn = true;
         if (isPlayerSelectEnemy == false) {
@@ -72,6 +83,34 @@ public class BattleManager : MonoBehaviour {
         }
 	}
 
+	public void PressSkillPanelButton () {
+		attack_DefendMenu.SetActive(false);
+        actionMenu.SetActive(true);
+		if (currentUnit.transform.position == playerUnit[0].transform.position)  {
+			larsSkillPanel.SetActive(true);
+		}
+	}
+
+	public void PressSkillButton (string skillName) {
+		isSelectorSpawn = true;
+		if (currentUnit.transform.position == playerUnit[0].transform.position) {
+			larsSkillPanel.SetActive(false);
+        }
+		isPlayerPressSkillButton = true;
+		playerSkillName = skillName;
+		if (isPlayerSelectEnemy == false) {
+			for (int i = 0; i < enemyPositionIndex; i++) {
+                if (isEnemyDead[i] == false) {
+                    enemySelectedPositionIndex = i;
+                    Instantiate(selector,
+                                enemySpawnPositions[i].transform.position,
+                                enemySpawnPositions[i].transform.rotation);
+                    break;
+                }
+            }
+		}
+	}
+
 	private void SpawnEnemy () {
 		//enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);
 		//int enemyDataIndex;
@@ -84,7 +123,7 @@ public class BattleManager : MonoBehaviour {
 		//	                        false, enemySpawnPositions[i].transform.localScale);
 		//}
 		if (playerUnit[0].GetComponent<PlayerStat>().player.level <= 10) {
-			enemyPositionIndex = Random.Range(1, 2);
+			enemyPositionIndex = Random.Range(1, 3);
 		}
 		else {
 			enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);
@@ -95,6 +134,30 @@ public class BattleManager : MonoBehaviour {
 			enemiesUnit[i].GetComponent<EnemyStat>().Init(enemyDataIndex);
 			enemiesUnit[i] =  Instantiate(enemiesUnit[i], enemySpawnPositions[i].transform.position, 
 			            enemySpawnPositions[i].transform.rotation);
+		}
+	}
+
+	public void PressUseItemButton () {
+		itemPanel.SetActive(true);
+		attack_DefendMenu.SetActive(false);
+		larsSkillPanel.SetActive(false);
+	}
+
+	public void PressUseItem(string itemName) {
+		if (currentUnit.gameObject.tag == "PlayerUnit") {
+			currentUnit.GetComponent<PlayerStat>().player.battleStats.hp += 10;
+			currentUnit.GetComponent<GenerateDamageText>().RecoverHealth(10);
+			itemPanel.SetActive(false);
+			if (isFirstTurn == true) {
+				playerList.Remove(currentUnit);
+				this.FristTurn();
+			}
+			else {
+				unitStats.Remove(currentUnit);
+				unitStats.Add(currentUnit);
+				unitLists.Enqueue(currentUnit);
+				this.nextTurn();
+			}
 		}
 	}
 
@@ -117,7 +180,9 @@ public class BattleManager : MonoBehaviour {
 		//										   false, playerSpawnPositions[2].transform.localScale);
 		//playerPositionIndex = 3;
 		playerUnit[0].GetComponent<PlayerStat>().Init(0);
-		playerUnit[0] = Instantiate(playerUnit[0], playerSpawnPositions[0].transform.position, playerSpawnPositions[0].transform.rotation);
+		playerUnit[0] = Instantiate(playerUnit[0], 
+		                            playerSpawnPositions[0].transform.position, 
+		                            playerSpawnPositions[0].transform.rotation);
 		playerPositionIndex = 1;
 	}
 
@@ -131,6 +196,7 @@ public class BattleManager : MonoBehaviour {
 		timeToStartBattle = 2.5f;
 		callTurn = false;
 		isTurnSkip = false;
+		isPlayerUseItem = false;
 		SpawnPlayer();
 		SpawnEnemy();
 		sumGilPoint = 0;
@@ -152,12 +218,31 @@ public class BattleManager : MonoBehaviour {
 		for (int i = 0; i < enemyPositionIndex; i++) {
 			isEnemyDead[i] = false;
 		}
+		Debug.Log(PlayerManager.Instance.Difficulty);
+		switch (PlayerManager.Instance.Difficulty) {
+			case 0: timer = 20.0f;
+				expModifier = 1.25f;
+				break;
+			case 1: timer = 15.0f;
+				expModifier = 1.0f;
+				break;
+			case 2: timer = 10.0f;
+				expModifier = 0.75f;
+				break;
+			case 3: timer = 5.0f;
+				expModifier = 0.5f;
+				break;
+			default: break;
+		}
+		//timer = 
 		//timer = ORK.Difficulties.GetBattleFactor() * 20.0f;
         time = timer;
 		//Debug.Log(time);
         playerAttack = false;
 		actionMenu.SetActive(false);
 		attack_DefendMenu.SetActive(false);
+		larsSkillPanel.SetActive(false);
+		itemPanel.SetActive(false);
 	}
 
     void Start() {
@@ -169,15 +254,15 @@ public class BattleManager : MonoBehaviour {
 			enemyList.Add(enemiesUnit[i]);
 		}
 		enemyList.Sort(delegate (GameObject x, GameObject y) {
-			return y.GetComponent<EnemyStat>().enemy.baseStat.dexterity
-				    .CompareTo(x.GetComponent<EnemyStat>().enemy.baseStat.dexterity);
+			return y.GetComponent<EnemyStat>().enemy.stats.dexterity
+				    .CompareTo(x.GetComponent<EnemyStat>().enemy.stats.dexterity);
 		});
 		for (int i = 0; i < playerPositionIndex; i++ ){
 			playerList.Add(playerUnit[i]);
 		}
 		playerList.Sort(delegate (GameObject x, GameObject y) {
-			return y.GetComponent<PlayerStat>().player.baseStat.dexterity.
-				    CompareTo(x.GetComponent<PlayerStat>().player.baseStat.dexterity);
+			return y.GetComponent<PlayerStat>().player.battleStats.spd.
+				    CompareTo(x.GetComponent<PlayerStat>().player.battleStats.spd);
 		});
 		for (int i = 0; i < playerPositionIndex; i++) {
 			if (playerUnit[i].tag == "PlayerUnit") {
@@ -191,19 +276,19 @@ public class BattleManager : MonoBehaviour {
         }
         unitStats.Sort(delegate (GameObject x, GameObject y) {
 			if (x.tag == "PlayerUnit" && y.tag == "PlayerUnit") {
-				return y.GetComponent<PlayerStat>().player.baseStat.dexterity
-					    .CompareTo(x.GetComponent<PlayerStat>().player.baseStat.dexterity);
+				return y.GetComponent<PlayerStat>().player.battleStats.spd
+					    .CompareTo(x.GetComponent<PlayerStat>().player.battleStats.spd);
 			}
 			else if (x.tag == "PlayerUnit" && y.tag == "Enemy") {
-				return y.GetComponent<EnemyStat>().enemy.baseStat.dexterity.
-					    CompareTo(x.GetComponent<PlayerStat>().player.baseStat.dexterity);
+				return y.GetComponent<EnemyStat>().enemy.stats.dexterity.
+					    CompareTo(x.GetComponent<PlayerStat>().player.battleStats.spd);
 			}
 			else if (x.tag == "Enemy" && y.tag == "PlayerUnit") {
-				return y.GetComponent<PlayerStat>().player.baseStat.dexterity.
-						CompareTo(x.GetComponent<EnemyStat>().enemy.baseStat.dexterity);
+				return y.GetComponent<PlayerStat>().player.battleStats.spd.
+					    CompareTo(x.GetComponent<EnemyStat>().enemy.stats.dexterity);
 			}
-			return y.GetComponent<EnemyStat>().enemy.baseStat.dexterity
-                    .CompareTo(x.GetComponent<EnemyStat>().enemy.baseStat.dexterity);
+			return y.GetComponent<EnemyStat>().enemy.stats.dexterity
+				    .CompareTo(x.GetComponent<EnemyStat>().enemy.stats.dexterity);
         });
         //if player go first
 		if (GameManager.instance.isPlayerAttackEnemy == true) {
@@ -257,6 +342,7 @@ public class BattleManager : MonoBehaviour {
         //check is game over
 		GameObject[] remainEnemyUnit = GameObject.FindGameObjectsWithTag("Enemy");
 		if (remainEnemyUnit.Length == 0) {
+			AudioManager.Instance.ChangeBgm(AudioManager.Instance.battleBgms[5]);
 			GameManager.instance.isPlayerAttackEnemy = false;
 			GameManager.instance.isEnemyAttackPlayer = false;
 			GameManager.instance.isBattleSceneAnimationLoaded = false;
@@ -268,43 +354,59 @@ public class BattleManager : MonoBehaviour {
 			}
 			UpdateVictoryPanelUI.instance.UpdateGilPoint(sumGilPoint);
 			UpdateVictoryPanelUI.instance.UpdateExpPoint(sumExpPoint);
-			expPlayerCanGet = sumExpPoint / playerPositionIndex;
+			//expPlayerCanGet = sumExpPoint / playerPositionIndex;
+			expPlayerCanGet = (sumExpPoint / playerPositionIndex) * (int)expModifier;
 			if (playerPositionIndex == 1) {
+				player1LvPanel.SetActive(true);
+                player2LvPanel.SetActive(false);
+                player3LvPanel.SetActive(false);
 				playerUnit[0].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
-				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.name,
+				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.info.name,
 									 playerUnit[0].GetComponent<PlayerStat>().player.level,
 									 playerUnit[0].GetComponent<PlayerStat>().player.experience,
 				                                              Expression.GetExpExpression(playerUnit[0].GetComponent<PlayerStat>().player.level + 1));
-                                     
+				PlayerManager.Instance.Characters[0] = playerUnit[0].GetComponent<PlayerStat>().player;
+				Debug.Log(PlayerManager.Instance.Characters[0].level);
 			}
 			if (playerPositionIndex == 2) {
+				player1LvPanel.SetActive(true);
+				player2LvPanel.SetActive(true);
+                player3LvPanel.SetActive(false);
 				playerUnit[0].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
 				playerUnit[1].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
-				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.name,
+				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.info.name,
                                      playerUnit[0].GetComponent<PlayerStat>().player.level,
                                      playerUnit[0].GetComponent<PlayerStat>().player.experience,
                                                               Expression.GetExpExpression(playerUnit[0].GetComponent<PlayerStat>().player.level + 1));
-				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.name,
+				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.info.name,
                                      playerUnit[1].GetComponent<PlayerStat>().player.level,
                                      playerUnit[1].GetComponent<PlayerStat>().player.experience,
                                                               Expression.GetExpExpression(playerUnit[1].GetComponent<PlayerStat>().player.level + 1));
+				PlayerManager.Instance.Characters[0] = playerUnit[0].GetComponent<PlayerStat>().player;
+				PlayerManager.Instance.Characters[1] = playerUnit[1].GetComponent<PlayerStat>().player;
 			}
 			if (playerPositionIndex == 3) {
+				player1LvPanel.SetActive(true);
+				player2LvPanel.SetActive(true);
+				player3LvPanel.SetActive(true);
 				playerUnit[0].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
 				playerUnit[1].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
 				playerUnit[2].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
-				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.name,
+				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.info.name,
                                      playerUnit[0].GetComponent<PlayerStat>().player.level,
                                      playerUnit[0].GetComponent<PlayerStat>().player.experience,
                                                               Expression.GetExpExpression(playerUnit[0].GetComponent<PlayerStat>().player.level + 1));
-                UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.name,
+				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.info.name,
                                      playerUnit[1].GetComponent<PlayerStat>().player.level,
                                      playerUnit[1].GetComponent<PlayerStat>().player.experience,
                                                               Expression.GetExpExpression(playerUnit[1].GetComponent<PlayerStat>().player.level + 1));
-				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[2].GetComponent<PlayerStat>().player.name,
+				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[2].GetComponent<PlayerStat>().player.info.name,
                                      playerUnit[2].GetComponent<PlayerStat>().player.level,
                                      playerUnit[2].GetComponent<PlayerStat>().player.experience,
                                                               Expression.GetExpExpression(playerUnit[2].GetComponent<PlayerStat>().player.level + 1));
+				PlayerManager.Instance.Characters[0] = playerUnit[0].GetComponent<PlayerStat>().player;
+				PlayerManager.Instance.Characters[1] = playerUnit[1].GetComponent<PlayerStat>().player;
+				PlayerManager.Instance.Characters[3] = playerUnit[3].GetComponent<PlayerStat>().player;
 			}
 			//ScreenManager.Instance.TriggerLoadingFadeOut("M0002",false);
 		}
@@ -368,8 +470,14 @@ public class BattleManager : MonoBehaviour {
                         }
                         if (isPlayerSelectEnemy == true){
                             playerList.Remove(currentUnit);
-                            currentUnit.GetComponent<GetPlayerAction>().
-							           AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
+							if (isPlayerPressSkillButton == true) {
+								currentUnit.GetComponent<GetPlayerAction>().
+										   PerformSkill(playerSkillName, enemiesUnit[enemySelectedPositionIndex]);
+							}
+							else {
+								currentUnit.GetComponent<GetPlayerAction>().
+                                       AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
+							}
                         }
 					}
 					else {
@@ -453,9 +561,17 @@ public class BattleManager : MonoBehaviour {
                     }
                 }
                 if (isPlayerSelectEnemy == true) {
-                    playerList.Remove(currentUnit);
-					currentUnit.GetComponent<GetPlayerAction>().
-                                       AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
+					if (isPlayerSelectEnemy == true) {
+                        playerList.Remove(currentUnit);
+                        if (isPlayerPressSkillButton == true) {
+                            currentUnit.GetComponent<GetPlayerAction>().
+                                       PerformSkill(playerSkillName, enemiesUnit[enemySelectedPositionIndex]);
+                        }
+                        else {
+                            currentUnit.GetComponent<GetPlayerAction>().
+                                   AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
+                        }
+                    }
                 }
             }
 		} 
@@ -490,7 +606,6 @@ public class BattleManager : MonoBehaviour {
 		}
 		if (callTurn == false) {
             timeToStartBattle -= Time.deltaTime;
-			Debug.Log(timeToStartBattle);
         }
 		if (timeToStartBattle <= 0 && callTurn == false) {
 			timeToStartBattle = 0;
@@ -501,6 +616,11 @@ public class BattleManager : MonoBehaviour {
                 SceneManager.LoadScene(0);
             }
 		}
+		if (isVictory == true) {
+			if (Input.GetKeyDown(KeyCode.Return)) {
+				ScreenManager.Instance.TriggerLoadingFadeOut("M0002", false);
+			}
+        }
     }
 
     public void nextTurn() {
@@ -510,6 +630,7 @@ public class BattleManager : MonoBehaviour {
 		if (isPlayerSelectEnemy == false && isSelectorSpawn == false && isUnitAction == false) {
 			GameObject[] remainEnemyUnit = GameObject.FindGameObjectsWithTag("Enemy");
             if (remainEnemyUnit.Length == 0) {
+				AudioManager.Instance.ChangeBgm(AudioManager.Instance.battleBgms[5]);
 				GameManager.instance.isEnemyAttackPlayer = false;
 				GameManager.instance.isPlayerAttackEnemy = false;
 				GameManager.instance.isBattleSceneAnimationLoaded = false;
@@ -521,43 +642,57 @@ public class BattleManager : MonoBehaviour {
                 }
 				UpdateVictoryPanelUI.instance.UpdateGilPoint(sumGilPoint);
                 UpdateVictoryPanelUI.instance.UpdateExpPoint(sumExpPoint);
-				expPlayerCanGet = sumExpPoint / playerPositionIndex;
+				expPlayerCanGet = (sumExpPoint / playerPositionIndex) * (int)expModifier;
                 if (playerPositionIndex == 1) {
+					player1LvPanel.SetActive(true);
+					player2LvPanel.SetActive(false);
+					player3LvPanel.SetActive(false);
                     playerUnit[0].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
-                    UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.name,
+					UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.info.name,
                                          playerUnit[0].GetComponent<PlayerStat>().player.level,
                                          playerUnit[0].GetComponent<PlayerStat>().player.experience,
                                                                   Expression.GetExpExpression(playerUnit[0].GetComponent<PlayerStat>().player.level + 1));
-
+					PlayerManager.Instance.Characters[0] = playerUnit[0].GetComponent<PlayerStat>().player;
                 }
 				if (playerPositionIndex == 2) {
+					player1LvPanel.SetActive(true);
+                    player2LvPanel.SetActive(true);
+                    player3LvPanel.SetActive(false);
                     playerUnit[0].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
                     playerUnit[1].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
-                    UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.name,
+					UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.info.name,
                                          playerUnit[0].GetComponent<PlayerStat>().player.level,
                                          playerUnit[0].GetComponent<PlayerStat>().player.experience,
                                                                   Expression.GetExpExpression(playerUnit[0].GetComponent<PlayerStat>().player.level + 1));
-                    UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.name,
+					UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.info.name,
                                          playerUnit[1].GetComponent<PlayerStat>().player.level,
                                          playerUnit[1].GetComponent<PlayerStat>().player.experience,
                                                                   Expression.GetExpExpression(playerUnit[1].GetComponent<PlayerStat>().player.level + 1));
+					PlayerManager.Instance.Characters[0] = playerUnit[0].GetComponent<PlayerStat>().player;
+					PlayerManager.Instance.Characters[1] = playerUnit[1].GetComponent<PlayerStat>().player;
                 }
 				if (playerPositionIndex == 3) {
+					player1LvPanel.SetActive(true);
+					player2LvPanel.SetActive(true);
+                    player3LvPanel.SetActive(true);
                     playerUnit[0].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
                     playerUnit[1].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
                     playerUnit[2].GetComponent<PlayerStat>().player.AddExperience(expPlayerCanGet);
-                    UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.name,
+					UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[0].GetComponent<PlayerStat>().player.info.name,
                                          playerUnit[0].GetComponent<PlayerStat>().player.level,
                                          playerUnit[0].GetComponent<PlayerStat>().player.experience,
                                                                   Expression.GetExpExpression(playerUnit[0].GetComponent<PlayerStat>().player.level + 1));
-                    UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.name,
+					UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.info.name,
                                          playerUnit[1].GetComponent<PlayerStat>().player.level,
                                          playerUnit[1].GetComponent<PlayerStat>().player.experience,
                                                                   Expression.GetExpExpression(playerUnit[1].GetComponent<PlayerStat>().player.level + 1));
-                    UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[2].GetComponent<PlayerStat>().player.name,
+					UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[2].GetComponent<PlayerStat>().player.info.name,
                                          playerUnit[2].GetComponent<PlayerStat>().player.level,
                                          playerUnit[2].GetComponent<PlayerStat>().player.experience,
                                                                   Expression.GetExpExpression(playerUnit[2].GetComponent<PlayerStat>().player.level + 1));
+					PlayerManager.Instance.Characters[0] = playerUnit[0].GetComponent<PlayerStat>().player;
+					PlayerManager.Instance.Characters[1] = playerUnit[1].GetComponent<PlayerStat>().player;
+					PlayerManager.Instance.Characters[2] = playerUnit[2].GetComponent<PlayerStat>().player;
                 }
 				//ScreenManager.Instance.TriggerLoadingFadeOut("M0002",false);
             }
@@ -606,8 +741,17 @@ public class BattleManager : MonoBehaviour {
 					unitStats.Remove(currentUnit);
 					unitStats.Add(currentUnit);
 					unitLists.Enqueue(currentUnit);
-					currentUnit.GetComponent<GetPlayerAction>().
-                                       AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
+					if (isPlayerSelectEnemy == true) {
+                        playerList.Remove(currentUnit);
+                        if (isPlayerPressSkillButton == true) {
+                            currentUnit.GetComponent<GetPlayerAction>().
+                                       PerformSkill(playerSkillName, enemiesUnit[enemySelectedPositionIndex]);
+                        }
+                        else {
+                            currentUnit.GetComponent<GetPlayerAction>().
+                                   AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
+                        }
+                    }
 					}
 				}
 			else {

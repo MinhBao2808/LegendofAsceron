@@ -10,7 +10,7 @@ namespace JsonDataClasses
         public string description;
         public UnitRace race;
         public UnitType type;
-        public UnitStatJson baseStat;
+        public UnitStatJson stats;
         public string[] skills;
         public SkillJson[] totalSkills;
     }

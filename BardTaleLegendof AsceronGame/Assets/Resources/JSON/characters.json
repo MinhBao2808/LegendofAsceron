@@ -5,7 +5,7 @@
     "description": "Lorem Ipsum",
     "race": "Humanoid",
     "type": "Melee",
-    "baseStat": 
+    "stats": 
 	{
       "level": 1,
       "hp": 20,
@@ -45,8 +45,10 @@
 	  "holyRes": 0.0,
 	  "darkRes": 0.0
     },
-	"equipments":
-	[
-	]
+	"weaponID": "",
+    "armorIDs":
+    [
+
+    ]
   }
 ]

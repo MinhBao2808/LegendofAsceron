@@ -9,7 +9,7 @@ public class EnemyUnit : EnemyJson {
         description = json.description;
         race = json.race;
         type = json.type;
-        baseStat = json.baseStat;
+        stats = json.stats;
         skills = json.skills;
         totalSkills = json.totalSkills;
         growthStat = json.growthStat;

@@ -2,33 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEventManager : MonoBehaviour {
+public class GameEventManager : MonoBehaviour
+{
 
-    public string[] chapters = { "0", "1", "2" };
-    public int currentChapter = 1;
-    private static GameEventManager _instance;
-
-    public static GameEventManager Instance
-    {
-        get { return _instance; }
-    }
+    public static GameEventManager Instance { get; private set; }
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this.gameObject);
             return;
         }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(this);
-        }
+        Instance = this;
+        //Init();
+        DontDestroyOnLoad(this);
+    }
+
+    void Init()
+    {
+        DialogManager.Instance.RunDialog(DialogManager.Instance.SearchDialogID("D0001"));
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void FixedUpdate()
+    {
+        if (DialogManager.Instance.IsDialogCanvasActive())
+        {
+            if (hInput.GetButtonUp("Interact"))
+            {
+                DialogManager.Instance.ContinueDialog();
+            }
+        }
+    }
+
+    void InvokeEvent()
+    {
+
+    }
+
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyActionBattle : MonoBehaviour {
 	[SerializeField] private string targetsTag;
+	[SerializeField] private AudioSource enemyAudioSource;
 	private bool isActionStarted = false;
-	public GameObject owner;
 	private bool isAttack = false;
 	GameObject target;
 	private Vector3 targetPosition;
@@ -36,7 +36,6 @@ public class EnemyActionBattle : MonoBehaviour {
 		if (BattleManager.instance.callTurn == true && BattleManager.instance.isGameOver == false && BattleManager.instance.isVictory == false) {
 			if (BattleManager.instance.currentUnit.transform.position.x == this.gameObject.transform.position.x && isActionStarted == true) {
 				if (isAttack == false) {
-					Debug.Log(gameObject.transform.position.x);
 					targetPosition = new Vector3(target.transform.position.x + 2.0f, 
 					                             target.transform.position.y, target.transform.position.z);
 					if (this.transform.position == targetPosition) {
@@ -74,8 +73,10 @@ public class EnemyActionBattle : MonoBehaviour {
 	}
 
 	private void Hit () {
+		enemyAudioSource.clip = AudioManager.Instance.battleBgms[3];
+        enemyAudioSource.Play();
 		GenerateDamageText targetText = target.GetComponent<GenerateDamageText>();
 		isActionStarted = true;
-		targetText.ReceiveDamage(this.gameObject.GetComponent<EnemyStat>().enemy.baseStat.strength);
+		targetText.ReceiveDamage((int)this.gameObject.GetComponent<EnemyStat>().enemy.stats.strength);
 	}
 }
