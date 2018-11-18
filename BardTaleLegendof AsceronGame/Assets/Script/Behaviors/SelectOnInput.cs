@@ -11,7 +11,7 @@ public class SelectOnInput : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetAxisRaw("Vertical") != 0.0f && buttonSelected == false) {
+        if (hInput.GetAxis("VerticalAxis") != 0.0f && buttonSelected == false) {
 			//if (BattleManager.instance.isPlayerSelectAttack() == true) {
 			//	GameObject[] chooseEnemyButton = GameObject.FindGameObjectsWithTag("ChooseEnemyButton");
 			//	selectedObject = chooseEnemyButton[0];
