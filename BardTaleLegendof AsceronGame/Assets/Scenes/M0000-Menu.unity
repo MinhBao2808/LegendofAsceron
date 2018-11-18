@@ -3628,8 +3628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d714815fe4d8df74491a2b8fabfb9090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyList: []
-  characterList: []
 --- !u!1 &438712024
 GameObject:
   m_ObjectHideFlags: 0
@@ -10793,6 +10791,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f0715866492e4fe468508dd6962c98e0, type: 3}
   battleBgms:
   - {fileID: 8300000, guid: e760ad843906bba4086f5c990c2294fb, type: 3}
+  - {fileID: 8300000, guid: 39231e6ee0ee24e4c89e47ec8e9d5541, type: 3}
+  - {fileID: 8300000, guid: 5a7ebc59dde314783996bbf89e91f81b, type: 3}
+  - {fileID: 8300000, guid: 6253980cc78594233b5daeb02e105433, type: 3}
+  - {fileID: 8300000, guid: f655097d163bb406a86dd1fc135a6ed1, type: 3}
+  - {fileID: 8300000, guid: 451aeae2470aa4e6fb8d691c516ea46b, type: 3}
   bossBgms:
   - {fileID: 8300000, guid: ca55275ee5c000e4b8dec3a64cdac7f5, type: 3}
   sfxSource: {fileID: 1953351111}

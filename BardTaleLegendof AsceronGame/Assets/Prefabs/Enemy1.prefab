@@ -20,9 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4037713211929808}
   - component: {fileID: 212815859366621948}
-  - component: {fileID: 114561054825430002}
   - component: {fileID: 114405579681357804}
   - component: {fileID: 114606846566325774}
+  - component: {fileID: 114592499948497904}
+  - component: {fileID: 82449975543632200}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Enemy
@@ -43,6 +44,101 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &82449975543632200
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1716112910176024}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &114405579681357804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -55,8 +151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageText: {fileID: 1481934256279706, guid: 4901c953b5233470e8d35ed7c6b3ec1b, type: 2}
-  damageTextOffset: 1.5
---- !u!114 &114561054825430002
+  damageTextOffset: -1.5
+  unitAudio: {fileID: 82449975543632200}
+--- !u!114 &114592499948497904
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -64,11 +161,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1716112910176024}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 837d4720dc246459fb331b22e6ce41a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 976470dc7de2041fdbc82d317e009b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetsTag: PlayerUnit
-  owner: {fileID: 1716112910176024}
+  enemyAudioSource: {fileID: 82449975543632200}
 --- !u!114 &114606846566325774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -81,50 +178,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy:
-    id: 
-    name: 
-    description: 
+    id: E0001
+    name: Ghoul
+    description: Lorem Ipsum
     race: 0
     type: 0
     baseStat:
-      level: 0
-      hp: 0
+      level: 1
+      hp: 10
       mp: 0
-      strength: 0
-      dexterity: 0
-      intelligence: 0
-      vitality: 0
-      endurance: 0
-      wisdom: 0
-      fireRes: 0
+      strength: 3
+      dexterity: 2
+      intelligence: 1
+      vitality: 1
+      endurance: 1
+      wisdom: 1
+      fireRes: -0.2
       lightningRes: 0
-      iceRes: 0
-      holyRes: 0
+      iceRes: 0.1
+      holyRes: -0.1
       darkRes: 0
     skills: []
     totalSkills: []
     growthStat:
-      level: 0
-      hp: 0
-      mp: 0
-      strength: 0
-      dexterity: 0
-      intelligence: 0
-      vitality: 0
-      endurance: 0
-      wisdom: 0
+      level: 1
+      hp: 5
+      mp: 2
+      strength: 0.75
+      dexterity: 0.25
+      intelligence: 0.1
+      vitality: 0.25
+      endurance: 0.2
+      wisdom: 0.2
       fireRes: 0
       lightningRes: 0
       iceRes: 0
       holyRes: 0
       darkRes: 0
     baseReward:
-      gold: 0
-      exp: 0
-      item: []
+      gold: 5
+      exp: 8
+      item:
+      - itemID: 0001
+        procChance: 0.2
     growthReward:
-      gold: 0
-      exp: 0
+      gold: 2
+      exp: 3
       item: []
 --- !u!212 &212815859366621948
 SpriteRenderer:
@@ -158,11 +257,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -804235197
-  m_SortingLayer: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.3738323, g: 0.2684077, b: 0.9852941, a: 1}
+  m_Sprite: {fileID: 21300000, guid: e1583f01bfa944ee39484346af4014d8, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
