@@ -7,7 +7,6 @@ public class BattleManager : MonoBehaviour {
     public static BattleManager instance = null;
 	[SerializeField] private GameObject[] playerSpawnPositions;
 	[SerializeField] public GameObject[] enemySpawnPositions;
-	[SerializeField] private GameObject[] skillButtons;
 	[SerializeField] private GameObject selector;
 	[SerializeField] private GameObject playerSelector;
 	[SerializeField] private Slider timerSlider;
@@ -16,6 +15,8 @@ public class BattleManager : MonoBehaviour {
 	[SerializeField] private GameObject attack_DefendMenu;
 	[SerializeField] private GameObject[] enemiesUnit;
 	[SerializeField] private GameObject[] playerUnit;
+	[SerializeField] private Button[] itemButton;
+	[SerializeField] private Button[] skillButton;
 	[SerializeField] private GameObject gameOverPanel;
 	[SerializeField] private GameObject victoryPanel;
 	[SerializeField] private GameObject player1LvPanel;
@@ -55,7 +56,7 @@ public class BattleManager : MonoBehaviour {
 	private int expPlayerCanGet;
 	private float expModifier;
 	private bool isPlayerPressSkillButton = false;
-	private string playerSkillName;
+	private int playerSkillIndex;
 	private bool isPlayerUseItem;
 	int count = 0;
 	//private Vector3 selectorPositionY = new Vector3(0, 3, 0);
@@ -87,18 +88,20 @@ public class BattleManager : MonoBehaviour {
 	public void PressSkillPanelButton () {
 		attack_DefendMenu.SetActive(false);
         actionMenu.SetActive(true);
-		if (currentUnit.transform.position == playerUnit[0].transform.position)  {
-			larsSkillPanel.SetActive(true);
+		larsSkillPanel.SetActive(true);
+		for (int i = 0; i < currentUnit.GetComponent<PlayerStat>().player.info.skills.Length;i++) {
+			//get name of skill and add to all button;
+			skillButton[i].GetComponentInChildren<Text>().text = currentUnit.GetComponent<PlayerStat>().player.info.skills[i];
 		}
 	}
 
-	public void PressSkillButton (string skillName) {
+	public void PressSkillButton (int index) {
 		isSelectorSpawn = true;
 		if (currentUnit.transform.position == playerUnit[0].transform.position) {
 			larsSkillPanel.SetActive(false);
         }
 		isPlayerPressSkillButton = true;
-		playerSkillName = skillName;
+		playerSkillIndex = index;
 		if (isPlayerSelectEnemy == false) {
 			for (int i = 0; i < enemyPositionIndex; i++) {
                 if (isEnemyDead[i] == false) {
@@ -110,6 +113,7 @@ public class BattleManager : MonoBehaviour {
                 }
             }
 		}
+        
 	}
 
 	private void SpawnEnemy () {
@@ -143,23 +147,54 @@ public class BattleManager : MonoBehaviour {
 		itemPanel.SetActive(true);
 		attack_DefendMenu.SetActive(false);
 		larsSkillPanel.SetActive(false);
+		if (PlayerManager.Instance.Usables.Count > 0) {
+			for (int i = 0; i < PlayerManager.Instance.Usables.Count; i++) {
+				//get item from data
+				itemButton[i].GetComponentInChildren<Text>().text = "" + PlayerManager.Instance.Usables[i].name;
+				itemButton[i].GetComponentInChildren<Image>().sprite = Resources.Load(PlayerManager.Instance.Usables[i].imgPath) as Sprite;
+            }
+		}
+
 	}
 
-	public void PressUseItem(string itemName) {
+	public void PressUseItem(int index) {
 		if (currentUnit.gameObject.tag == "PlayerUnit") {
-			currentUnit.GetComponent<PlayerStat>().player.battleStats.hp += 10;
-			currentUnit.GetComponent<GenerateDamageText>().RecoverHealth(10);
+			if (PlayerManager.Instance.Usables[index].amount > 0) {
+				if (PlayerManager.Instance.Usables[index].regenType == JsonDataClasses.UsableRegenType.HP) {
+					float currentHp = currentUnit.GetComponent<PlayerStat>().player.battleStats.hp;
+					currentHp += PlayerManager.Instance.Usables[index].amount;
+					if (currentHp >= currentUnit.GetComponent<PlayerStat>().player.battleStats.maxHp) {
+						currentHp = currentUnit.GetComponent<PlayerStat>().player.battleStats.maxHp;
+					}
+					currentUnit.GetComponent<GenerateDamageText>().ReceiveDamage(PlayerManager.Instance.Usables[index].amount);
+					currentUnit.GetComponent<PlayerStat>().player.SetHp(currentHp);
+				}
+				if (PlayerManager.Instance.Usables[index].regenType==JsonDataClasses.UsableRegenType.MP) {
+					float currentMp = currentUnit.GetComponent<PlayerStat>().player.battleStats.mp;
+					currentMp += PlayerManager.Instance.Usables[index].amount;
+					if (currentMp >= currentUnit.GetComponent<PlayerStat>().player.battleStats.maxMp) {
+						currentMp = currentUnit.GetComponent<PlayerStat>().player.battleStats.maxMp;
+					}
+					currentUnit.GetComponent<GenerateDamageText>().ReceiveDamage(PlayerManager.Instance.Usables[index].amount);
+					currentUnit.GetComponent<PlayerStat>().player.SetMp(currentMp);
+				}
+				//if (PlayerManager.Instance.Usables[index].regenType == JsonDataClasses.UsableRegenType.Synergy) {
+				//	float currentSynergy = currentUnit.GetComponent<PlayerStat>().pla
+				//}
+			}
 			itemPanel.SetActive(false);
-			if (isFirstTurn == true) {
-				playerList.Remove(currentUnit);
-				this.FristTurn();
-			}
-			else {
-				unitStats.Remove(currentUnit);
-				unitStats.Add(currentUnit);
-				unitLists.Enqueue(currentUnit);
-				this.nextTurn();
-			}
+            if (isFirstTurn == true)
+            {
+                playerList.Remove(currentUnit);
+                this.FristTurn();
+            }
+            else
+            {
+                unitStats.Remove(currentUnit);
+                unitStats.Add(currentUnit);
+                unitLists.Enqueue(currentUnit);
+                this.nextTurn();
+            }
 		}
 	}
 
@@ -355,6 +390,7 @@ public class BattleManager : MonoBehaviour {
 			}
 			UpdateVictoryPanelUI.instance.UpdateGilPoint(sumGilPoint);
 			UpdateVictoryPanelUI.instance.UpdateExpPoint(sumExpPoint);
+			PlayerManager.Instance.Currency += sumGilPoint;
 			//expPlayerCanGet = sumExpPoint / playerPositionIndex;
 			expPlayerCanGet = (sumExpPoint / playerPositionIndex) * (int)expModifier;
 			if (playerPositionIndex == 1) {
@@ -475,7 +511,7 @@ public class BattleManager : MonoBehaviour {
                             playerList.Remove(currentUnit);
 							if (isPlayerPressSkillButton == true) {
 								currentUnit.GetComponent<GetPlayerAction>().
-										   PerformSkill(playerSkillName, enemiesUnit[enemySelectedPositionIndex]);
+								           PerformSkill(playerSkillIndex, enemiesUnit[enemySelectedPositionIndex]);
 							}
 							else {
 								currentUnit.GetComponent<GetPlayerAction>().
@@ -569,7 +605,7 @@ public class BattleManager : MonoBehaviour {
                         playerList.Remove(currentUnit);
                         if (isPlayerPressSkillButton == true) {
                             currentUnit.GetComponent<GetPlayerAction>().
-                                       PerformSkill(playerSkillName, enemiesUnit[enemySelectedPositionIndex]);
+							           PerformSkill(playerSkillIndex, enemiesUnit[enemySelectedPositionIndex]);
                         }
                         else {
                             currentUnit.GetComponent<GetPlayerAction>().
@@ -647,6 +683,7 @@ public class BattleManager : MonoBehaviour {
                 }
 				UpdateVictoryPanelUI.instance.UpdateGilPoint(sumGilPoint);
                 UpdateVictoryPanelUI.instance.UpdateExpPoint(sumExpPoint);
+				PlayerManager.Instance.Currency += sumGilPoint;
 				expPlayerCanGet = (sumExpPoint / playerPositionIndex) * (int)expModifier;
                 if (playerPositionIndex == 1) {
 					player1LvPanel.SetActive(true);
@@ -750,7 +787,7 @@ public class BattleManager : MonoBehaviour {
                         playerList.Remove(currentUnit);
                         if (isPlayerPressSkillButton == true) {
                             currentUnit.GetComponent<GetPlayerAction>().
-                                       PerformSkill(playerSkillName, enemiesUnit[enemySelectedPositionIndex]);
+							           PerformSkill(playerSkillIndex, enemiesUnit[enemySelectedPositionIndex]);
                         }
                         else {
                             currentUnit.GetComponent<GetPlayerAction>().

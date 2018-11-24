@@ -73,8 +73,7 @@ public class GetPlayerAction : MonoBehaviour {
 	private void SkillAnimationEnd() {
 		isAttack = true;
 		animator.SetBool(skillPlayerName,false);
-		damage = Expression.SkillPATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk,
-		                              0.0f, 3.0f,
+		damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk, 3.0f,
 		                              targetGameObject.GetComponent<EnemyStat>().enemy.stats.vitality,1.0f,1.0f);
 		GenerateDamageText targetText = targetGameObject.GetComponent<GenerateDamageText>();
         BattleManager.instance.isSelectorSpawn = false;
@@ -82,11 +81,16 @@ public class GetPlayerAction : MonoBehaviour {
 		isPerformSkill = false;
 	}
 
-	public void PerformSkill (string skillName, GameObject target) {
+	public void PerformSkill (int skillIndex, GameObject target) {
 		isPerformSkill = true;
 		isAttack = false;
 		actionStarted = true;
-		skillPlayerName = skillName;
+		skillPlayerName = this.gameObject.GetComponent<PlayerStat>().player.info.skills[skillIndex];
+		this.gameObject.GetComponent<PlayerStat>().player.battleStats.mp -= this.gameObject.GetComponent<PlayerStat>().player.info.totalSkills[skillIndex].mpCost;
+		Debug.Log(skillPlayerName);
+		//if (this.gameObject.GetComponent<PlayerStat>().player.info.totalSkills[skillIndex].isPassive == true) {
+		//	if (this.gameObject.GetComponent<PlayerStat>().player.info.type == SkillType.Buff)
+		//}
 		targetGameObject = target;
 	}
     

@@ -23,6 +23,7 @@ public class PlayerManager : MonoBehaviour {
     public float RotY { get; set; }
     public float RotZ { get; set; }
     public string CurrentSceneID { get; set; }
+    [SerializeField]
     public List<PlayerCharacter> Characters { get; private set; }
 
     public GameObject player;
@@ -81,6 +82,11 @@ public class PlayerManager : MonoBehaviour {
         RotX = 0;
         RotY = 0;
         RotZ = 0;
+        AddItem("armor", "IA0001");
+        PlayerCharacter character = Characters[0];
+        EquipEquipment("armor", "IA0001", ref character);
+        Characters[0] = character;
+        Characters[0].UnequipArmor(ArmorPiece.Head);
     }
 
     public void AddCharacter(CharacterJson character, int level)
@@ -92,16 +98,76 @@ public class PlayerManager : MonoBehaviour {
     {
         if (type.ToLower() == "usable")
         {
-            Usables.Add(DataManager.Instance.SearchUsableID(id));
+            if (DataManager.Instance.SearchUsableID(id) != null)
+            {
+                Usables.Add(DataManager.Instance.SearchUsableID(id));
+            }
+            else
+            {
+                Debug.LogError("Usable " + id + " not found!");
+            }
         }
         else if (type.ToLower() == "weapon")
         {
-            Weapons.Add(new PlayerWeapon(id));
+            if (DataManager.Instance.SearchWeaponID(id) != null)
+            {
+                Weapons.Add(new PlayerWeapon(id));
+            }
+            else
+            {
+                Debug.LogError("Weapon " + id + " not found!");
+            }
         }
         else if (type.ToLower() == "armor")
         {
-            Armors.Add(new PlayerArmor(id));
+            if (DataManager.Instance.SearchArmorID(id) != null)
+            {
+                Armors.Add(new PlayerArmor(id));
+            }
+            else 
+            {
+                Debug.LogError("Armor " + id + " not found!");
+            }
         }
+    }
+
+    public void EquipEquipment(string equipmentType, string equipmentId,ref PlayerCharacter character)
+    {
+        if (equipmentType.ToLower() == "weapon")
+        {
+            for (int i = 0; i < Weapons.Count; i++)
+            {
+                if (Weapons[i].weapon.id == equipmentId)
+                {
+                    PlayerWeapon playerWeapon = Weapons[i];
+                    character.EquipWeapon(ref playerWeapon);
+                    Weapons[i] = playerWeapon;
+                    break;
+                }
+            }
+        }
+        else if (equipmentType.ToLower() == "armor")
+        {
+            for (int i = 0; i < Armors.Count; i++)
+            {
+                if (Armors[i].armor.id == equipmentId)
+                {
+                    PlayerArmor playerArmor = Armors[i];
+                    character.EquipArmor(ref playerArmor);
+                    Armors[i] = playerArmor;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("Target Item is not an Equipment!");
+        }
+    }
+
+    public void UnequipEquipment(string equipmentId, PlayerCharacter character)
+    {
+
     }
 
     public void SetPlayerPos()
@@ -198,19 +264,19 @@ public class PlayerCharacter
             stats = new UnitStatJson()
         };
 
-        if (!String.IsNullOrEmpty(json.weaponID))
-        {
+        //if (!String.IsNullOrEmpty(json.weaponID))
+        //{
             weapon = new PlayerWeapon(json.weaponID);
-        }
+        //}
 
-        if (json.armorIDs.Length > 0)
-        {
+        // (json.armorIDs.Length > 0)
+        //{
             armors = new List<PlayerArmor>();
             for (int i = 0; i < json.armorIDs.Length; i++)
             {
                 armors.Add(new PlayerArmor(json.armorIDs[i]));
             }
-        }
+        //}
 
         SetStatByLevel(targetLevel, json);
 
@@ -219,6 +285,65 @@ public class PlayerCharacter
 
         CalculateBattleStat();
         RefreshStatus();
+    }
+
+    public void UnequipWeapon()
+    {
+        weapon.owner = null;
+        weapon = null;
+        CalculateBattleStat();
+    }
+
+    public void UnequipArmor(ArmorPiece piece)
+    {
+        for (int i = 0; i < armors.Count; i++)
+        {
+            if (armors[i].armor.aPiece == piece)
+            {
+                armors[i].owner = null;
+                armors.Remove(armors[i]);
+                CalculateBattleStat();
+                return;
+            }
+        }
+    }
+
+    public void EquipWeapon(ref PlayerWeapon equipment)
+    {
+        if(weapon != null)
+        {
+            weapon.owner = null;
+        }
+        if(equipment.owner != null)
+        {
+            equipment.owner.UnequipWeapon();
+            equipment.owner.CalculateBattleStat();
+        }
+        equipment.owner = this;
+    }
+
+    public void EquipArmor(ref PlayerArmor piece)
+    {
+        for (int i = 0; i < armors.Count; i++)
+        {
+            if ( armors[i].armor.aPiece == piece.armor.aPiece)
+            {
+                armors[i].owner = null;
+                if(piece.owner != null)
+                {
+                    piece.owner.UnequipArmor(piece.armor.aPiece);
+                    piece.owner.CalculateBattleStat();
+                }
+                piece.owner = this;
+                armors.Remove(armors[i]);
+                armors.Add(piece);
+                CalculateBattleStat();
+                return;
+            }
+        }
+        armors.Add(piece);
+        piece.owner = this;
+        CalculateBattleStat();
     }
 
     public void AddExperience(int exp)
@@ -337,8 +462,6 @@ public class PlayerCharacter
     {
         battleStats = new PlayerCharBattleStat();
 
-        Debug.Log(info.stats);
-
         battleStats.maxHp += info.stats.hp + info.stats.vitality * GameConfigs.HP_PER_VIT;
         battleStats.maxMp += info.stats.mp + info.stats.wisdom * GameConfigs.MP_PER_WIS;
 
@@ -411,12 +534,17 @@ public class PlayerWeapon
 {
     public WeaponJson weapon;
     public int durability;
+    public PlayerCharacter owner;
 
     public PlayerWeapon(string weaponID)
     {
         weapon = DataManager.Instance.SearchWeaponID(weaponID);
-        weapon.GenerateDurability();
-        durability = weapon.MaxDurability;
+        if (weapon != null)
+        {
+            weapon.GenerateDurability();
+            durability = weapon.MaxDurability;
+            owner = null;
+        }
     }
 }
 
@@ -425,12 +553,17 @@ public class PlayerArmor
 {
     public ArmorJson armor;
     public int durability;
+    public PlayerCharacter owner;
 
     public PlayerArmor(string armorID)
     {
         armor = DataManager.Instance.SearchArmorID(armorID);
-        armor.GenerateDurability();
-        durability = armor.MaxDurability;
+        if (armor != null)
+        {
+            armor.GenerateDurability();
+            durability = armor.MaxDurability;
+            owner = null;
+        }
     }
 }
 

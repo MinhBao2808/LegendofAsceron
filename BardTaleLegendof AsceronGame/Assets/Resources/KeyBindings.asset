@@ -139,4 +139,4 @@ MonoBehaviour:
     Sensitivity: 1
     val: 0
   rebindRemoveKey: 27
-  forceResetInEditor: 0
+  forceResetInEditor: 1

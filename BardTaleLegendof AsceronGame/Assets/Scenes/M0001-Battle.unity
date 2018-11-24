@@ -1022,6 +1022,7 @@ GameObject:
   - component: {fileID: 363965484}
   - component: {fileID: 363965483}
   - component: {fileID: 363965482}
+  - component: {fileID: 363965485}
   m_Layer: 5
   m_Name: ItemButton5
   m_TagString: Untagged
@@ -1089,12 +1090,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1291094687}
-        m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_MethodName: PressUseItem
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -1135,6 +1136,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 363965480}
   m_CullTransparentMesh: 0
+--- !u!114 &363965485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 363965480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515e56506918b4991b34081180027b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUsable:
+    usable:
+      id: 
+      name: 
+      lvlRequirement: 0
+      type: 0
+      tooltips: 
+      imgPath: 
+      amount: 0
+      isPercentage: 0
+      regenType: 0
+    amount: 0
 --- !u!1 &388202396
 GameObject:
   m_ObjectHideFlags: 0
@@ -2207,6 +2231,7 @@ GameObject:
   - component: {fileID: 706726464}
   - component: {fileID: 706726463}
   - component: {fileID: 706726462}
+  - component: {fileID: 706726465}
   m_Layer: 5
   m_Name: SkillButton1 (4)
   m_TagString: Untagged
@@ -2275,11 +2300,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291094687}
         m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -2320,6 +2345,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 706726460}
   m_CullTransparentMesh: 0
+--- !u!114 &706726465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 706726460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 629525dfb3f714df68a79857cd023df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillJson:
+    id: 
+    tooltips: 
+    isPassive: 0
+    mpCost: 0
+    lvlRequirement: 0
+    target: 
+    type: 
+    power: 0
+    damageDuration: 0
+    buffDuration: 0
+    debuffDuration: 0
 --- !u!1 &742880378
 GameObject:
   m_ObjectHideFlags: 0
@@ -2331,6 +2379,7 @@ GameObject:
   - component: {fileID: 742880382}
   - component: {fileID: 742880381}
   - component: {fileID: 742880380}
+  - component: {fileID: 742880383}
   m_Layer: 5
   m_Name: ItemButton4
   m_TagString: Untagged
@@ -2398,12 +2447,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1291094687}
-        m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_MethodName: PressUseItem
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -2444,6 +2493,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 742880378}
   m_CullTransparentMesh: 0
+--- !u!114 &742880383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 742880378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515e56506918b4991b34081180027b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUsable:
+    usable:
+      id: 
+      name: 
+      lvlRequirement: 0
+      type: 0
+      tooltips: 
+      imgPath: 
+      amount: 0
+      isPercentage: 0
+      regenType: 0
+    amount: 0
 --- !u!1 &751736686
 GameObject:
   m_ObjectHideFlags: 0
@@ -2475,7 +2547,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1265, y: 9.000061}
+  m_AnchoredPosition: {x: 1265, y: 9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &756916798
@@ -3092,6 +3164,7 @@ GameObject:
   - component: {fileID: 893439131}
   - component: {fileID: 893439130}
   - component: {fileID: 893439129}
+  - component: {fileID: 893439132}
   m_Layer: 5
   m_Name: SkillButton1 (5)
   m_TagString: Untagged
@@ -3160,11 +3233,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291094687}
         m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -3205,6 +3278,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 893439127}
   m_CullTransparentMesh: 0
+--- !u!114 &893439132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 893439127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 629525dfb3f714df68a79857cd023df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillJson:
+    id: 
+    tooltips: 
+    isPassive: 0
+    mpCost: 0
+    lvlRequirement: 0
+    target: 
+    type: 
+    power: 0
+    damageDuration: 0
+    buffDuration: 0
+    debuffDuration: 0
 --- !u!1 &900312163
 GameObject:
   m_ObjectHideFlags: 0
@@ -3291,6 +3387,7 @@ GameObject:
   - component: {fileID: 910025782}
   - component: {fileID: 910025781}
   - component: {fileID: 910025780}
+  - component: {fileID: 910025783}
   m_Layer: 5
   m_Name: SkillButton1 (1)
   m_TagString: Untagged
@@ -3359,11 +3456,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291094687}
         m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -3404,6 +3501,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 910025778}
   m_CullTransparentMesh: 0
+--- !u!114 &910025783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 910025778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 629525dfb3f714df68a79857cd023df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillJson:
+    id: 
+    tooltips: 
+    isPassive: 0
+    mpCost: 0
+    lvlRequirement: 0
+    target: 
+    type: 
+    power: 0
+    damageDuration: 0
+    buffDuration: 0
+    debuffDuration: 0
 --- !u!1 &911024841
 GameObject:
   m_ObjectHideFlags: 0
@@ -3768,6 +3888,7 @@ GameObject:
   - component: {fileID: 985073634}
   - component: {fileID: 985073633}
   - component: {fileID: 985073632}
+  - component: {fileID: 985073635}
   m_Layer: 5
   m_Name: ItemButton3
   m_TagString: Untagged
@@ -3835,12 +3956,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1291094687}
-        m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_MethodName: PressUseItem
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -3881,6 +4002,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 985073630}
   m_CullTransparentMesh: 0
+--- !u!114 &985073635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 985073630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515e56506918b4991b34081180027b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUsable:
+    usable:
+      id: 
+      name: 
+      lvlRequirement: 0
+      type: 0
+      tooltips: 
+      imgPath: 
+      amount: 0
+      isPercentage: 0
+      regenType: 0
+    amount: 0
 --- !u!1 &992052103
 GameObject:
   m_ObjectHideFlags: 0
@@ -4753,6 +4897,7 @@ GameObject:
   - component: {fileID: 1204874727}
   - component: {fileID: 1204874726}
   - component: {fileID: 1204874725}
+  - component: {fileID: 1204874728}
   m_Layer: 5
   m_Name: ItemButton
   m_TagString: Untagged
@@ -4821,7 +4966,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291094687}
         m_MethodName: PressUseItem
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4866,6 +5011,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1204874723}
   m_CullTransparentMesh: 0
+--- !u!114 &1204874728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1204874723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515e56506918b4991b34081180027b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUsable:
+    usable:
+      id: 
+      name: 
+      lvlRequirement: 0
+      type: 0
+      tooltips: 
+      imgPath: 
+      amount: 0
+      isPercentage: 0
+      regenType: 0
+    amount: 0
 --- !u!1 &1233494383
 GameObject:
   m_ObjectHideFlags: 0
@@ -5260,6 +5428,7 @@ GameObject:
   - component: {fileID: 1267652155}
   - component: {fileID: 1267652154}
   - component: {fileID: 1267652153}
+  - component: {fileID: 1267652156}
   m_Layer: 5
   m_Name: ItemButton2
   m_TagString: Untagged
@@ -5327,12 +5496,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1291094687}
-        m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_MethodName: PressUseItem
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -5373,6 +5542,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1267652151}
   m_CullTransparentMesh: 0
+--- !u!114 &1267652156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1267652151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515e56506918b4991b34081180027b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUsable:
+    usable:
+      id: 
+      name: 
+      lvlRequirement: 0
+      type: 0
+      tooltips: 
+      imgPath: 
+      amount: 0
+      isPercentage: 0
+      regenType: 0
+    amount: 0
 --- !u!1 &1286079133
 GameObject:
   m_ObjectHideFlags: 0
@@ -5493,13 +5685,6 @@ MonoBehaviour:
   - {fileID: 1258904592}
   - {fileID: 1579938322}
   - {fileID: 1749581731}
-  skillButtons:
-  - {fileID: 1894156731}
-  - {fileID: 910025778}
-  - {fileID: 1382017870}
-  - {fileID: 1409597079}
-  - {fileID: 706726460}
-  - {fileID: 893439127}
   selector: {fileID: 1073965948209046, guid: f2d7b01667c8c42dbaaa8d6550e25fc7, type: 2}
   playerSelector: {fileID: 1332225993281834, guid: 23846ab3dae71492e9bc1fc9f118e8d8,
     type: 2}
@@ -5526,6 +5711,20 @@ MonoBehaviour:
   - {fileID: 1716112910176024, guid: ba1b697935e3a4bb1b0edbaadfccc72f, type: 2}
   playerUnit:
   - {fileID: 1256116698446774, guid: 0872ef7f00f2c4f898ac72d2b2b3ae2a, type: 2}
+  itemButton:
+  - {fileID: 1204874725}
+  - {fileID: 1267652153}
+  - {fileID: 985073632}
+  - {fileID: 742880380}
+  - {fileID: 363965482}
+  - {fileID: 1810460231}
+  skillButton:
+  - {fileID: 1894156733}
+  - {fileID: 910025780}
+  - {fileID: 1382017872}
+  - {fileID: 1409597081}
+  - {fileID: 706726462}
+  - {fileID: 893439129}
   gameOverPanel: {fileID: 965270403}
   victoryPanel: {fileID: 1387310150}
   player1LvPanel: {fileID: 992052103}
@@ -5746,6 +5945,7 @@ GameObject:
   - component: {fileID: 1382017874}
   - component: {fileID: 1382017873}
   - component: {fileID: 1382017872}
+  - component: {fileID: 1382017875}
   m_Layer: 5
   m_Name: SkillButton1 (2)
   m_TagString: Untagged
@@ -5814,11 +6014,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291094687}
         m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -5859,6 +6059,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1382017870}
   m_CullTransparentMesh: 0
+--- !u!114 &1382017875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1382017870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 629525dfb3f714df68a79857cd023df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillJson:
+    id: 
+    tooltips: 
+    isPassive: 0
+    mpCost: 0
+    lvlRequirement: 0
+    target: 
+    type: 
+    power: 0
+    damageDuration: 0
+    buffDuration: 0
+    debuffDuration: 0
 --- !u!1 &1387310150
 GameObject:
   m_ObjectHideFlags: 0
@@ -6100,6 +6323,7 @@ GameObject:
   - component: {fileID: 1409597083}
   - component: {fileID: 1409597082}
   - component: {fileID: 1409597081}
+  - component: {fileID: 1409597084}
   m_Layer: 5
   m_Name: SkillButton1 (3)
   m_TagString: Untagged
@@ -6168,11 +6392,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291094687}
         m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -6213,6 +6437,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1409597079}
   m_CullTransparentMesh: 0
+--- !u!114 &1409597084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1409597079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 629525dfb3f714df68a79857cd023df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillJson:
+    id: 
+    tooltips: 
+    isPassive: 0
+    mpCost: 0
+    lvlRequirement: 0
+    target: 
+    type: 
+    power: 0
+    damageDuration: 0
+    buffDuration: 0
+    debuffDuration: 0
 --- !u!1 &1414995122
 GameObject:
   m_ObjectHideFlags: 0
@@ -7437,6 +7684,7 @@ GameObject:
   - component: {fileID: 1810460233}
   - component: {fileID: 1810460232}
   - component: {fileID: 1810460231}
+  - component: {fileID: 1810460234}
   m_Layer: 5
   m_Name: ItemButton6
   m_TagString: Untagged
@@ -7504,12 +7752,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1291094687}
-        m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_MethodName: PressUseItem
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -7550,6 +7798,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1810460229}
   m_CullTransparentMesh: 0
+--- !u!114 &1810460234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1810460229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515e56506918b4991b34081180027b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUsable:
+    usable:
+      id: 
+      name: 
+      lvlRequirement: 0
+      type: 0
+      tooltips: 
+      imgPath: 
+      amount: 0
+      isPercentage: 0
+      regenType: 0
+    amount: 0
 --- !u!1 &1835476893
 GameObject:
   m_ObjectHideFlags: 0
@@ -7733,6 +8004,7 @@ GameObject:
   - component: {fileID: 1894156735}
   - component: {fileID: 1894156734}
   - component: {fileID: 1894156733}
+  - component: {fileID: 1894156736}
   m_Layer: 5
   m_Name: SkillButton1
   m_TagString: Untagged
@@ -7801,7 +8073,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291094687}
         m_MethodName: PressSkillButton
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7846,6 +8118,29 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1894156731}
   m_CullTransparentMesh: 0
+--- !u!114 &1894156736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1894156731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 629525dfb3f714df68a79857cd023df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillJson:
+    id: 
+    tooltips: 
+    isPassive: 0
+    mpCost: 0
+    lvlRequirement: 0
+    target: 
+    type: 
+    power: 0
+    damageDuration: 0
+    buffDuration: 0
+    debuffDuration: 0
 --- !u!1 &1991238750
 GameObject:
   m_ObjectHideFlags: 0
@@ -8149,7 +8444,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 602.00006, y: 9.000061}
+  m_AnchoredPosition: {x: 602, y: 9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2061507180
