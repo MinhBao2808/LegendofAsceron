@@ -51,6 +51,14 @@ public class DataManager : MonoBehaviour
 
         for (int i = 0; i < WeaponList.Count; i++)
         {
+            if (WeaponList[i].modification == null)
+            {
+                WeaponList[i].modification = new EquipmentModJson();
+            }
+            if (WeaponList[i].stats == null)
+            {
+                WeaponList[i].stats = new EquipmentStatJson();
+            }
             WeaponList[i].GenerateDurability();
         }
 
@@ -60,12 +68,21 @@ public class DataManager : MonoBehaviour
 
         for (int i = 0; i < ArmorList.Count; i++)
         {
+            if (ArmorList[i].modification == null)
+            {
+                ArmorList[i].modification = new EquipmentModJson();
+            }
+            if (ArmorList[i].stats == null)
+            {
+                ArmorList[i].stats = new EquipmentStatJson();
+            }
             ArmorList[i].GenerateDurability();
         }
 
         var usableJson = Resources.Load<TextAsset>("JSON/usables");
         UsableJson[] tempUsableList = JsonConvert.DeserializeObject<UsableJson[]>(usableJson.text);
         UsableList.AddRange(tempUsableList);
+
     }
 
     public WeaponJson SearchWeaponID (string id)

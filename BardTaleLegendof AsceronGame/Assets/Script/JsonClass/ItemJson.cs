@@ -148,6 +148,21 @@ namespace JsonDataClasses
         public float iceRes;
         public float holyRes;
         public float darkRes;
+
+        public EquipmentStatJson()
+        {
+            strength = 0;
+            dexterity = 0;
+            intelligence = 0;
+            vitality = 0;
+            endurance = 0;
+            wisdom = 0;
+            fireRes = 0;
+            lightningRes = 0;
+            iceRes = 0;
+            holyRes = 0;
+            darkRes = 0;
+        }
     }
 
     [Serializable]
@@ -162,6 +177,19 @@ namespace JsonDataClasses
         public float crit;
         public float mdef;
         public float pdef;
+
+        public EquipmentModJson()
+        {
+            hp = 0;
+            mp = 0;
+            patk = 0;
+            matk = 0;
+            speed = 0;
+            evasion = 0;
+            crit = 0;
+            mdef = 0;
+            pdef = 0;
+        }
     }
     
     public enum ArmorType
