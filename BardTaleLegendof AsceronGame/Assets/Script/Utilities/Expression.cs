@@ -22,7 +22,7 @@ public static class Expression  {
 	}
 
 
-	public static float SkillPATK (float strength, float weaponPATK,float skillDamageScale, float PDEFtarget, float CRTD, float resistance) {
-		return (PATK(strength,weaponPATK) * skillDamageScale) * 100 / (100 + PDEFtarget) * Modifier(CRTD,resistance);
+	public static float SkillATK (float strength, float weaponATK,float skillDamageScale, float DEFtarget, float CRTD, float resistance) {
+		return (PATK(strength,weaponATK) * skillDamageScale) * 100 / (100 + DEFtarget) * Modifier(CRTD,resistance);
 	}
 }

@@ -73,7 +73,7 @@ public class GetPlayerAction : MonoBehaviour {
 	private void SkillAnimationEnd() {
 		isAttack = true;
 		animator.SetBool(skillPlayerName,false);
-		damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk, 3.0f,
+		damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk, 3.0f,1.0f,
 		                              targetGameObject.GetComponent<EnemyStat>().enemy.stats.vitality,1.0f,1.0f);
 		GenerateDamageText targetText = targetGameObject.GetComponent<GenerateDamageText>();
         BattleManager.instance.isSelectorSpawn = false;
