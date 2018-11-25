@@ -1,8 +1,8 @@
 ﻿<Properties StartupConfiguration="{5740844B-10B4-2404-B194-D815115ADC54}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Manager/ScreenManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Manager/PlayerManager.cs">
     <Files>
-      <File FileName="Assets/Script/Manager/PlayerManager.cs" Line="206" Column="2" />
+      <File FileName="Assets/Script/Manager/PlayerManager.cs" Line="16" Column="27" />
       <File FileName="Assets/Script/Manager/GameEventManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Script/Manager/DataManager.cs" Line="20" Column="10" />
       <File FileName="Assets/Script/JsonClass/CharacterJson.cs" Line="8" Column="32" />
@@ -15,6 +15,8 @@
       <File FileName="Assets/Script/JsonClass/ItemJson.cs" Line="1" Column="1" />
       <File FileName="Assets/Script/Utilities/Expression.cs" Line="25" Column="22" />
       <File FileName="Assets/Script/Manager/ScreenManager.cs" Line="16" Column="1" />
+      <File FileName="Assets/Resources/JSON/usables.json" Line="8" Column="33" />
+      <File FileName="Assets/Script/Manager/BattleManager.cs" Line="153" Column="75" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
