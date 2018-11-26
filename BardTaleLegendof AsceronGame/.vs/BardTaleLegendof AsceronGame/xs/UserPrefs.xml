@@ -1,10 +1,10 @@
 ﻿<Properties StartupConfiguration="{5740844B-10B4-2404-B194-D815115ADC54}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Manager/PlayerManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Manager/BattleManager.cs">
     <Files>
-      <File FileName="Assets/Script/Manager/PlayerManager.cs" Line="16" Column="27" />
+      <File FileName="Assets/Script/Manager/PlayerManager.cs" Line="249" Column="20" />
       <File FileName="Assets/Script/Manager/GameEventManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Script/Manager/DataManager.cs" Line="20" Column="10" />
+      <File FileName="Assets/Script/Manager/DataManager.cs" Line="13" Column="27" />
       <File FileName="Assets/Script/JsonClass/CharacterJson.cs" Line="8" Column="32" />
       <File FileName="Assets/Script/JsonClass/UnitStatJson.cs" Line="1" Column="1" />
       <File FileName="Assets/Script/GameConfigs.cs" Line="1" Column="1" />
@@ -12,11 +12,12 @@
       <File FileName="Assets/Script/Behaviors/Action in battle/PlayerStat.cs" Line="1" Column="1" />
       <File FileName="Assets/Script/Behaviors/Action in battle/GetPlayerAction.cs" Line="77" Column="1" />
       <File FileName="Assets/Script/Behaviors/SelectOnInput.cs" Line="17" Column="45" />
-      <File FileName="Assets/Script/JsonClass/ItemJson.cs" Line="1" Column="1" />
+      <File FileName="Assets/Script/JsonClass/ItemJson.cs" Line="238" Column="17" />
       <File FileName="Assets/Script/Utilities/Expression.cs" Line="25" Column="22" />
       <File FileName="Assets/Script/Manager/ScreenManager.cs" Line="16" Column="1" />
       <File FileName="Assets/Resources/JSON/usables.json" Line="8" Column="33" />
-      <File FileName="Assets/Script/Manager/BattleManager.cs" Line="153" Column="75" />
+      <File FileName="Assets/Script/Manager/BattleManager.cs" Line="636" Column="36" />
+      <File FileName="Assets/Script/Behaviors/Action in battle/DestroyDamageText.cs" Line="19" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

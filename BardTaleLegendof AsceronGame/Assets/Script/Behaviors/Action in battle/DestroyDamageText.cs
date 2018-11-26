@@ -8,4 +8,16 @@ public class DestroyDamageText : MonoBehaviour {
 	void Start () {
         Destroy(this.gameObject, this.destroyTime);
 	}
+
+	private void OnDestroy()
+	{
+		if (BattleManager.instance.IsPlayerUseItem == true) {
+			if (BattleManager.instance.isFirstTurn == true) {
+				BattleManager.instance.FristTurn();
+			}
+			else {
+				BattleManager.instance.nextTurn();
+			}
+		}
+	}
 }

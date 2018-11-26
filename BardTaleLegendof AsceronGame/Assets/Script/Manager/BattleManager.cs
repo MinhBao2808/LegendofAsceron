@@ -59,6 +59,20 @@ public class BattleManager : MonoBehaviour {
 	private int playerSkillIndex;
 	private bool isPlayerUseItem;
 	int count = 0;
+
+	public bool IsPlayerUseItem
+	{
+		get
+		{
+			return isPlayerUseItem;
+		}
+
+		set
+		{
+			isPlayerUseItem = value;
+		}
+	}
+
 	//private Vector3 selectorPositionY = new Vector3(0, 3, 0);
 
 	public void PressActionButton () {
@@ -147,53 +161,53 @@ public class BattleManager : MonoBehaviour {
 		itemPanel.SetActive(true);
 		attack_DefendMenu.SetActive(false);
 		larsSkillPanel.SetActive(false);
-		if (PlayerManager.Instance.Usables.Count > 0) {
-			for (int i = 0; i < PlayerManager.Instance.Usables.Count; i++) {
+		if (DataManager.Instance.UsableList.Count > 0) {
+			for (int i = 0; i < DataManager.Instance.UsableList.Count; i++) {
 				//get item from data
-				itemButton[i].GetComponentInChildren<Text>().text = "" + PlayerManager.Instance.Usables[i].name;
-				itemButton[i].GetComponentInChildren<Image>().sprite = Resources.Load(PlayerManager.Instance.Usables[i].imgPath) as Sprite;
+				itemButton[i].GetComponentInChildren<Text>().text = "" + DataManager.Instance.UsableList[i].name;
+				itemButton[i].GetComponentInChildren<Image>().sprite = Resources.Load(DataManager.Instance.UsableList[i].imgPath) as Sprite;
             }
 		}
-
 	}
 
 	public void PressUseItem(int index) {
 		if (currentUnit.gameObject.tag == "PlayerUnit") {
-			if (PlayerManager.Instance.Usables[index].amount > 0) {
-				if (PlayerManager.Instance.Usables[index].regenType == JsonDataClasses.UsableRegenType.HP) {
+			if (DataManager.Instance.UsableList[index].amount > 0) {
+				if (DataManager.Instance.UsableList[index].regenType == JsonDataClasses.UsableRegenType.HP) {
 					float currentHp = currentUnit.GetComponent<PlayerStat>().player.battleStats.hp;
-					currentHp += PlayerManager.Instance.Usables[index].amount;
+					currentHp += DataManager.Instance.UsableList[index].amount;
 					if (currentHp >= currentUnit.GetComponent<PlayerStat>().player.battleStats.maxHp) {
 						currentHp = currentUnit.GetComponent<PlayerStat>().player.battleStats.maxHp;
 					}
-					currentUnit.GetComponent<GenerateDamageText>().ReceiveDamage(PlayerManager.Instance.Usables[index].amount);
+					currentUnit.GetComponent<GenerateDamageText>().ReceiveDamage(DataManager.Instance.UsableList[index].amount);
 					currentUnit.GetComponent<PlayerStat>().player.SetHp(currentHp);
 				}
-				if (PlayerManager.Instance.Usables[index].regenType==JsonDataClasses.UsableRegenType.MP) {
+				if (DataManager.Instance.UsableList[index].regenType==JsonDataClasses.UsableRegenType.MP) {
 					float currentMp = currentUnit.GetComponent<PlayerStat>().player.battleStats.mp;
 					currentMp += PlayerManager.Instance.Usables[index].amount;
 					if (currentMp >= currentUnit.GetComponent<PlayerStat>().player.battleStats.maxMp) {
 						currentMp = currentUnit.GetComponent<PlayerStat>().player.battleStats.maxMp;
 					}
-					currentUnit.GetComponent<GenerateDamageText>().ReceiveDamage(PlayerManager.Instance.Usables[index].amount);
+					currentUnit.GetComponent<GenerateDamageText>().ReceiveDamage(DataManager.Instance.UsableList[index].amount);
 					currentUnit.GetComponent<PlayerStat>().player.SetMp(currentMp);
 				}
 				//if (PlayerManager.Instance.Usables[index].regenType == JsonDataClasses.UsableRegenType.Synergy) {
 				//	float currentSynergy = currentUnit.GetComponent<PlayerStat>().pla
 				//}
 			}
+			isPlayerUseItem = true;
 			itemPanel.SetActive(false);
             if (isFirstTurn == true)
             {
                 playerList.Remove(currentUnit);
-                this.FristTurn();
+                //this.FristTurn();
             }
             else
             {
                 unitStats.Remove(currentUnit);
                 unitStats.Add(currentUnit);
                 unitLists.Enqueue(currentUnit);
-                this.nextTurn();
+                //this.nextTurn();
             }
 		}
 	}
@@ -619,8 +633,8 @@ public class BattleManager : MonoBehaviour {
 
     void Update() {
 		//Debug.Log(timer);
+		timerSlider.value = time / timer;
 		if (enemyTurn == false && callTurn == true) {
-			timerSlider.value = time/timer;
 			time -= Time.deltaTime;
             Debug.Log(time);
             if (time <= 0.0f) {
