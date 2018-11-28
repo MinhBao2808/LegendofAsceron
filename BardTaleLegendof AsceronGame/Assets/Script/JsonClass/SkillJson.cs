@@ -13,9 +13,8 @@ namespace JsonDataClasses
         public SkillTarget[] target;
         public SkillType[] type;
         public int power;
-        public int damageDuration;
-        public int buffDuration;
-        public int debuffDuration;
+        public EffectJson effect;
+        public string imgPath;
     }
 
     public enum SkillTarget

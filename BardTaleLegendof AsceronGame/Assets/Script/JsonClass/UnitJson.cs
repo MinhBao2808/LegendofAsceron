@@ -11,8 +11,8 @@ namespace JsonDataClasses
         public UnitRace race;
         public UnitType type;
         public UnitStatJson stats;
-        public string[] skills;
-        public SkillJson[] totalSkills;
+        public string[] learnedSkills;
+        public string[] totalSkills;
     }
 
     public enum UnitType

@@ -11,6 +11,7 @@ public class DataManager : MonoBehaviour
     public List<WeaponJson> WeaponList { get; private set; }
     public List<ArmorJson> ArmorList { get; private set; }
     public List<UsableJson> UsableList { get; private set; }
+    public List<SkillJson> SkillList { get; private set; }
 
     public static DataManager Instance { get; private set; }
 
@@ -36,6 +37,7 @@ public class DataManager : MonoBehaviour
         WeaponList = new List<WeaponJson>();
         ArmorList = new List<ArmorJson>();
         UsableList = new List<UsableJson>();
+        SkillList = new List<SkillJson>();
 
         var enemyJson = Resources.Load<TextAsset>("JSON/enemies");
         EnemyJson[] tempEnemyList = JsonConvert.DeserializeObject<EnemyJson[]>(enemyJson.text);
@@ -83,6 +85,10 @@ public class DataManager : MonoBehaviour
         UsableJson[] tempUsableList = JsonConvert.DeserializeObject<UsableJson[]>(usableJson.text);
         UsableList.AddRange(tempUsableList);
 
+        var skillJson = Resources.Load<TextAsset>("JSON/skills");
+        SkillJson[] tempSkillList = JsonConvert.DeserializeObject<SkillJson[]>(skillJson.text);
+        SkillList.AddRange(tempSkillList);
+        
     }
 
     public WeaponJson SearchWeaponID (string id)
@@ -98,5 +104,10 @@ public class DataManager : MonoBehaviour
     public UsableJson SearchUsableID(string id)
     {
         return UsableList.Find((obj) => obj.id.Equals(id));
+    }
+
+    public SkillJson SearchSkillID (string id)
+    {
+        return SkillList.Find((obj) => obj.id.Equals(id));
     }
 }

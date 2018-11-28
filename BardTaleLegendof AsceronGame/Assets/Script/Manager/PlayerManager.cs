@@ -259,7 +259,7 @@ public class PlayerCharacter
             description = json.description,
             race = json.race,
             type = json.type,
-            skills = json.skills,
+            learnedSkills = json.learnedSkills,
             totalSkills = json.totalSkills,
             stats = new UnitStatJson()
         };

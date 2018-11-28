@@ -10,7 +10,7 @@ public class EnemyUnit : EnemyJson {
         race = json.race;
         type = json.type;
         stats = json.stats;
-        skills = json.skills;
+        learnedSkills = json.learnedSkills;
         totalSkills = json.totalSkills;
         growthStat = json.growthStat;
         baseReward = json.baseReward;
