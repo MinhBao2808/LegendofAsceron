@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using JsonDataClasses;
 
 public class GetPlayerAction : MonoBehaviour {
     private bool actionStarted = false;
@@ -85,8 +86,8 @@ public class GetPlayerAction : MonoBehaviour {
 		isPerformSkill = true;
 		isAttack = false;
 		actionStarted = true;
-		skillPlayerName = this.gameObject.GetComponent<PlayerStat>().player.info.skills[skillIndex];
-		this.gameObject.GetComponent<PlayerStat>().player.battleStats.mp -= this.gameObject.GetComponent<PlayerStat>().player.info.totalSkills[skillIndex].mpCost;
+		skillPlayerName = this.gameObject.GetComponent<PlayerStat>().player.info.learnedSkills[skillIndex];
+		this.gameObject.GetComponent<PlayerStat>().player.battleStats.mp -= DataManager.Instance.SkillList[skillIndex].mpCost;
 		Debug.Log(skillPlayerName);
 		//if (this.gameObject.GetComponent<PlayerStat>().player.info.totalSkills[skillIndex].isPassive == true) {
 		//	if (this.gameObject.GetComponent<PlayerStat>().player.info.type == SkillType.Buff)

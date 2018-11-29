@@ -22,11 +22,12 @@
 	  "holyRes": -0.2,
 	  "darkRes": -0.1
     },
-    "skills": 
+    "learnedSkills": 
 	[
 	],
     "totalSkills": 
 	[
+		"S0001"
 	],
     "growthStat": 
 	{

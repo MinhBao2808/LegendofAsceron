@@ -103,9 +103,9 @@ public class BattleManager : MonoBehaviour {
 		attack_DefendMenu.SetActive(false);
         actionMenu.SetActive(true);
 		larsSkillPanel.SetActive(true);
-		for (int i = 0; i < currentUnit.GetComponent<PlayerStat>().player.info.skills.Length;i++) {
+		for (int i = 0; i < currentUnit.GetComponent<PlayerStat>().player.info.learnedSkills.Length;i++) {
 			//get name of skill and add to all button;
-			skillButton[i].GetComponentInChildren<Text>().text = currentUnit.GetComponent<PlayerStat>().player.info.skills[i];
+			skillButton[i].GetComponentInChildren<Text>().text = currentUnit.GetComponent<PlayerStat>().player.info.learnedSkills[i];
 		}
 	}
 
