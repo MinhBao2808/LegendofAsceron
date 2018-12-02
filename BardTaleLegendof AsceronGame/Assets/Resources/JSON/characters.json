@@ -50,6 +50,8 @@
     "armorIDs":
     [
 
-    ]
+    ],
+    "modelImgPath": "Characters/C0001_model",
+    "faceImgPath": "Characters/C0001_face"
   }
 ]

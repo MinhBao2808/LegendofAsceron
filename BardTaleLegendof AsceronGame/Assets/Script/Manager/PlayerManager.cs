@@ -23,11 +23,10 @@ public class PlayerManager : MonoBehaviour {
     public float RotY { get; set; }
     public float RotZ { get; set; }
     public string CurrentSceneID { get; set; }
-    [SerializeField]
     public List<PlayerCharacter> Characters { get; private set; }
+    public List<string> PartyMemberID { get; private set; }
 
     public GameObject player;
-    private float timeTick = 0f;
     private const float timeInterval = 1f;
 
     public static PlayerManager Instance
@@ -54,14 +53,14 @@ public class PlayerManager : MonoBehaviour {
     {
         while(true)
         {
-            PlayTime += 1;
+            PlayTime += (int)timeInterval;
             PosX = player.transform.position.x;
             PosY = player.transform.position.y;
             PosZ = player.transform.position.z;
             RotX = player.transform.rotation.eulerAngles.x;
             RotY = player.transform.rotation.eulerAngles.y;
             RotZ = player.transform.rotation.eulerAngles.z;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(timeInterval);
         }
     }
 
@@ -75,6 +74,10 @@ public class PlayerManager : MonoBehaviour {
         Characters = new List<PlayerCharacter>
         {
             new PlayerCharacter(DataManager.Instance.CharacterList[0], 1)
+        };
+        PartyMemberID = new List<string>
+        {
+            Characters[0].info.id
         };
         PosX = 0;
         PosY = 0;
@@ -92,6 +95,32 @@ public class PlayerManager : MonoBehaviour {
     public void AddCharacter(CharacterJson character, int level)
     {
         Characters.Add(new PlayerCharacter(character, level));
+    }
+
+    public PlayerCharacter SearchCharacterById(string id)
+    {
+        return Characters.Find((obj) => obj.info.id.Equals(id));
+    }
+
+    public void AddToParty(string id)
+    {
+        if (PartyMemberID.Count < 3)
+        {
+            PartyMemberID.Add(id);
+        }
+    }
+
+    public void RemoveFromParty(string id)
+    {
+        PartyMemberID.Remove(id);
+    }
+
+    public void SwapPartyMember(int index, string selectId)
+    {
+        if (index < PartyMemberID.Count)
+        {
+            PartyMemberID[index] = selectId;
+        }
     }
 
     public void AddItem(string type, string id)
@@ -183,6 +212,7 @@ public class PlayerManager : MonoBehaviour {
         Currency = data.currency;
         PlayTime = data.playTime;
         Characters = data.characters;
+        PartyMemberID = data.partyMemberIds;
         Weapons = data.weapons;
         Armors = data.armors;
         Usables = data.usables;
@@ -207,6 +237,7 @@ public class PlayerData
     public int playTime;
     public int difficulty;
     public List<PlayerCharacter> characters;
+    public List<string> partyMemberIds;
     public List<PlayerWeapon> weapons;
     public List<PlayerArmor> armors;
     public List<UsableJson> usables;
@@ -225,6 +256,7 @@ public class PlayerData
         difficulty = PlayerManager.Instance.Difficulty;
         currency = PlayerManager.Instance.Currency;
         characters = PlayerManager.Instance.Characters;
+        partyMemberIds = PlayerManager.Instance.PartyMemberID;
         weapons = PlayerManager.Instance.Weapons;
         armors = PlayerManager.Instance.Armors;
         usables = PlayerManager.Instance.Usables;
@@ -261,6 +293,8 @@ public class PlayerCharacter
             type = json.type,
             learnedSkills = json.learnedSkills,
             totalSkills = json.totalSkills,
+            modelImgPath = json.modelImgPath,
+            faceImgPath = json.faceImgPath,
             stats = new UnitStatJson()
         };
 
@@ -460,7 +494,15 @@ public class PlayerCharacter
 
     public void CalculateBattleStat()
     {
-        battleStats = new PlayerCharBattleStat();
+        PlayerCharBattleStat tempBattleStats = new PlayerCharBattleStat();
+
+        if (battleStats != null)
+        {
+            tempBattleStats.hp = battleStats.hp;
+            tempBattleStats.mp = battleStats.mp;
+        }
+
+        battleStats = tempBattleStats;
 
         battleStats.maxHp += info.stats.hp + info.stats.vitality * GameConfigs.HP_PER_VIT;
         battleStats.maxMp += info.stats.mp + info.stats.wisdom * GameConfigs.MP_PER_WIS;
@@ -492,6 +534,14 @@ public class PlayerCharacter
             battleStats.eva : GameConfigs.MAX_EVA_PERCENTAGE;
         battleStats.crit = (battleStats.crit <= GameConfigs.MAX_CRIT_PERCENTAGE) ?
             battleStats.crit : GameConfigs.MAX_CRIT_PERCENTAGE;
+        if (battleStats.hp >= battleStats.maxHp)
+        {
+            battleStats.hp = battleStats.maxHp;
+        }
+        if (battleStats.mp >= battleStats.maxMp)
+        {
+            battleStats.mp = battleStats.maxMp;
+        }
     }
 
     public void IncreaseAttributes(int amount)
@@ -598,8 +648,6 @@ public class PlayerCharBattleStat
     {
         maxHp = 0;
         maxMp = 0;
-        hp = 0;
-        mp = 0;
         patk = 0;
         matk = 0;
         pdef = 0;
