@@ -13,6 +13,8 @@ namespace JsonDataClasses
         public UnitStatJson stats;
         public string[] learnedSkills;
         public string[] totalSkills;
+        public string modelImgPath;
+        public string faceImgPath;
     }
 
     public enum UnitType

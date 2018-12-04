@@ -5,7 +5,7 @@
         "lvlRequirement": 1,
         "type": "Usable",
         "tooltips": "Small HP potion, recover a small amount of HP.",
-        "imgPath": "items/iu0001",
+        "imgPath": "InventoryIcons/iu0001",
         "amount": 10,
         "isPercentage": "false",
         "regenType": "HP"
@@ -16,7 +16,7 @@
         "lvlRequirement": 1,
         "type": "Usable",
         "tooltips": "Small elixir potion, recover a small percentage of HP.",
-        "imgPath": "items/iu0002",
+        "imgPath": "InventoryIcons/iu0002",
         "amount": 10,
         "isPercentage": "true",
         "regenType": "HP"
@@ -27,7 +27,7 @@
         "lvlRequirement": 1,
         "type": "Usable",
         "tooltips": "Small miracle water, recover a small amount of MP.",
-        "imgPath": "items/iu0003",
+        "imgPath": "InventoryIcons/iu0003",
         "amount": 5,
         "isPercentage": "false",
         "regenType": "MP"
@@ -38,7 +38,7 @@
         "lvlRequirement": 1,
         "type": "Usable",
         "tooltips": "Small holy water bottle, recover a small percentage of MP.",
-        "imgPath": "items/iu0004",
+        "imgPath": "InventoryIcons/iu0004",
         "amount": 10,
         "isPercentage": "true",
         "regenType": "MP"
