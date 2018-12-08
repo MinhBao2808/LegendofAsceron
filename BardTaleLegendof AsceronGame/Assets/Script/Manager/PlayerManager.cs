@@ -102,6 +102,18 @@ public class PlayerManager : MonoBehaviour {
         return Characters.Find((obj) => obj.info.id.Equals(id));
     }
 
+    public int ReturnCharacterPosById(string id)
+    {
+        for (int i=0; i<Characters.Count; i++)
+        {
+            if ( Characters[i].info.id == id)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void AddToParty(string id)
     {
         if (PartyMemberID.Count < 3)
