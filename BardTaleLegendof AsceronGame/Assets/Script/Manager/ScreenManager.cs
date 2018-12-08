@@ -95,7 +95,6 @@ public class ScreenManager : MonoBehaviour {
 
     void OnLoadComplete(string trigger)
     {
-		Debug.Log(trigger);
         PreviousScene = SceneManager.GetActiveScene().buildIndex;
         if(!isBattle)
         {

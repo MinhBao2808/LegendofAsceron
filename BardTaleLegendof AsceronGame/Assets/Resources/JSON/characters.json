@@ -16,11 +16,11 @@
 	  "vitality": 6,
       "endurance": 6,
       "wisdom": 4,
-	  "fireRes": 0.1,
-	  "lightningRes": 0.1,
-	  "iceRes": 0.1,
-	  "holyRes": -0.2,
-	  "darkRes": -0.1
+	  "fireRes": 10.00,
+	  "lightningRes": 10.00,
+	  "iceRes": 10.00,
+	  "holyRes": -20.00,
+	  "darkRes": -10.00
     },
     "learnedSkills": 
 	[
