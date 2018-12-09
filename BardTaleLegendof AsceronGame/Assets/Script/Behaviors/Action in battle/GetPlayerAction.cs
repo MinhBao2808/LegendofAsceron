@@ -28,9 +28,18 @@ public class GetPlayerAction : MonoBehaviour {
 				//Debug.Log(this.gameObject.name);
                 if (isAttack == false)
                 {
-                    targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f, targetGameObject.transform.position.y, targetGameObject.transform.position.z);
-                    if (this.transform.position == targetPosition)
-                    {
+					//if (this.gameObject.GetComponent<PlayerStat>().player.info.type == UnitType.Melee) {
+					//	targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f, 
+					//	                             targetGameObject.transform.position.y, 
+					//	                             targetGameObject.transform.position.z);
+					//}
+					//else if (this.gameObject.GetComponent<PlayerStat>().player.info.type == UnitType.Range) {
+					//	targetPosition = new Vector3(0.0f, 0.0f, 0.0f);
+					//}
+					targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f,
+												 targetGameObject.transform.position.y,
+												 targetGameObject.transform.position.z);
+                    if (this.transform.position == targetPosition) {
                         Hit(targetGameObject);
                     }
                 }
@@ -68,14 +77,13 @@ public class GetPlayerAction : MonoBehaviour {
 			targetGameObject = target;
 			actionStarted = true;
 			isAttack = false;
+			damage = 0.0f;
         }
     }
 
 	private void SkillAnimationEnd() {
 		isAttack = true;
 		animator.SetBool(skillPlayerName,false);
-		damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk, 3.0f,1.0f,
-		                              targetGameObject.GetComponent<EnemyStat>().enemy.stats.vitality,1.0f,1.0f);
 		GenerateDamageText targetText = targetGameObject.GetComponent<GenerateDamageText>();
         BattleManager.instance.isSelectorSpawn = false;
 		targetText.ReceiveDamage((int)damage);
@@ -83,16 +91,19 @@ public class GetPlayerAction : MonoBehaviour {
 	}
 
 	public void PerformSkill (int skillIndex, GameObject target) {
+		targetGameObject = target;
 		isPerformSkill = true;
 		isAttack = false;
 		actionStarted = true;
-		skillPlayerName = this.gameObject.GetComponent<PlayerStat>().player.info.learnedSkills[skillIndex];
+		skillPlayerName = this.gameObject.GetComponent<PlayerStat>().player.info.totalSkills[skillIndex];
+		//skillPlayerName = this.gameObject.GetComponent<PlayerStat>().player.info.learnedSkills[skillIndex];
 		this.gameObject.GetComponent<PlayerStat>().player.battleStats.mp -= DataManager.Instance.SkillList[skillIndex].mpCost;
-		Debug.Log(skillPlayerName);
+		damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk, 
+		                             3.0f,DataManager.Instance.SkillList[skillIndex].power,
+                                      targetGameObject.GetComponent<EnemyStat>().enemy.stats.vitality, 1.0f, 1.0f);
 		//if (this.gameObject.GetComponent<PlayerStat>().player.info.totalSkills[skillIndex].isPassive == true) {
 		//	if (this.gameObject.GetComponent<PlayerStat>().player.info.type == SkillType.Buff)
 		//}
-		targetGameObject = target;
 	}
     
 	private void Hit (GameObject target) {

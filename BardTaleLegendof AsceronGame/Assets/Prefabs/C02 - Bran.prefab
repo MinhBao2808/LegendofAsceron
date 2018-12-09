@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 212168674439009192}
   - component: {fileID: 114663431328588760}
   - component: {fileID: 114810162298655906}
+  - component: {fileID: 95842888779449268}
   m_Layer: 0
   m_Name: C02 - Bran
   m_TagString: PlayerUnit
@@ -43,6 +44,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &95842888779449268
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1967417227280614}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 14fa9667af9884ccbac62df93459e1da, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114424204315849032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -54,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd957cc35c0d4393b94204e3b72f508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner: {fileID: 1967417227280614}
+  playerSource: {fileID: 0}
 --- !u!114 &114663431328588760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,6 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageText: {fileID: 1481934256279706, guid: 4901c953b5233470e8d35ed7c6b3ec1b, type: 2}
   damageTextOffset: 2.5
+  unitAudio: {fileID: 0}
 --- !u!114 &114810162298655906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -80,61 +100,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player:
-    id: 
-    name: 
-    description: 
-    race: 0
-    type: 0
-    baseStat:
-      level: 0
+    level: 0
+    experience: 0
+    availableAttributes: 0
+    availableSkillPoints: 0
+    battleStats:
+      maxHp: 0
+      maxMp: 0
       hp: 0
       mp: 0
-      strength: 0
-      dexterity: 0
-      intelligence: 0
-      vitality: 0
-      endurance: 0
-      wisdom: 0
+      patk: 0
+      matk: 0
+      pdef: 0
+      mdef: 0
+      spd: 0
+      eva: 0
+      crit: 0
       fireRes: 0
       lightningRes: 0
       iceRes: 0
       holyRes: 0
       darkRes: 0
-    skills: []
-    totalSkills: []
-    growthStat:
-      level: 0
-      hp: 0
-      mp: 0
-      strength: 0
-      dexterity: 0
-      intelligence: 0
-      vitality: 0
-      endurance: 0
-      wisdom: 0
-      fireRes: 0
-      lightningRes: 0
-      iceRes: 0
-      holyRes: 0
-      darkRes: 0
-    weapon:
+    info:
       id: 
       name: 
-      lvlRequirement: 0
+      description: 
+      race: 0
       type: 0
-      tooltips: 
-      rarity: 0
-      modification:
+      stats:
+        level: 0
         hp: 0
         mp: 0
-        patk: 0
-        matk: 0
-        speed: 0
-        evasion: 0
-        crit: 0
-        mdef: 0
-        pdef: 0
-      stats:
         strength: 0
         dexterity: 0
         intelligence: 0
@@ -146,14 +142,248 @@ MonoBehaviour:
         iceRes: 0
         holyRes: 0
         darkRes: 0
+      learnedSkills: []
+      totalSkills: []
+      modelImgPath: 
+      faceImgPath: 
+    weapon:
+      weapon:
+        id: 
+        name: 
+        lvlRequirement: 0
+        type: 0
+        tooltips: 
+        imgPath: 
+        ilvl: 0
+        rarity: 0
+        modification:
+          hp: 0
+          mp: 0
+          patk: 0
+          matk: 0
+          speed: 0
+          evasion: 0
+          crit: 0
+          mdef: 0
+          pdef: 0
+        stats:
+          strength: 0
+          dexterity: 0
+          intelligence: 0
+          vitality: 0
+          endurance: 0
+          wisdom: 0
+          fireRes: 0
+          lightningRes: 0
+          iceRes: 0
+          holyRes: 0
+          darkRes: 0
+        wType: 0
+        patk: 0
+        matk: 0
       durability: 0
-      wType: 0
+      owner:
+        level: 0
+        experience: 0
+        availableAttributes: 0
+        availableSkillPoints: 0
+        battleStats:
+          maxHp: 0
+          maxMp: 0
+          hp: 0
+          mp: 0
+          patk: 0
+          matk: 0
+          pdef: 0
+          mdef: 0
+          spd: 0
+          eva: 0
+          crit: 0
+          fireRes: 0
+          lightningRes: 0
+          iceRes: 0
+          holyRes: 0
+          darkRes: 0
+        info:
+          id: 
+          name: 
+          description: 
+          race: 0
+          type: 0
+          stats:
+            level: 0
+            hp: 0
+            mp: 0
+            strength: 0
+            dexterity: 0
+            intelligence: 0
+            vitality: 0
+            endurance: 0
+            wisdom: 0
+            fireRes: 0
+            lightningRes: 0
+            iceRes: 0
+            holyRes: 0
+            darkRes: 0
+          learnedSkills: []
+          totalSkills: []
+          modelImgPath: 
+          faceImgPath: 
+        weapon:
+          weapon:
+            id: 
+            name: 
+            lvlRequirement: 0
+            type: 0
+            tooltips: 
+            imgPath: 
+            ilvl: 0
+            rarity: 0
+            modification:
+              hp: 0
+              mp: 0
+              patk: 0
+              matk: 0
+              speed: 0
+              evasion: 0
+              crit: 0
+              mdef: 0
+              pdef: 0
+            stats:
+              strength: 0
+              dexterity: 0
+              intelligence: 0
+              vitality: 0
+              endurance: 0
+              wisdom: 0
+              fireRes: 0
+              lightningRes: 0
+              iceRes: 0
+              holyRes: 0
+              darkRes: 0
+            wType: 0
+            patk: 0
+            matk: 0
+          durability: 0
+          owner:
+            level: 0
+            experience: 0
+            availableAttributes: 0
+            availableSkillPoints: 0
+            battleStats:
+              maxHp: 0
+              maxMp: 0
+              hp: 0
+              mp: 0
+              patk: 0
+              matk: 0
+              pdef: 0
+              mdef: 0
+              spd: 0
+              eva: 0
+              crit: 0
+              fireRes: 0
+              lightningRes: 0
+              iceRes: 0
+              holyRes: 0
+              darkRes: 0
+            info:
+              id: 
+              name: 
+              description: 
+              race: 0
+              type: 0
+              stats:
+                level: 0
+                hp: 0
+                mp: 0
+                strength: 0
+                dexterity: 0
+                intelligence: 0
+                vitality: 0
+                endurance: 0
+                wisdom: 0
+                fireRes: 0
+                lightningRes: 0
+                iceRes: 0
+                holyRes: 0
+                darkRes: 0
+              learnedSkills: []
+              totalSkills: []
+              modelImgPath: 
+              faceImgPath: 
+            weapon:
+              weapon:
+                id: 
+                name: 
+                lvlRequirement: 0
+                type: 0
+                tooltips: 
+                imgPath: 
+                ilvl: 0
+                rarity: 0
+                modification:
+                  hp: 0
+                  mp: 0
+                  patk: 0
+                  matk: 0
+                  speed: 0
+                  evasion: 0
+                  crit: 0
+                  mdef: 0
+                  pdef: 0
+                stats:
+                  strength: 0
+                  dexterity: 0
+                  intelligence: 0
+                  vitality: 0
+                  endurance: 0
+                  wisdom: 0
+                  fireRes: 0
+                  lightningRes: 0
+                  iceRes: 0
+                  holyRes: 0
+                  darkRes: 0
+                wType: 0
+                patk: 0
+                matk: 0
+              durability: 0
+              owner:
+                level: 0
+                experience: 0
+                availableAttributes: 0
+                availableSkillPoints: 0
+                battleStats:
+                  maxHp: 0
+                  maxMp: 0
+                  hp: 0
+                  mp: 0
+                  patk: 0
+                  matk: 0
+                  pdef: 0
+                  mdef: 0
+                  spd: 0
+                  eva: 0
+                  crit: 0
+                  fireRes: 0
+                  lightningRes: 0
+                  iceRes: 0
+                  holyRes: 0
+                  darkRes: 0
+                info:
+                  id: 
+                  name: 
+                  description: 
+                  race: 0
+                  type: 0
+                  modelImgPath: 
+                  faceImgPath: 
+                weapon:
+                  durability: 0
+                armors: []
+            armors: []
+        armors: []
     armors: []
-    accessories: []
-    level: 0
-    experience: 0
-    availableAttributes: 0
-    availableSkillPoints: 0
 --- !u!212 &212168674439009192
 SpriteRenderer:
   m_ObjectHideFlags: 1

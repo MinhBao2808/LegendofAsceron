@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class BattleManager : MonoBehaviour {
     public static BattleManager instance = null;
@@ -23,9 +24,14 @@ public class BattleManager : MonoBehaviour {
 	[SerializeField] private GameObject player2LvPanel;
 	[SerializeField] private GameObject player3LvPanel;
 	[SerializeField] private GameObject larsSkillPanel;
+	[SerializeField] private GameObject BrannSkillPanel;
+	[SerializeField] private GameObject AghmundSkillPanel;
 	//private GameObject playerSelectorSpawn;
 	[SerializeField] private GameObject[] playerSelectorPositions;
 	[SerializeField] private GameObject itemPanel;
+	[SerializeField] private TextMeshProUGUI toolTips;
+	[SerializeField] private Image[] itemIconImage;
+	[SerializeField] private Image[] skillIconImage;
 	private GameObject playerSelectorSpawned;
 	public bool isGameOver;
 	public bool isVictory;
@@ -103,17 +109,36 @@ public class BattleManager : MonoBehaviour {
 		attack_DefendMenu.SetActive(false);
         actionMenu.SetActive(true);
 		larsSkillPanel.SetActive(true);
+		if (currentUnit.transform.position == playerUnit[0].transform.position) {
+			larsSkillPanel.SetActive(true);
+			BrannSkillPanel.SetActive(false);
+			AghmundSkillPanel.SetActive(false);
+		}
+		if (currentUnit.transform.position == playerUnit[1].transform.position) {
+			BrannSkillPanel.SetActive(true);
+			larsSkillPanel.SetActive(false);
+			AghmundSkillPanel.SetActive(false);
+		}
+		if (currentUnit.transform.position == playerUnit[2].transform.position) {
+			AghmundSkillPanel.SetActive(true);
+			larsSkillPanel.SetActive(false);
+			BrannSkillPanel.SetActive(false);
+		}
 		for (int i = 0; i < currentUnit.GetComponent<PlayerStat>().player.info.learnedSkills.Length;i++) {
-			//get name of skill and add to all button;
-			skillButton[i].GetComponentInChildren<Text>().text = currentUnit.GetComponent<PlayerStat>().player.info.learnedSkills[i];
+			//get name of skill and add to all button
+			skillButton[i].GetComponentInChildren<Text>().text = "" + currentUnit.GetComponent<PlayerStat>().player.info.learnedSkills[i];
+			skillIconImage[i].sprite = Resources.Load<Sprite>(DataManager.Instance.SkillList[i].imgPath) as Sprite;
+			//skillButton[i].GetComponentInChildren<Image>().sprite = Resources.Load(DataManager.Instance.SkillList[i].imgPath) as Sprite;
+			SkillToolTips(i);
 		}
 	}
 
 	public void PressSkillButton (int index) {
+		toolTips.gameObject.SetActive(false);
 		isSelectorSpawn = true;
-		if (currentUnit.transform.position == playerUnit[0].transform.position) {
-			larsSkillPanel.SetActive(false);
-        }
+		larsSkillPanel.SetActive(false);
+		BrannSkillPanel.SetActive(false);
+		AghmundSkillPanel.SetActive(false);
 		isPlayerPressSkillButton = true;
 		playerSkillIndex = index;
 		if (isPlayerSelectEnemy == false) {
@@ -164,18 +189,23 @@ public class BattleManager : MonoBehaviour {
 		if (DataManager.Instance.UsableList.Count > 0) {
 			for (int i = 0; i < DataManager.Instance.UsableList.Count; i++) {
 				//get item from data
+				itemButton[i].gameObject.SetActive(true);
 				itemButton[i].GetComponentInChildren<Text>().text = "" + DataManager.Instance.UsableList[i].name;
-				itemButton[i].GetComponentInChildren<Image>().sprite = Resources.Load(DataManager.Instance.UsableList[i].imgPath) as Sprite;
+				itemIconImage[i].sprite = Resources.Load<Sprite>(DataManager.Instance.UsableList[i].imgPath) as Sprite;
+				//itemButton[i].GetComponentInChildren<Image>().sprite = Resources.Load(DataManager.Instance.UsableList[i].imgPath) as Sprite;
+				//ItemToolTips(i);
             }
 		}
 	}
 
 	public void PressUseItem(int index) {
+		toolTips.gameObject.SetActive(false);
+		DataManager.Instance.UsableList[index].amount -= 1;
 		if (currentUnit.gameObject.tag == "PlayerUnit") {
 			if (DataManager.Instance.UsableList[index].amount > 0) {
 				if (DataManager.Instance.UsableList[index].regenType == JsonDataClasses.UsableRegenType.HP) {
 					float currentHp = currentUnit.GetComponent<PlayerStat>().player.battleStats.hp;
-					currentHp += DataManager.Instance.UsableList[index].amount;
+					currentHp += 10;
 					if (currentHp >= currentUnit.GetComponent<PlayerStat>().player.battleStats.maxHp) {
 						currentHp = currentUnit.GetComponent<PlayerStat>().player.battleStats.maxHp;
 					}
@@ -184,7 +214,7 @@ public class BattleManager : MonoBehaviour {
 				}
 				if (DataManager.Instance.UsableList[index].regenType==JsonDataClasses.UsableRegenType.MP) {
 					float currentMp = currentUnit.GetComponent<PlayerStat>().player.battleStats.mp;
-					currentMp += PlayerManager.Instance.Usables[index].amount;
+					currentMp += 10;
 					if (currentMp >= currentUnit.GetComponent<PlayerStat>().player.battleStats.maxMp) {
 						currentMp = currentUnit.GetComponent<PlayerStat>().player.battleStats.maxMp;
 					}
@@ -417,7 +447,6 @@ public class BattleManager : MonoBehaviour {
 									 playerUnit[0].GetComponent<PlayerStat>().player.experience,
 				                                              Expression.GetExpExpression(playerUnit[0].GetComponent<PlayerStat>().player.level + 1));
 				PlayerManager.Instance.Characters[0] = playerUnit[0].GetComponent<PlayerStat>().player;
-				Debug.Log(PlayerManager.Instance.Characters[0].level);
 			}
 			if (playerPositionIndex == 2) {
 				player1LvPanel.SetActive(true);
@@ -839,4 +868,14 @@ public class BattleManager : MonoBehaviour {
     public void SetPlayerSelectAttack() {//player choose attack enemy 
         playerSelectAttack = true;
     }
+
+	public void SkillToolTips(int index) {
+		toolTips.text = "" + DataManager.Instance.SkillList[index].tooltips;
+		toolTips.gameObject.SetActive(true);
+	}
+
+	public void ItemToolTips(int index) {
+		toolTips.text = "" + DataManager.Instance.UsableList[index].tooltips;
+		toolTips.gameObject.SetActive(true);
+	}
 }

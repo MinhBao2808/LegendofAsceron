@@ -86,10 +86,14 @@ public class PlayerManager : MonoBehaviour {
         RotY = 0;
         RotZ = 0;
         AddItem("armor", "IA0001");
+        AddItem("armor", "IA0002");
+        AddItem("armor", "IA0003");
+        AddItem("armor", "IA0004");
+        AddItem("usables", "IU0001");
         PlayerCharacter character = Characters[0];
         EquipEquipment("armor", "IA0001", ref character);
         Characters[0] = character;
-        Characters[0].UnequipArmor(ArmorPiece.Head);
+        //Characters[0].UnequipArmor(ArmorPiece.Head);
     }
 
     public void AddCharacter(CharacterJson character, int level)
@@ -100,6 +104,18 @@ public class PlayerManager : MonoBehaviour {
     public PlayerCharacter SearchCharacterById(string id)
     {
         return Characters.Find((obj) => obj.info.id.Equals(id));
+    }
+
+    public int ReturnCharacterPosById(string id)
+    {
+        for (int i=0; i<Characters.Count; i++)
+        {
+            if ( Characters[i].info.id == id)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void AddToParty(string id)
@@ -201,7 +217,6 @@ public class PlayerManager : MonoBehaviour {
 
     public void SetPlayerPos()
     {
-        Debug.Log(new Vector3(PosX, PosY, PosZ));
         player.transform.position = new Vector3(PosX,PosY,PosZ);
         player.transform.rotation = Quaternion.Euler(RotX,RotY,RotZ);
     }
@@ -279,6 +294,7 @@ public class PlayerCharacter
     public int availableSkillPoints;
     public PlayerCharBattleStat battleStats;
     public UnitJson info;
+    public WeaponType[] weaponTypes;
     public PlayerWeapon weapon;
     public List<PlayerArmor> armors;
 
@@ -298,18 +314,20 @@ public class PlayerCharacter
             stats = new UnitStatJson()
         };
 
+        weaponTypes = json.weaponTypes;
+
         //if (!String.IsNullOrEmpty(json.weaponID))
         //{
-            weapon = new PlayerWeapon(json.weaponID);
+        weapon = new PlayerWeapon(json.weaponID);
         //}
 
         // (json.armorIDs.Length > 0)
         //{
-            armors = new List<PlayerArmor>();
-            for (int i = 0; i < json.armorIDs.Length; i++)
-            {
-                armors.Add(new PlayerArmor(json.armorIDs[i]));
-            }
+        armors = new List<PlayerArmor>();
+        for (int i = 0; i < json.armorIDs.Length; i++)
+        {
+            armors.Add(new PlayerArmor(json.armorIDs[i]));
+        }
         //}
 
         SetStatByLevel(targetLevel, json);
@@ -320,6 +338,57 @@ public class PlayerCharacter
         CalculateBattleStat();
         RefreshStatus();
     }
+
+    public PlayerCharacter(PlayerCharacter target)
+    {
+        info = new UnitJson();
+        info.id = target.info.id;
+        info.name = target.info.name;
+        info.description = target.info.description;
+        info.faceImgPath = target.info.faceImgPath;
+        info.learnedSkills = target.info.learnedSkills;
+        info.modelImgPath = target.info.modelImgPath;
+        info.race = target.info.race;
+        info.totalSkills = target.info.totalSkills;
+        info.type = target.info.type;
+        info.stats = new UnitStatJson();
+        info.stats.hp = target.info.stats.hp;
+        info.stats.mp = target.info.stats.mp;
+        info.stats.strength = target.info.stats.strength;
+        info.stats.dexterity = target.info.stats.dexterity;
+        info.stats.intelligence = target.info.stats.intelligence;
+        info.stats.vitality = target.info.stats.vitality;
+        info.stats.endurance = target.info.stats.endurance;
+        info.stats.wisdom = target.info.stats.wisdom;
+        info.stats.level = target.info.stats.level;
+        info.stats.fireRes = target.info.stats.fireRes;
+        info.stats.lightningRes = target.info.stats.lightningRes;
+        info.stats.iceRes = target.info.stats.iceRes;
+        info.stats.holyRes = target.info.stats.holyRes;
+        info.stats.darkRes = target.info.stats.darkRes;
+        if (target.weapon != null && target.weapon.weapon != null)
+        {
+            weapon = new PlayerWeapon(target.weapon.weapon.id);
+        }
+        armors = new List<PlayerArmor>();
+        for (int i = 0; i < target.armors.Count; i++)
+        {
+            if (target.armors[i] != null && target.armors[i].armor != null)
+            {
+                armors.Add(new PlayerArmor(target.armors[i].armor.id));
+            }
+        }
+
+        level = target.level;
+        experience = target.experience;
+
+        availableAttributes = target.availableAttributes;
+        availableSkillPoints = target.availableSkillPoints;
+
+        CalculateBattleStat();
+        RefreshStatus();
+    }
+
 
     public void UnequipWeapon()
     {
@@ -504,18 +573,24 @@ public class PlayerCharacter
 
         battleStats = tempBattleStats;
 
-        battleStats.maxHp += info.stats.hp + info.stats.vitality * GameConfigs.HP_PER_VIT;
-        battleStats.maxMp += info.stats.mp + info.stats.wisdom * GameConfigs.MP_PER_WIS;
+        battleStats.maxHp = info.stats.hp + info.stats.vitality * GameConfigs.HP_PER_VIT;
+        battleStats.maxMp = info.stats.mp + info.stats.wisdom * GameConfigs.MP_PER_WIS;
 
-        battleStats.eva += info.stats.dexterity * GameConfigs.EVA_PER_DEX;
-        battleStats.crit += info.stats.dexterity * GameConfigs.CRIT_PER_DEX;
-        battleStats.spd += info.stats.dexterity * GameConfigs.SPD_PER_DEX;
+        battleStats.eva = info.stats.dexterity * GameConfigs.EVA_PER_DEX;
+        battleStats.crit = info.stats.dexterity * GameConfigs.CRIT_PER_DEX;
+        battleStats.spd = info.stats.dexterity * GameConfigs.SPD_PER_DEX;
 
-        battleStats.patk += info.stats.strength * GameConfigs.PATK_PER_STR;
-        battleStats.matk += info.stats.intelligence * GameConfigs.MATK_PER_INT;
+        battleStats.patk = info.stats.strength * GameConfigs.PATK_PER_STR;
+        battleStats.matk = info.stats.intelligence * GameConfigs.MATK_PER_INT;
 
-        battleStats.pdef += info.stats.endurance * GameConfigs.PDEF_PER_END;
-        battleStats.mdef += info.stats.wisdom * GameConfigs.MDEF_PER_WIS;
+        battleStats.pdef = info.stats.endurance * GameConfigs.PDEF_PER_END;
+        battleStats.mdef = info.stats.wisdom * GameConfigs.MDEF_PER_WIS;
+
+        battleStats.fireRes = info.stats.fireRes;
+        battleStats.lightningRes = info.stats.lightningRes;
+        battleStats.iceRes = info.stats.iceRes;
+        battleStats.holyRes = info.stats.holyRes;
+        battleStats.darkRes = info.stats.darkRes;
 
         if (weapon != null)
         {
@@ -576,6 +651,11 @@ public class PlayerCharacter
             info.stats.wisdom = character.stats.wisdom + (character.growthStat.wisdom * (lvl - 1));
             info.stats.endurance = character.stats.endurance + (character.growthStat.endurance * (lvl - 1));
         }
+        info.stats.fireRes = character.stats.fireRes;
+        info.stats.lightningRes = character.stats.lightningRes;
+        info.stats.iceRes = character.stats.iceRes;
+        info.stats.holyRes = character.stats.holyRes;
+        info.stats.darkRes = character.stats.darkRes;
     }
 }
 
