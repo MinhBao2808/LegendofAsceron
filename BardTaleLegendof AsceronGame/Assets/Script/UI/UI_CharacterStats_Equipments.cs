@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class UI_CharacterStats_Equipments : MonoBehaviour {
@@ -10,15 +11,22 @@ public class UI_CharacterStats_Equipments : MonoBehaviour {
     private Image image;
     [SerializeField]
     private TextMeshProUGUI equipmentName;
+    [SerializeField]
+    private ScrollRect subEquipmentPanel;
+
+    private PlayerArmor showedArmor;
+    private PlayerWeapon showedWeapon;
 
     // Use this for initialization
     void Start () {
-        image = transform.GetChild(0).GetComponent<Image>();
-        equipmentName = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        image = transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
+        equipmentName = transform.GetChild(0).transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        subEquipmentPanel = transform.GetChild(1).GetComponent<ScrollRect>();
     }
 	
     public void OnShowWeapon(PlayerWeapon weapon)
     {
+        subEquipmentPanel.gameObject.SetActive(false);
         if (weapon != null)
         {
             if (weapon.weapon != null)
@@ -27,6 +35,7 @@ public class UI_CharacterStats_Equipments : MonoBehaviour {
                 image.sprite = Resources.Load<Sprite>(weapon.weapon.imgPath);
                 image.preserveAspect = true;
                 equipmentName.text = weapon.weapon.name;
+                showedWeapon = weapon;
             }
             else
             {
@@ -43,6 +52,7 @@ public class UI_CharacterStats_Equipments : MonoBehaviour {
 
     public void OnShowArmor(PlayerArmor armor)
     {
+        subEquipmentPanel.gameObject.SetActive(false);
         if (armor != null)
         {
             if (armor.armor != null)
@@ -51,6 +61,7 @@ public class UI_CharacterStats_Equipments : MonoBehaviour {
                 image.sprite = Resources.Load<Sprite>(armor.armor.imgPath);
                 image.preserveAspect = true;
                 equipmentName.text = armor.armor.name;
+                showedArmor = armor;
             }
             else
             {
@@ -62,6 +73,18 @@ public class UI_CharacterStats_Equipments : MonoBehaviour {
         {
             image.gameObject.SetActive(false);
             equipmentName.text = "None";
+        }
+    }
+
+    public void OnButtonClick()
+    {
+        if (gameObject.activeSelf)
+        {
+            subEquipmentPanel.gameObject.SetActive(false);
+        }
+        else
+        {
+            subEquipmentPanel.gameObject.SetActive(true);
         }
     }
 }

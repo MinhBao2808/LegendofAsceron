@@ -122,7 +122,8 @@ public class UI_CharacterStats : MonoBehaviour {
         mp.value = character.battleStats.mp / character.battleStats.maxMp;
         int nextLevelExp = Expression.GetExpExpression(character.level + 1);
         exp.value = character.experience / nextLevelExp;
-        toNextLevel.text = "To Next Level: " + (nextLevelExp - character.experience);
+        level.text = character.level.ToString("N0");
+        toNextLevel.text = "To Next Level: " + (nextLevelExp - character.experience).ToString("N0");
     }
 
     void ShowAttributes()

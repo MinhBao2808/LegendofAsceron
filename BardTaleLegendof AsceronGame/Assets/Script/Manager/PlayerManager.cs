@@ -86,10 +86,14 @@ public class PlayerManager : MonoBehaviour {
         RotY = 0;
         RotZ = 0;
         AddItem("armor", "IA0001");
+        AddItem("armor", "IA0002");
+        AddItem("armor", "IA0003");
+        AddItem("armor", "IA0004");
+        AddItem("usables", "IU0001");
         PlayerCharacter character = Characters[0];
         EquipEquipment("armor", "IA0001", ref character);
         Characters[0] = character;
-        Characters[0].UnequipArmor(ArmorPiece.Head);
+        //Characters[0].UnequipArmor(ArmorPiece.Head);
     }
 
     public void AddCharacter(CharacterJson character, int level)
@@ -290,6 +294,7 @@ public class PlayerCharacter
     public int availableSkillPoints;
     public PlayerCharBattleStat battleStats;
     public UnitJson info;
+    public WeaponType[] weaponTypes;
     public PlayerWeapon weapon;
     public List<PlayerArmor> armors;
 
@@ -309,18 +314,20 @@ public class PlayerCharacter
             stats = new UnitStatJson()
         };
 
+        weaponTypes = json.weaponTypes;
+
         //if (!String.IsNullOrEmpty(json.weaponID))
         //{
-            weapon = new PlayerWeapon(json.weaponID);
+        weapon = new PlayerWeapon(json.weaponID);
         //}
 
         // (json.armorIDs.Length > 0)
         //{
-            armors = new List<PlayerArmor>();
-            for (int i = 0; i < json.armorIDs.Length; i++)
-            {
-                armors.Add(new PlayerArmor(json.armorIDs[i]));
-            }
+        armors = new List<PlayerArmor>();
+        for (int i = 0; i < json.armorIDs.Length; i++)
+        {
+            armors.Add(new PlayerArmor(json.armorIDs[i]));
+        }
         //}
 
         SetStatByLevel(targetLevel, json);

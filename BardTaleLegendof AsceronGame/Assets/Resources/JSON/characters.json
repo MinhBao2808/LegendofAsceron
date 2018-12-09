@@ -46,10 +46,9 @@
 	  "holyRes": 0.0,
 	  "darkRes": 0.0
     },
-	"weaponID": "",
+	"weaponID": "IW0001",
     "armorIDs":
     [
-
     ],
     "modelImgPath": "Characters/C0001_model",
     "faceImgPath": "Characters/C0001_face"
