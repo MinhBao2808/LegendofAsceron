@@ -16,10 +16,10 @@
 	  "vitality": 1,
       "endurance": 1,
       "wisdom": 1,
-	  "fireRes": -0.2,
+	  "fireRes": -20.00,
 	  "lightningRes": 0.0,
-	  "iceRes": 0.1,
-	  "holyRes": -0.1,
+	  "iceRes": 10.00,
+	  "holyRes": -10.00,
 	  "darkRes": 0.0
     },
     "skills": 
@@ -48,7 +48,7 @@
     "baseReward": 
 	{
       "gold": 5,
-      "exp": 8,
+      "exp": 6,
       "item": 
 	  [
         {
@@ -60,7 +60,7 @@
     "growthReward": 
 	{
       "gold": 2,
-      "exp": 3,
+      "exp": 2,
       "item": 
 	  [
       ]
@@ -83,10 +83,10 @@
 	  "vitality": 5,
       "endurance": 3,
       "wisdom": 3,
-	  "fireRes": -0.25,
+	  "fireRes": -25.00,
 	  "lightningRes": 0.0,
-	  "iceRes": 0.2,
-	  "holyRes": -0.05,
+	  "iceRes": 20.00,
+	  "holyRes": -5.00,
 	  "darkRes": 0.0
     },
     "skills": 
@@ -114,8 +114,8 @@
     },
     "baseReward": 
 	{
-      "gold": 15,
-      "exp": 20,
+      "gold": 14,
+      "exp": 18,
       "item": 
 	  [
         {
@@ -126,8 +126,8 @@
     },
     "growthReward": 
 	{
-      "gold": 5,
-      "exp": 6,
+      "gold": 4,
+      "exp": 5,
       "item": 
 	  [
       ]

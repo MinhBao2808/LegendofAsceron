@@ -60,8 +60,8 @@ public class UI_CharacterStats : MonoBehaviour {
     PlayerCharacter tempChar;
     int attributePoints;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         charId = string.Empty;
         character = null;
         tempChar = null;
@@ -87,8 +87,20 @@ public class UI_CharacterStats : MonoBehaviour {
         wis.addButton.onClick.AddListener(() => wis.OnButtonClick(ref attributePoints, true));
         #endregion
         gameObject.SetActive(false);
-	}
-	
+    }
+
+    public void Check(string id)
+    {
+        if (gameObject.activeSelf)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            Unhide(id);
+        }
+    }
+
     public void Unhide(string id)
     {
         charId = id;
@@ -152,14 +164,17 @@ public class UI_CharacterStats : MonoBehaviour {
     void ShowEquipments()
     {
         weapon.OnShowWeapon(character.weapon);
+        weapon.SetTempChar(tempChar);
         int i;
         for(i = 0; i< character.armors.Count; i++)
         {
             armor[i].OnShowArmor(character.armors[i]);
+            armor[i].SetTempChar(tempChar);
         }
         for (;i< armor.Length;i++)
         {
             armor[i].OnShowArmor(null);
+            armor[i].SetTempChar(tempChar);
         }
     }
 

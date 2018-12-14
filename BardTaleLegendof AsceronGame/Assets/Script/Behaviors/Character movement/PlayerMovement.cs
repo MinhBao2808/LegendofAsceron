@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MovingObject {
     public static PlayerMovement instance = null;
 	private Rigidbody rigid;
-	private Animation ani;
+	private Animator ani;
 	private CharacterController characterController;
 	//[SerializeField] private Transform cameraT;
 	[SerializeField] private float inputDelay = 0.1f;
@@ -31,11 +31,12 @@ public class PlayerMovement : MovingObject {
 	private void Start() {
 		targetRotation = transform.rotation;
 		rigid = GetComponent<Rigidbody>();
-		ani = GetComponent<Animation>();
+		ani = GetComponent<Animator>();
 		//animation.Play("idle");
 		characterController = GetComponent<CharacterController>();
 		isPlayerPressAttack = false;
         DontDestroyOnLoad(this);
+        DontDestroyOnLoad(Camera.main);
 	}
 
 	public Quaternion TargetRotation {
@@ -50,18 +51,23 @@ public class PlayerMovement : MovingObject {
 		if (GameManager.instance.isEnemyAttackPlayer == false) {
 			if (hInput.GetButton("Interact")) {
 				isPlayerPressAttack = true;
-				ani.Play("Attack");
+                //ani.Play("Attack");
+                ani.SetBool("Jump", true);
 			}
             else
             {
 				if (hInput.GetButton("Accelerate")) {
 					currentSpeed = sprintSpeed;
-                    ani.Play("Run");
+                    ani.SetFloat("Speed", 0.5f);
+                    ani.SetBool("Jump", false);
+                    //ani.Play("Run");
                 }
 				else 
                 {
 					currentSpeed = walkSpeed;
-                    ani.Play("Walk");
+                    ani.SetFloat("Speed", 0.2f);
+                    ani.SetBool("Jump", false);
+                    //ani.Play("Walk");
                 }
 				isPlayerPressAttack = false;
                 Vector2 input = new Vector2(hInput.GetAxis("HorizontalAxis"), hInput.GetAxis("VerticalAxis"));
@@ -74,13 +80,17 @@ public class PlayerMovement : MovingObject {
 					characterController.Move(velocity * Time.deltaTime);
 				}
 				else {
-					ani.PlayQueued("idle", QueueMode.PlayNow);
+                    ani.SetFloat("Speed", 0);
+                    ani.SetBool("Jump", false);
+					//ani.PlayQueued("idle", QueueMode.PlayNow);
 				}
 			}
 		}
-		else {
-			ani.PlayQueued("idle", QueueMode.PlayNow);
-		}
+		else
+        {
+            ani.SetFloat("Speed", 0);
+            //ani.PlayQueued("idle", QueueMode.PlayNow);
+        }
 	}
 
 	public Vector2 ReturnPlayerPosition() {
@@ -89,7 +99,7 @@ public class PlayerMovement : MovingObject {
     }
 
 	private void OnCollisionEnter(Collision collision) {
-		if (collision.gameObject.tag == "Enemy" && isPlayerPressAttack == true) {
+		if (collision.gameObject.layer == 9 && isPlayerPressAttack == true) {
 			GameManager.instance.isPlayerAttackEnemy = true;
 		}
 	}

@@ -14,6 +14,7 @@ public class UI_CharacterStats_Equipments : MonoBehaviour {
     [SerializeField]
     private ScrollRect subEquipmentPanel;
 
+    private PlayerCharacter tempChar;
     private PlayerArmor showedArmor;
     private PlayerWeapon showedWeapon;
 
@@ -76,6 +77,11 @@ public class UI_CharacterStats_Equipments : MonoBehaviour {
         }
     }
 
+    public void SetTempChar(PlayerCharacter temp)
+    {
+        tempChar = temp;
+    }
+
     public void OnButtonClick()
     {
 		if (subEquipmentPanel.gameObject.activeSelf)
@@ -86,5 +92,10 @@ public class UI_CharacterStats_Equipments : MonoBehaviour {
         {
             subEquipmentPanel.gameObject.SetActive(true);
         }
+    }
+
+    public void OnSubItemClick()
+    {
+
     }
 }

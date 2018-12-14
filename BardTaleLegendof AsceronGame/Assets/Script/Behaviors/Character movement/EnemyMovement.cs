@@ -158,9 +158,10 @@ public class EnemyMovement : MovingObject {
 	//}
 
 	private void OnCollisionEnter(Collision collision) {
-		if (collision.gameObject.tag == "Player") {
+        if (collision.gameObject.layer == 8) {
 			if (GameManager.instance.isPlayerAttackEnemy == false && enemySeePlayer == true) {
 				GameManager.instance.isEnemyAttackPlayer = true;
+                //attackEvent();
 			}
 			//else {
 			//	GameManager.instance.isPlayerAttackEnemy = true;
