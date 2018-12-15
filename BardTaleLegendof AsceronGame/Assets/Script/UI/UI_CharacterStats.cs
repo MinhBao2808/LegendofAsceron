@@ -54,7 +54,11 @@ public class UI_CharacterStats : MonoBehaviour {
     #region Stats
     [SerializeField]
     private UI_CharacterStats_Stats[] detailedStats;
+    [SerializeField]
+    private TextMeshProUGUI battlePointText;
     #endregion
+
+
     string charId;
     PlayerCharacter character;
     PlayerCharacter tempChar;
@@ -99,6 +103,11 @@ public class UI_CharacterStats : MonoBehaviour {
         {
             Unhide(id);
         }
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 
     public void Unhide(string id)
@@ -194,6 +203,7 @@ public class UI_CharacterStats : MonoBehaviour {
         detailedStats[11].OnUpdate(character.battleStats.iceRes, 0);
         detailedStats[12].OnUpdate(character.battleStats.holyRes, 0);
         detailedStats[13].OnUpdate(character.battleStats.darkRes, 0);
+        battlePointText.text = "Battle Point: " + character.bodyPower;
     }
 
     public void TestButton()
@@ -247,6 +257,7 @@ public class UI_CharacterStats : MonoBehaviour {
             tempChar.battleStats.holyRes - character.battleStats.holyRes);
         detailedStats[13].OnUpdate(character.battleStats.darkRes, 
             tempChar.battleStats.darkRes - character.battleStats.darkRes);
+        battlePointText.text = "Battle Point: " + tempChar.bodyPower;
     }
 
     public void CancelAttributes()
@@ -304,5 +315,6 @@ public class UI_CharacterStats : MonoBehaviour {
         detailedStats[11].OnUpdate(character.battleStats.iceRes, 0);
         detailedStats[12].OnUpdate(character.battleStats.holyRes, 0);
         detailedStats[13].OnUpdate(character.battleStats.darkRes, 0);
+        battlePointText.text = "Battle Point: " + character.bodyPower;
     }
 }

@@ -10,6 +10,10 @@ public class HUDController : MonoBehaviour {
     [SerializeField]
     GameObject pauseMenu;
     [SerializeField]
+    GameObject characterMenu;
+    [SerializeField]
+    GameObject inventoryMenu;
+    [SerializeField]
     UI_CharacterItem characterItem_01;
     [SerializeField]
     UI_CharacterItem characterItem_02;
@@ -22,6 +26,7 @@ public class HUDController : MonoBehaviour {
     void Start () {
         DontDestroyOnLoad(this);
         pauseMenu.SetActive(false);
+        inventoryMenu.SetActive(false);
         characterItem_01.gameObject.SetActive(false);
         characterItem_02.gameObject.SetActive(false);
         characterItem_03.gameObject.SetActive(false);
@@ -53,6 +58,7 @@ public class HUDController : MonoBehaviour {
                 characterItem_03.gameObject.SetActive(false);
             }
             pauseMenu.SetActive(!pauseMenu.activeSelf);
+            inventoryMenu.SetActive(false);
         }
 	}
 }

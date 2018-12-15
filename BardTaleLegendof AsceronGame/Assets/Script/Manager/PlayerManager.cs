@@ -76,11 +76,13 @@ public class PlayerManager : MonoBehaviour {
         CheckNewGame = true;
         Characters = new List<PlayerCharacter>
         {
-            new PlayerCharacter(DataManager.Instance.CharacterList[0], 1)
+            new PlayerCharacter(DataManager.Instance.CharacterList[0], 1),
+            new PlayerCharacter(DataManager.Instance.CharacterList[1], 1)
         };
         PartyMemberID = new List<string>
         {
-            Characters[0].info.id
+            Characters[0].info.id,
+            Characters[1].info.id
         };
         PosX = 0;
         PosY = 0;
@@ -96,6 +98,12 @@ public class PlayerManager : MonoBehaviour {
         PlayerCharacter character = Characters[0];
         EquipEquipment("armor", "IA0001", ref character);
         Characters[0] = character;
+
+        character = Characters[1];
+        EquipEquipment("armor", "IA0002", ref character);
+        EquipEquipment("armor", "IA0003", ref character);
+        Characters[1] = character;
+
         CurrentSceneID = "M0000";
         //Characters[0].UnequipArmor(ArmorPiece.Head);
     }

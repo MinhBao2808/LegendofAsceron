@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class NPCBehavior : MonoBehaviour {
 
+    [SerializeField]
+    string id;
+    [SerializeField]
+    string[] dialogIds;
+
+
 	// Use this for initialization
 	void Start () {
 		
@@ -13,4 +19,9 @@ public class NPCBehavior : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void OnInteract()
+    {
+
+    }
 }
