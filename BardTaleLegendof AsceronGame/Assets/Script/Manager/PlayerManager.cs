@@ -312,6 +312,7 @@ public class PlayerCharacter
     public WeaponType[] weaponTypes;
     public PlayerWeapon weapon;
     public List<PlayerArmor> armors;
+    public int bodyPower;
 
     public PlayerCharacter(CharacterJson json, int targetLevel)
     {
@@ -346,6 +347,8 @@ public class PlayerCharacter
         //}
 
         SetStatByLevel(targetLevel, json);
+
+        bodyPower = 0;
 
         availableAttributes = 0;
         availableSkillPoints = 0;
@@ -396,6 +399,8 @@ public class PlayerCharacter
 
         level = target.level;
         experience = target.experience;
+
+        bodyPower = target.bodyPower;
 
         availableAttributes = target.availableAttributes;
         availableSkillPoints = target.availableSkillPoints;
@@ -580,6 +585,7 @@ public class PlayerCharacter
     public void CalculateBattleStat()
     {
         PlayerCharBattleStat tempBattleStats = new PlayerCharBattleStat();
+        bodyPower = 0;
 
         if (battleStats != null)
         {
@@ -633,6 +639,21 @@ public class PlayerCharacter
         {
             battleStats.mp = battleStats.maxMp;
         }
+
+        bodyPower += (int)battleStats.maxHp * BodyPower.HP;
+        bodyPower += (int)battleStats.maxMp * BodyPower.MP;
+        bodyPower += (int)battleStats.eva * BodyPower.EVA;
+        bodyPower += (int)battleStats.crit * BodyPower.CRIT;
+        bodyPower += (int)battleStats.spd * BodyPower.SPD;
+        bodyPower += (int)battleStats.patk * BodyPower.PATK;
+        bodyPower += (int)battleStats.matk * BodyPower.MATK;
+        bodyPower += (int)battleStats.pdef * BodyPower.PDEF;
+        bodyPower += (int)battleStats.mdef * BodyPower.MDEF;
+        bodyPower += (int)battleStats.fireRes * BodyPower.ELE_RES;
+        bodyPower += (int)battleStats.lightningRes * BodyPower.ELE_RES;
+        bodyPower += (int)battleStats.iceRes * BodyPower.ELE_RES;
+        bodyPower += (int)battleStats.holyRes * BodyPower.MORAL_RES;
+        bodyPower += (int)battleStats.darkRes * BodyPower.MORAL_RES;
     }
 
     public void IncreaseAttributes(int amount)
