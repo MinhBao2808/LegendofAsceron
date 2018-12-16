@@ -22,7 +22,7 @@ public class InventoryUI : MonoBehaviour {
             temp.transform.parent = scrollView.content;
             itemList.Add(temp);
         }
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
 	}
 
     public void OnButtonClick()

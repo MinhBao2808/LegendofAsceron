@@ -11,7 +11,7 @@ public class DialogManager : MonoBehaviour
     public static DialogManager Instance { get; private set; }
 
     public List<DialogsJson> dialogList = new List<DialogsJson>();
-
+    
     [SerializeField]
     TextMeshProUGUI charName;
     [SerializeField]
