@@ -84,9 +84,9 @@ public class InteractController : MonoBehaviour {
                 charFace.sprite = texture;
             }
 
-            talkdialogId = selection.talkId[Random.];
-            shopId = "";
-            questId = "";
+            talkdialogId = selection.talkId[Random.Range(0, selection.talkId.Length)];
+            shopId = selection.shopId;
+            questId = selection.questId;
 
             for (int i = 0; i < selection.dialogType.Length; i++)
             {
@@ -111,6 +111,16 @@ public class InteractController : MonoBehaviour {
     }
 
     public void OnTalkClick()
+    {
+        DialogManager.Instance.RunDialog(talkdialogId);
+    }
+
+    public void OnShopClick()
+    {
+
+    }
+
+    public void OnQuestClick()
     {
 
     }

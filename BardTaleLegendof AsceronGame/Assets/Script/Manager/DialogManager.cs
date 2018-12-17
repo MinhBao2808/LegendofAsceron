@@ -55,8 +55,9 @@ public class DialogManager : MonoBehaviour
         return null;
     }
 
-    public void RunDialog(DialogsJson dialogs)
+    public void RunDialog(string id)
     {
+        DialogsJson dialogs = SearchDialogID(id);
         if (runningDialogs == null)
         {
             dialogCount = 0;

@@ -21,7 +21,7 @@ public class GameEventManager : MonoBehaviour
 
     void Init()
     {
-        DialogManager.Instance.RunDialog(DialogManager.Instance.SearchDialogID("D0001"));
+        //DialogManager.Instance.RunDialog("D0001");
     }
 
     // Update is called once per frame
