@@ -77,24 +77,29 @@ public class PlayerManager : MonoBehaviour {
         Characters = new List<PlayerCharacter>
         {
             new PlayerCharacter(DataManager.Instance.CharacterList[0], 1),
-            new PlayerCharacter(DataManager.Instance.CharacterList[1], 1)
+            new PlayerCharacter(DataManager.Instance.CharacterList[1], 1),
+            new PlayerCharacter(DataManager.Instance.CharacterList[2], 1)
         };
         PartyMemberID = new List<string>
         {
             Characters[0].info.id,
-            Characters[1].info.id
+            Characters[1].info.id,
+            Characters[2].info.id
         };
+
         PosX = 0;
         PosY = 0;
         PosZ = 0;
         RotX = 0;
         RotY = 0;
         RotZ = 0;
+
         AddItem("armor", "IA0001", 1);
         AddItem("armor", "IA0002", 1);
         AddItem("armor", "IA0003", 1);
         AddItem("armor", "IA0004", 1);
         AddItem("usable", "IU0001", 1);
+
         PlayerCharacter character = Characters[0];
         EquipEquipment("armor", "IA0001", ref character);
         Characters[0] = character;

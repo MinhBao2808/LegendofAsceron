@@ -6,6 +6,7 @@
         "type": "Usable",
         "tooltips": "Small HP potion, recover a small amount of HP.",
         "imgPath": "InventoryIcons/iu0001",
+		"gold": 1,
         "amount": 10,
         "isPercentage": "false",
         "regenType": "HP"
@@ -17,6 +18,7 @@
         "type": "Usable",
         "tooltips": "Small elixir potion, recover a small percentage of HP.",
         "imgPath": "InventoryIcons/iu0002",
+		"gold": 2,
         "amount": 10,
         "isPercentage": "true",
         "regenType": "HP"
@@ -28,6 +30,7 @@
         "type": "Usable",
         "tooltips": "Small miracle water, recover a small amount of MP.",
         "imgPath": "InventoryIcons/iu0003",
+		"gold": 2,
         "amount": 5,
         "isPercentage": "false",
         "regenType": "MP"
@@ -39,6 +42,7 @@
         "type": "Usable",
         "tooltips": "Small holy water bottle, recover a small percentage of MP.",
         "imgPath": "InventoryIcons/iu0004",
+		"gold": 4,
         "amount": 10,
         "isPercentage": "true",
         "regenType": "MP"
