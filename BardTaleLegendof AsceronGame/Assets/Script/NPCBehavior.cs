@@ -1,27 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class NPCBehavior : MonoBehaviour {
 
     [SerializeField]
     string id;
     [SerializeField]
-    string[] dialogIds;
+    string selectionId;
 
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private void OnMouseEnter()
+    {
+        OnInteract();
+    }
 
     public void OnInteract()
     {
-
+        InteractController.Instance.OnShowSelection(selectionId);
     }
 }

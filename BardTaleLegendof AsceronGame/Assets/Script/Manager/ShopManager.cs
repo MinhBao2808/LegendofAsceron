@@ -4,11 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using JsonDataClasses;
+using Newtonsoft.Json;
 
 public class ShopManager : MonoBehaviour {
 
     public static ShopManager Instance { get; private set; }
+    public List<ShopJson> shopList = new List<ShopJson>();
 
+    [SerializeField]
+    Canvas shopCanvas;
     [SerializeField]
     ShopItem shopItemPrefs;
     [SerializeField]
@@ -43,43 +47,58 @@ public class ShopManager : MonoBehaviour {
             return;
         }
         Instance = this;
+        Init();
         DontDestroyOnLoad(this);
+    }
+
+    void Init()
+    {
         shopItems = new List<ShopItem>();
         for (int i = 0; i < 30; i++)
         {
             ShopItem temp = Instantiate(shopItemPrefs);
+            temp.transform.parent = viewPortContent.transform;
             shopItems.Add(temp);
         }
+        var shopsJson = Resources.Load<TextAsset>("JSON/shops");
+        ShopJson[] tempShop = JsonConvert.DeserializeObject<ShopJson[]>(shopsJson.text);
+        shopList.AddRange(tempShop);
     }
 
-    public void OnShow(string[] items)
+    public void OnShow(string shopid)
     {
-        for (int i = 0; i < items.Length; i++)
+        if (FindShopById(shopid) != null)
         {
-            shopItems[i].transform.parent = viewPortContent.transform;
-            ItemJson item;
-            if (items[i].ToLower().Contains("iw"))
+            string[] items = FindShopById(shopid).shopItemIds;
+            for (int i = 0; i < items.Length; i++)
             {
-                WeaponJson weapon = DataManager.Instance.SearchWeaponID(items[i]);
-                item = weapon;
+                ItemJson item;
+                if (items[i].ToLower().Contains("iw"))
+                {
+                    WeaponJson weapon = DataManager.Instance.SearchWeaponID(items[i]);
+                    item = weapon;
+                }
+                else if (items[i].ToLower().Contains("ia"))
+                {
+                    ArmorJson armor = DataManager.Instance.SearchArmorID(items[i]);
+                    item = armor;
+                }
+                else
+                {
+                    item = DataManager.Instance.SearchUsableID(items[i]);
+                }
+                Sprite sprite = Resources.Load<Sprite>(item.imgPath);
+                shopItems[i].OnShow(sprite, item.id);
             }
-            else if (items[i].ToLower().Contains("ia"))
-            {
-                ArmorJson armor = DataManager.Instance.SearchArmorID(items[i]);
-                item = armor;
-            }
-            else
-            {
-                item = DataManager.Instance.SearchUsableID(items[i]);
-            }
-            Sprite sprite = Resources.Load<Sprite>(item.imgPath);
-            shopItems[i].OnShow(sprite, item.id);
+            shopCanvas.gameObject.SetActive(true);
         }
     }
 
-    public void OnClose()
+    public void OnExit()
     {
-
+        confirmPanel.gameObject.SetActive(false);
+        OnHoverDetailPanel.gameObject.SetActive(false);
+        shopCanvas.gameObject.SetActive(false);
     }
 
     public void OnHoverItem(string itemid)
@@ -157,5 +176,17 @@ public class ShopManager : MonoBehaviour {
         confirmPanel.SetActive(false);
         OnHoverDetailPanel.SetActive(false);
         isItemClicked = false;
+    }
+
+    ShopJson FindShopById(string id)
+    {
+        for (int i = 0; i < shopList.Count; i++)
+        {
+            if (shopList[i].id == id)
+            {
+                return shopList[i];
+            }
+        }
+        return null;
     }
 }

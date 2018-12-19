@@ -11745,6 +11745,10 @@ Prefab:
       value: 
       objectReference: {fileID: 21604702384561604, guid: acae5ec765a124985b4bb870afb6907b,
         type: 2}
+    - target: {fileID: 1067687142017504, guid: b882cb3c9c48ad141b5eb290bec61a9e, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b882cb3c9c48ad141b5eb290bec61a9e, type: 2}
   m_IsPrefabAsset: 0
@@ -13761,7 +13765,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000015258789, y: -0.000030442674}
+  m_AnchoredPosition: {x: -0.000015258789, y: 0.000001191599}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &620291047
@@ -16008,7 +16012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &690850542
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16927,7 +16931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &735677010
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17668,7 +17672,7 @@ RectTransform:
   m_Father: {fileID: 940465559}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.00000023841858}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.99999994}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -33974,6 +33978,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08382b49e4a809049aaab60b8866206c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shopList: []
+  shopCanvas: {fileID: 690850544}
   shopItemPrefs: {fileID: 114298722512079736, guid: c344c69402e2fea48a0a4c555f0e863b,
     type: 2}
   viewPortContent: {fileID: 1588452737}
@@ -37205,8 +37211,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 758612277}
   m_HandleRect: {fileID: 758612276}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.99999976
+  m_Value: 0
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -47379,7 +47385,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1870836532
 RectTransform:
   m_ObjectHideFlags: 0

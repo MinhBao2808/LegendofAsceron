@@ -69,44 +69,50 @@ public class InteractController : MonoBehaviour {
 
     public void OnShowSelection(string id)
     {
-        SelectionsJson selection = SearchSelectionID(id);
-        if (selection != null)
+        if (!selectionCanvas.gameObject.activeSelf)
         {
-            talkButton.gameObject.SetActive(false);
-            questButton.gameObject.SetActive(false);
-            shopButton.gameObject.SetActive(false);
-
-            charName.text = selection.selectionDialog.name;
-            charContext.text = selection.selectionDialog.context;
-            Sprite texture = Resources.Load<Sprite>(selection.selectionDialog.imgPath);
-            if (texture)
+            SelectionsJson selection = SearchSelectionID(id);
+            if (selection != null)
             {
-                charFace.sprite = texture;
+                GameManager.instance.IsPause = true;
+
+                talkButton.gameObject.SetActive(false);
+                questButton.gameObject.SetActive(false);
+                shopButton.gameObject.SetActive(false);
+
+                charName.text = selection.selectionDialog.name;
+                charContext.text = selection.selectionDialog.context;
+                Sprite texture = Resources.Load<Sprite>(selection.selectionDialog.imgPath);
+                if (texture)
+                {
+                    charFace.sprite = texture;
+                }
+
+                selectionCanvas.gameObject.SetActive(true);
+                talkdialogId = selection.talkId[Random.Range(0, selection.talkId.Length)];
+                shopId = selection.shopId;
+                questId = selection.questId;
+
+                for (int i = 0; i < selection.dialogType.Length; i++)
+                {
+                    if (selection.dialogType[i].ToLower() == "talk")
+                    {
+                        talkButton.gameObject.SetActive(true);
+                    }
+                    else if (selection.dialogType[i].ToLower() == "quest")
+                    {
+                        questButton.gameObject.SetActive(true);
+                    }
+                    else if (selection.dialogType[i].ToLower() == "shop")
+                    {
+                        shopButton.gameObject.SetActive(true);
+                    }
+                }
             }
-
-            talkdialogId = selection.talkId[Random.Range(0, selection.talkId.Length)];
-            shopId = selection.shopId;
-            questId = selection.questId;
-
-            for (int i = 0; i < selection.dialogType.Length; i++)
+            else
             {
-                if (selection.dialogType[i].ToLower() == "talk")
-                {
-                    talkButton.gameObject.SetActive(true);
-                }
-                else if (selection.dialogType[i].ToLower() == "quest")
-                {
-                    questButton.gameObject.SetActive(true);
-                }
-                else if (selection.dialogType[i].ToLower() == "shop")
-                {
-                    shopButton.gameObject.SetActive(true);
-                }
+                Debug.LogError("Can't find Selection Dialogs");
             }
-        }
-        else
-        {
-            Debug.LogError("Can't find Selection Dialogs");
         }
     }
 
@@ -117,7 +123,7 @@ public class InteractController : MonoBehaviour {
 
     public void OnShopClick()
     {
-
+        ShopManager.Instance.OnShow(shopId);
     }
 
     public void OnQuestClick()
@@ -127,6 +133,10 @@ public class InteractController : MonoBehaviour {
 
     public void OnExitClick()
     {
+        talkdialogId = "";
+        shopId = "";
+        questId = "";
         selectionCanvas.gameObject.SetActive(false);
+        GameManager.instance.IsPause = false;
     }
 }
