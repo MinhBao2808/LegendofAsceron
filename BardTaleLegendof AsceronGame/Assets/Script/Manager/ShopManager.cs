@@ -49,6 +49,7 @@ public class ShopManager : MonoBehaviour {
         Instance = this;
         Init();
         DontDestroyOnLoad(this);
+        isItemClicked = false;
     }
 
     void Init()
@@ -99,6 +100,7 @@ public class ShopManager : MonoBehaviour {
         confirmPanel.gameObject.SetActive(false);
         OnHoverDetailPanel.gameObject.SetActive(false);
         shopCanvas.gameObject.SetActive(false);
+        isItemClicked = false;
     }
 
     public void OnHoverItem(string itemid)

@@ -29,7 +29,7 @@ public class GameEventManager : MonoBehaviour
     {
         if (DialogManager.Instance.IsDialogCanvasActive())
         {
-            if (hInput.GetButtonUp("Interact"))
+            if (hInput.GetButtonUp("Interact") || Input.GetMouseButtonUp(0))
             {
                 DialogManager.Instance.ContinueDialog();
             }

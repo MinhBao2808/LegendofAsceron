@@ -119,16 +119,18 @@ public class InteractController : MonoBehaviour {
     public void OnTalkClick()
     {
         DialogManager.Instance.RunDialog(talkdialogId);
+        OnExitClick();
     }
 
     public void OnShopClick()
     {
         ShopManager.Instance.OnShow(shopId);
+        OnExitClick();
     }
 
     public void OnQuestClick()
     {
-
+        OnExitClick();
     }
 
     public void OnExitClick()

@@ -58,16 +58,19 @@ public class DialogManager : MonoBehaviour
     public void RunDialog(string id)
     {
         DialogsJson dialogs = SearchDialogID(id);
-        if (runningDialogs == null)
+        if (dialogs != null)
         {
-            dialogCount = 0;
-            runningDialogs = dialogs;
-            SetActive(true);
-            ContinueDialog();
-        }
-        else
-        {
-            Debug.LogError("A dialog is currently running. Please wait!");
+            if (runningDialogs == null)
+            {
+                dialogCount = 0;
+                runningDialogs = dialogs;
+                SetActive(true);
+                ContinueDialog();
+            }
+            else
+            {
+                Debug.LogError("A dialog is currently running. Please wait!");
+            }
         }
     }
 

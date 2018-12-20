@@ -13,6 +13,11 @@ public class ShopItem : MonoBehaviour {
 
     string itemId;
 
+    private void Awake()
+    {
+        button.onClick.AddListener(()=>ShopManager.Instance.OnClickItem());
+    }
+
     public void OnShow(Sprite img, string id)
     {
         image.sprite = img;

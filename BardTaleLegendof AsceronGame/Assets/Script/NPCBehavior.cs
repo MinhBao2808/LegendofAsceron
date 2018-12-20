@@ -10,9 +10,14 @@ public class NPCBehavior : MonoBehaviour {
     [SerializeField]
     string selectionId;
 
-    private void OnMouseEnter()
+    public void OnMouseDown()
     {
-        OnInteract();
+        float distance = Vector3.Distance(PlayerManager.Instance.player.transform.position, transform.position);
+        Debug.Log(distance);
+        if (distance <= 1.5f)
+        {
+            OnInteract();
+        }
     }
 
     public void OnInteract()
