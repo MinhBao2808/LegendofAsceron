@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ShopItem : MonoBehaviour {
+public class ShopItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
     [SerializeField]
     Button button;
@@ -15,7 +15,7 @@ public class ShopItem : MonoBehaviour {
 
     private void Awake()
     {
-        button.onClick.AddListener(()=>ShopManager.Instance.OnClickItem());
+        button.onClick.AddListener(ShopManager.Instance.OnClickItem);
     }
 
     public void OnShow(Sprite img, string id)
@@ -24,12 +24,13 @@ public class ShopItem : MonoBehaviour {
         itemId = id;
     }
 
-    public void OnMouseEnter()
+    public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("entered");
         ShopManager.Instance.OnHoverItem(itemId);
     }
 
-    public void OnMouseExit()
+    public void OnPointerExit(PointerEventData eventData)
     {
         ShopManager.Instance.OnHoverOut();
     }

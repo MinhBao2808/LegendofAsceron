@@ -12,13 +12,6 @@ public class InventoryUI_Items : MonoBehaviour {
     TextMeshProUGUI itemName;
     [SerializeField]
     TextMeshProUGUI quantity;
-
-	// Use this for initialization
-	void Start () {
-        image = transform.GetChild(0).GetComponent<Image>();
-        itemName = transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
-        quantity = transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
-    }
 	
     public void OnShow(string id, string type, int amount)
     {

@@ -27,7 +27,7 @@
 	],
     "totalSkills": 
 	[
-		"S0001","S0002","S0003","S0004","S0005"
+		"S0001"
 	],
     "growthStat": 
 	{
@@ -81,7 +81,6 @@
 	],
     "totalSkills": 
 	[
-		"S0006","S0007","S008"
 	],
     "growthStat": 
 	{
@@ -135,7 +134,7 @@
 	],
     "totalSkills": 
 	[
-		"S0009","S0010"
+		"S0002","S0003"
 	],
     "growthStat": 
 	{

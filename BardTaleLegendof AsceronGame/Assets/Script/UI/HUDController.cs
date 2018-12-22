@@ -20,7 +20,11 @@ public class HUDController : MonoBehaviour {
     [SerializeField]
     UI_CharacterItem characterItem_03;
     [SerializeField]
+    UI_CharacterStats characterStats;
+    [SerializeField]
     TextMeshProUGUI playtimeText;
+    [SerializeField]
+    TextMeshProUGUI goldText;
 
     // Use this for initialization
     void Start () {
@@ -35,7 +39,8 @@ public class HUDController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         playtimeText.text = "Play Time: " + PlayerManager.Instance.PlayTime;
-        if(hInput.GetButtonUp("Back") && SceneManager.GetActiveScene().name != "M0000-Menu")
+        goldText.text = "Gold: " + PlayerManager.Instance.Currency;
+        if(hInput.GetButtonUp("Back") && SceneManager.GetActiveScene().name != "M0000-Menu" && SceneManager.GetActiveScene().name != "M0001-Battle")
         {
             characterItem_01.gameObject.SetActive(!pauseMenu.activeSelf);
             characterItem_01.UpdateImage();
@@ -57,8 +62,9 @@ public class HUDController : MonoBehaviour {
             {
                 characterItem_03.gameObject.SetActive(false);
             }
-            pauseMenu.SetActive(!pauseMenu.activeSelf);
+            characterStats.Hide();
             inventoryMenu.SetActive(false);
+            pauseMenu.SetActive(!pauseMenu.activeSelf);
         }
 	}
 }

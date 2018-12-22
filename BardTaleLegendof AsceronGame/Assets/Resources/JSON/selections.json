@@ -5,7 +5,7 @@
     {
       "name": "Injured Soldier",
       "context": "...What do you want?",
-      "imgPath": "lars"
+      "imgPath": "DialogImg/NPC0001"
     },
     "dialogType": [
       "talk",

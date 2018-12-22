@@ -111,6 +111,8 @@ public class PlayerManager : MonoBehaviour {
 
         CurrentSceneID = "M0000";
         //Characters[0].UnequipArmor(ArmorPiece.Head);
+
+        Debug.Log("Check");
     }
 
     public void AddCharacter(CharacterJson character, int level)

@@ -123,7 +123,7 @@ public class DialogManager : MonoBehaviour
 
     void SetCharImage(string _imgName)
     {
-        Sprite texture = Resources.Load<Sprite>("DialogImg/" + _imgName);
+        Sprite texture = Resources.Load<Sprite>( _imgName);
         if (texture)
         {
             charFace.sprite = texture;

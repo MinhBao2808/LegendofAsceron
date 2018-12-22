@@ -33,6 +33,12 @@ public class ShopManager : MonoBehaviour {
     TextMeshProUGUI itemDescription;
     [SerializeField]
     TextMeshProUGUI itemPrice;
+    [SerializeField]
+    TextMeshProUGUI charName;
+    [SerializeField]
+    TextMeshProUGUI charContext;
+    [SerializeField]
+    Image charFace;
 
     private string itemId;
     private ItemJson itemJson;
@@ -68,10 +74,21 @@ public class ShopManager : MonoBehaviour {
 
     public void OnShow(string shopid)
     {
-        if (FindShopById(shopid) != null)
+        ShopJson shop = FindShopById(shopid);
+        if (shop != null)
         {
-            string[] items = FindShopById(shopid).shopItemIds;
-            for (int i = 0; i < items.Length; i++)
+
+            charName.text = shop.shopDialog.name;
+            charContext.text = shop.shopDialog.context;
+            Sprite texture = Resources.Load<Sprite>(shop.shopDialog.imgPath);
+            if (texture)
+            {
+                charFace.sprite = texture;
+            }
+
+            string[] items = shop.shopItemIds;
+            int i = 0;
+            for (; i < items.Length; i++)
             {
                 ItemJson item;
                 if (items[i].ToLower().Contains("iw"))
@@ -89,7 +106,12 @@ public class ShopManager : MonoBehaviour {
                     item = DataManager.Instance.SearchUsableID(items[i]);
                 }
                 Sprite sprite = Resources.Load<Sprite>(item.imgPath);
+                shopItems[i].gameObject.SetActive(true);
                 shopItems[i].OnShow(sprite, item.id);
+            }
+            for (; i < shopItems.Count; i++)
+            {
+                shopItems[i].gameObject.SetActive(false);
             }
             shopCanvas.gameObject.SetActive(true);
         }
@@ -101,6 +123,7 @@ public class ShopManager : MonoBehaviour {
         OnHoverDetailPanel.gameObject.SetActive(false);
         shopCanvas.gameObject.SetActive(false);
         isItemClicked = false;
+        itemJson = null;
     }
 
     public void OnHoverItem(string itemid)
@@ -109,7 +132,7 @@ public class ShopManager : MonoBehaviour {
         {
             OnHoverDetailPanel.SetActive(true);
             ItemJson item;
-            if (itemid.Contains("iw"))
+            if (itemid.ToLower().Contains("iw"))
             {
                 WeaponJson weapon = DataManager.Instance.SearchWeaponID(itemid);
                 item = weapon;
@@ -118,7 +141,7 @@ public class ShopManager : MonoBehaviour {
                     "PATK: " + weapon.patk + "\n" +
                     "MATK: " + weapon.matk;
             }
-            else if (itemid.Contains("ia"))
+            else if (itemid.ToLower().Contains("ia"))
             {
                 ArmorJson armor = DataManager.Instance.SearchArmorID(itemid);
                 item = armor;
@@ -135,20 +158,25 @@ public class ShopManager : MonoBehaviour {
             itemDescription.text = item.tooltips;
             itemName.text = item.name;
             itemPrice.text = item.gold + " Gold";
-            itemId = itemid;
             itemJson = item;
         }
+        itemId = itemid;
     }
 
     public void OnHoverOut()
     {
-        OnHoverDetailPanel.SetActive(false);
-        confirmPanel.SetActive(false);
+        if (!isItemClicked)
+        {
+            OnHoverDetailPanel.SetActive(false);
+            confirmPanel.SetActive(false);
+        }
     }
 
     public void OnClickItem()
     {
         isItemClicked = false;
+        OnHoverItem(itemId);
+        OnHoverDetailPanel.SetActive(true);
         confirmPanel.SetActive(true);
         isItemClicked = true;
     }

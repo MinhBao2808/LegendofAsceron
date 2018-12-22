@@ -14,7 +14,7 @@ public class InventoryUI : MonoBehaviour {
     List<InventoryUI_Items> itemList;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         itemList = new List<InventoryUI_Items>();
         for (int i = 0; i < 20; i++)
         {
