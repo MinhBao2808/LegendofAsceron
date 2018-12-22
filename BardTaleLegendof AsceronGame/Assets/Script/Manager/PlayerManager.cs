@@ -688,6 +688,41 @@ public class PlayerCharacter
         IncreaseSkillPoints(GameConfigs.SKILLPOINTS_PER_LVL * increaseAmount);
     }
 
+    public bool IsSkillLeanred(string skillId)
+    {
+        for (int i=0; i< info.learnedSkills.Length; i++)
+        {
+            if (info.learnedSkills[i] == skillId)
+                return true;
+        }
+        return false;
+    }
+
+    public bool IsSkillAvailable(string skillId)
+    {
+        for (int i=0; i< info.totalSkills.Length; i++)
+        {
+            if (info.totalSkills[i] == skillId)
+                return true;
+        }
+        return false;
+    }
+
+    public void AddSkill(string skillId)
+    {
+        if (IsSkillAvailable(skillId))
+        {
+            string[] temp = new string[info.learnedSkills.Length+1];
+            for (int i=0; i<info.learnedSkills.Length; i++)
+            {
+                temp[i] = info.learnedSkills[i];
+            }
+            temp[info.learnedSkills.Length] = skillId;
+            info.learnedSkills = temp;
+            availableSkillPoints--;
+        }
+    }
+
     public void SetStatByLevel(int lvl, CharacterJson character)
     {
         if (lvl > 0)
