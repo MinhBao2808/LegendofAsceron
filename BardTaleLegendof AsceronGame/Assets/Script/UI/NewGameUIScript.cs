@@ -8,6 +8,7 @@ public class NewGameUIScript : UiPanelTemplate {
 
     public TextMeshProUGUI infoText;
     protected int difficulty;
+	[SerializeField] private GameObject prologuePanel;
 
 	// Use this for initialization
 	void Start () {
@@ -27,8 +28,10 @@ public class NewGameUIScript : UiPanelTemplate {
         if (difficulty != -1)
         {
             PlayerManager.Instance.Initialize(difficulty);
-            ScreenManager.Instance.TriggerLoadingFadeOut(
-                MapManager.Instance.NewGameSceneID, true);
+			//ScreenManager.Instance.TriggerLoadingFadeOut(
+			//MapManager.Instance.NewGameSceneID, true);
+			prologuePanel.SetActive(true);
+			prologuePanel.GetComponent<Animator>().SetTrigger("rolling");
             PlayerManager.Instance.SetPlayerPos();
         }
     }

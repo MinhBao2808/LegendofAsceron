@@ -5,10 +5,17 @@ using UnityEngine;
 public class CreditsSceneScripts : MonoBehaviour {
 
     public GameObject optionsMenu;
+	public bool isProloguePanel;
 
     public void OnFinishAnimation()
     {
-        optionsMenu.SetActive(true);
-        gameObject.SetActive(false);
+		if (isProloguePanel == true) {
+			ScreenManager.Instance.TriggerLoadingFadeOut(
+            MapManager.Instance.NewGameSceneID, true);
+		}
+		else {
+			optionsMenu.SetActive(true);
+            gameObject.SetActive(false);
+		}
     }
 }
