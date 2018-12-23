@@ -1,10 +1,9 @@
 ﻿<Properties StartupConfiguration="{5740844B-10B4-2404-B194-D815115ADC54}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Manager/InteractController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/UI/UI_Character_Skill.cs">
     <Files>
       <File FileName="Assets/Script/Manager/PlayerManager.cs" Line="94" Column="18" />
       <File FileName="Assets/Script/UI/UI_CharacterItem.cs" Line="11" Column="12" />
-      <File FileName="Assets/Script/UI/UI_CharacterStats_Attributes.cs" Line="38" Column="32" />
-      <File FileName="Assets/Script/UI/UI_CharacterStats.cs" Line="158" Column="34" />
+      <File FileName="Assets/Script/UI/UI_CharacterStats.cs" Line="51" Column="29" />
       <File FileName="Assets/Script/Manager/DialogManager.cs" Line="126" Column="49" />
       <File FileName="Assets/Resources/JSON/dialogs.json" Line="59" Column="21" />
       <File FileName="Assets/Script/Manager/InteractController.cs" Line="1" Column="1" />
@@ -13,7 +12,9 @@
       <File FileName="Assets/Resources/JSON/characters.json" Line="107" Column="43" />
       <File FileName="Assets/Script/UI/InventoryUI_Items.cs" Line="19" Column="38" />
       <File FileName="Assets/Script/Manager/ShopManager.cs" Line="77" Column="27" />
-      <File FileName="Assets/Script/UI/HUDController.cs" Line="52" Column="18" />
+      <File FileName="Assets/Script/UI/UI_Character_Skill.cs" Line="4" Column="4" />
+      <File FileName="Assets/Script/Manager/DataManager.cs" Line="42" Column="51" />
+      <File FileName="Assets/Resources/JSON/enemies.json" Line="223" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

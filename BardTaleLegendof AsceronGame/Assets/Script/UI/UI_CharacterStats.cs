@@ -56,6 +56,8 @@ public class UI_CharacterStats : MonoBehaviour {
     private UI_CharacterStats_Stats[] detailedStats;
     [SerializeField]
     private TextMeshProUGUI battlePointText;
+    [SerializeField]
+    UI_Character_Skill skillPanel;
     #endregion
 
 
@@ -122,6 +124,7 @@ public class UI_CharacterStats : MonoBehaviour {
             ShowAttributes();
             ShowEquipments();
             ShowDetailedStats();
+            OnShowSkill();
             gameObject.SetActive(true);
         }
         else
@@ -212,6 +215,7 @@ public class UI_CharacterStats : MonoBehaviour {
         int pos = PlayerManager.Instance.ReturnCharacterPosById(charId);
         PlayerManager.Instance.Characters[pos] = character;
         Unhide(charId);
+        OnShowSkill();
     }
 
     public void UpdateAvailablePoints()
@@ -316,5 +320,10 @@ public class UI_CharacterStats : MonoBehaviour {
         detailedStats[12].OnUpdate(character.battleStats.holyRes, 0);
         detailedStats[13].OnUpdate(character.battleStats.darkRes, 0);
         battlePointText.text = "Battle Point: " + character.bodyPower;
+    }
+
+    public void OnShowSkill()
+    {
+        skillPanel.OnShow(charId);
     }
 }

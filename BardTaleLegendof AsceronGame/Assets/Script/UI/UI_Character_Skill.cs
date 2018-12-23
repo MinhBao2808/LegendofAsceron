@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UI_Character_Skill : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class UI_Character_Skill : MonoBehaviour {
     private SkillPanelItem skillItemPref;
     [SerializeField]
     GameObject content;
+    [SerializeField]
+    TextMeshProUGUI skillPointsText;
     private List<SkillPanelItem> skillItemList;
     private string[] playerSkillArray;
     private string charId;
