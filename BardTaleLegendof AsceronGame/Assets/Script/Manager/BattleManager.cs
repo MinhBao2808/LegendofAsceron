@@ -11,6 +11,12 @@ public class BattleManager : MonoBehaviour {
 	[SerializeField] private GameObject selector;
 	[SerializeField] private GameObject playerSelector;
 	[SerializeField] private Slider timerSlider;
+	[SerializeField] private Slider larsHpSlider;
+	[SerializeField] private Slider brannHpSlider;
+	[SerializeField] private Slider aghmundHpSlider;
+	[SerializeField] private Slider larsMpSlider;
+	[SerializeField] private Slider brannMpSlider;
+	[SerializeField] private Slider aghmundMpSlider;
 	[SerializeField] private Image[] listImageShowUnitTurn;
 	[SerializeField] private GameObject actionMenu;
 	[SerializeField] private GameObject attack_DefendMenu;
@@ -168,20 +174,21 @@ public class BattleManager : MonoBehaviour {
 		//}
 		enemyList = new List<GameObject>();
 		if (playerUnit[0].GetComponent<PlayerStat>().player.level <= 10) {
-			enemyPositionIndex = Random.Range(2, 3);
+			//enemyPositionIndex = Random.Range(2, 3);
+			enemyPositionIndex = 3;
 		}
 		else {
 			enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);
 		}
-		int enemyDataIndex;
+		int enemyDataIndex = 0;
 		for (int i = 0; i < enemyPositionIndex; i++) {
-			enemyDataIndex = Random.Range(0, 2);
 			enemiesUnit[i].GetComponent<EnemyStat>().Init(enemyDataIndex);
 			enemiesUnit[i].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(enemiesUnit[enemyDataIndex].GetComponent<EnemyStat>().enemy.facePath);
 			//enemiesUnit[i].GetComponent<EnemyStat>().enemy.stats = enemiesUnit[i].GetComponent<EnemyStat>().enemy.growthStat;
 			enemiesUnit[i] =  Instantiate(enemiesUnit[enemyDataIndex], enemySpawnPositions[i].transform.position, 
 			            enemySpawnPositions[i].transform.rotation);
 			enemyList.Add(enemiesUnit[i]);
+			enemyDataIndex++;
 		}
 	}
 
@@ -705,6 +712,15 @@ public class BattleManager : MonoBehaviour {
 
     void Update() {
 		//Debug.Log(timer);
+		larsHpSlider.value = playerUnit[0].GetComponent<PlayerStat>().player.battleStats.hp / playerUnit[0].GetComponent<PlayerStat>().player.battleStats.maxHp;
+		larsMpSlider.value = playerUnit[0].GetComponent<PlayerStat>().player.battleStats.mp / playerUnit[0].GetComponent<PlayerStat>().player.battleStats.maxMp;
+
+		brannHpSlider.value = playerUnit[1].GetComponent<PlayerStat>().player.battleStats.hp / playerUnit[1].GetComponent<PlayerStat>().player.battleStats.maxHp;
+		brannMpSlider.value = playerUnit[1].GetComponent<PlayerStat>().player.battleStats.mp / playerUnit[1].GetComponent<PlayerStat>().player.battleStats.maxMp;
+        
+		aghmundHpSlider.value = playerUnit[2].GetComponent<PlayerStat>().player.battleStats.hp / playerUnit[2].GetComponent<PlayerStat>().player.battleStats.maxHp;
+		aghmundMpSlider.value = playerUnit[2].GetComponent<PlayerStat>().player.battleStats.mp / playerUnit[2].GetComponent<PlayerStat>().player.battleStats.maxMp;
+
 		timerSlider.value = time / timer;
 		if (enemyTurn == false && callTurn == true) {
 			time -= Time.deltaTime;
