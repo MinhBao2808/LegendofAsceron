@@ -21,15 +21,15 @@ public class GameEventManager : MonoBehaviour
 
     void Init()
     {
-        DialogManager.Instance.RunDialog(DialogManager.Instance.SearchDialogID("D0001"));
+        //DialogManager.Instance.RunDialog("D0001");
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (DialogManager.Instance.IsDialogCanvasActive())
         {
-            if (hInput.GetButtonUp("Interact"))
+            if (hInput.GetButtonDown("Interact") || Input.GetMouseButtonDown(0))
             {
                 DialogManager.Instance.ContinueDialog();
             }

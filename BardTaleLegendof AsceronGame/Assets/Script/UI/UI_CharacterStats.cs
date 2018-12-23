@@ -54,14 +54,20 @@ public class UI_CharacterStats : MonoBehaviour {
     #region Stats
     [SerializeField]
     private UI_CharacterStats_Stats[] detailedStats;
+    [SerializeField]
+    private TextMeshProUGUI battlePointText;
+    [SerializeField]
+    UI_Character_Skill skillPanel;
     #endregion
+
+
     string charId;
     PlayerCharacter character;
     PlayerCharacter tempChar;
     int attributePoints;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         charId = string.Empty;
         character = null;
         tempChar = null;
@@ -87,8 +93,25 @@ public class UI_CharacterStats : MonoBehaviour {
         wis.addButton.onClick.AddListener(() => wis.OnButtonClick(ref attributePoints, true));
         #endregion
         gameObject.SetActive(false);
-	}
-	
+    }
+
+    public void Check(string id)
+    {
+        if (gameObject.activeSelf)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            Unhide(id);
+        }
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void Unhide(string id)
     {
         charId = id;
@@ -101,6 +124,7 @@ public class UI_CharacterStats : MonoBehaviour {
             ShowAttributes();
             ShowEquipments();
             ShowDetailedStats();
+            OnShowSkill();
             gameObject.SetActive(true);
         }
         else
@@ -152,14 +176,17 @@ public class UI_CharacterStats : MonoBehaviour {
     void ShowEquipments()
     {
         weapon.OnShowWeapon(character.weapon);
+        weapon.SetTempChar(tempChar);
         int i;
         for(i = 0; i< character.armors.Count; i++)
         {
             armor[i].OnShowArmor(character.armors[i]);
+            armor[i].SetTempChar(tempChar);
         }
         for (;i< armor.Length;i++)
         {
             armor[i].OnShowArmor(null);
+            armor[i].SetTempChar(tempChar);
         }
     }
 
@@ -179,14 +206,16 @@ public class UI_CharacterStats : MonoBehaviour {
         detailedStats[11].OnUpdate(character.battleStats.iceRes, 0);
         detailedStats[12].OnUpdate(character.battleStats.holyRes, 0);
         detailedStats[13].OnUpdate(character.battleStats.darkRes, 0);
+        battlePointText.text = "Battle Point: " + character.bodyPower;
     }
 
     public void TestButton()
     {
-        character.IncreaseLevel(1);
         int pos = PlayerManager.Instance.ReturnCharacterPosById(charId);
-        PlayerManager.Instance.Characters[pos] = character;
+        PlayerManager.Instance.Characters[pos].IncreaseLevel(1);
+        character = PlayerManager.Instance.Characters[pos];
         Unhide(charId);
+        OnShowSkill();
     }
 
     public void UpdateAvailablePoints()
@@ -232,6 +261,7 @@ public class UI_CharacterStats : MonoBehaviour {
             tempChar.battleStats.holyRes - character.battleStats.holyRes);
         detailedStats[13].OnUpdate(character.battleStats.darkRes, 
             tempChar.battleStats.darkRes - character.battleStats.darkRes);
+        battlePointText.text = "Battle Point: " + tempChar.bodyPower;
     }
 
     public void CancelAttributes()
@@ -289,5 +319,11 @@ public class UI_CharacterStats : MonoBehaviour {
         detailedStats[11].OnUpdate(character.battleStats.iceRes, 0);
         detailedStats[12].OnUpdate(character.battleStats.holyRes, 0);
         detailedStats[13].OnUpdate(character.battleStats.darkRes, 0);
+        battlePointText.text = "Battle Point: " + character.bodyPower;
+    }
+
+    public void OnShowSkill()
+    {
+        skillPanel.OnShow(charId);
     }
 }

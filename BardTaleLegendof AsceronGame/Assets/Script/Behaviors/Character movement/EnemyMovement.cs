@@ -24,6 +24,7 @@ public class EnemyMovement : MovingObject {
 	private float currentSpeed;
 	private float currentTimeEnemyFollowPlayer;
 	private Vector3 enemyTarget;
+	private bool isDestroy;
 
 	//private void Awake() {
 	//	foreach(int i in GameManager.instance.enemyInMapIndex) {
@@ -35,6 +36,13 @@ public class EnemyMovement : MovingObject {
 
 	// Use this for initialization
 	void Start () {
+		if (GameManager.instance.playerNameDestroy.Count > 0) {
+			foreach (string name in GameManager.instance.playerNameDestroy) {
+				if (name == this.gameObject.name) {
+					Destroy(this.gameObject);
+				}
+			}
+		}
 		animator = GetComponent<Animator>();
 		currentTimeEnemyFollowPlayer = timeToFollowPlayer;
 		enemy = GetComponent<Transform>();
@@ -109,11 +117,11 @@ public class EnemyMovement : MovingObject {
 			animator.Play("Attack");
 		}
 		else {
-			if (GameManager.instance.isPlayerAttackEnemy == true) {
-				Destroy(this.gameObject);
-				//GameManager.instance.GoToBattle();
-				ScreenManager.Instance.TriggerBattleFadeOut();
-			}
+			//if (GameManager.instance.isPlayerAttackEnemy == true) {
+			//	//Destroy(this.gameObject);
+			//	//GameManager.instance.GoToBattle();
+			//	ScreenManager.Instance.TriggerBattleFadeOut();
+			//}
 			if (enemySeePlayer == true && currentTimeEnemyFollowPlayer >= 0) {
                 currentTimeEnemyFollowPlayer -= Time.deltaTime;
                 currentSpeed = sprintSpeed;
@@ -143,9 +151,8 @@ public class EnemyMovement : MovingObject {
 		//	}
 		//}
 
-		Destroy(this.gameObject);
 		//GameManager.instance.GoToBattle();
-		//ScreenManager.Instance.TriggerBattleFadeOut();
+
 	}
 
 	//private void OnTriggerEnter(Collider collision) {
@@ -158,10 +165,16 @@ public class EnemyMovement : MovingObject {
 	//}
 
 	private void OnCollisionEnter(Collision collision) {
-		if (collision.gameObject.tag == "Player") {
-			if (GameManager.instance.isPlayerAttackEnemy == false && enemySeePlayer == true) {
-				GameManager.instance.isEnemyAttackPlayer = true;
-			}
+        if (collision.gameObject.layer == 8) {
+			//if (GameManager.instance.isPlayerAttackEnemy == false && enemySeePlayer == true) {
+				
+			//}
+			GameManager.instance.isEnemyAttackPlayer = true;
+			//attackEvent();
+			GameManager.instance.playerNameDestroy.Add(this.gameObject.name);
+           
+			Destroy(this.gameObject);
+			ScreenManager.Instance.TriggerBattleFadeOut();
 			//else {
 			//	GameManager.instance.isPlayerAttackEnemy = true;
 			//}

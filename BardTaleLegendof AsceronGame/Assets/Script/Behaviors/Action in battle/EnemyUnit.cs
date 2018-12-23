@@ -10,6 +10,8 @@ public class EnemyUnit : EnemyJson {
         race = json.race;
         type = json.type;
         stats = json.stats;
+		imgPath = json.imgPath;
+		facePath = json.facePath;
         learnedSkills = json.learnedSkills;
         totalSkills = json.totalSkills;
         growthStat = json.growthStat;

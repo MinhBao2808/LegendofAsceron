@@ -17,6 +17,7 @@ public class DataManager : MonoBehaviour
 
     private void Awake()
     {
+        //Check if there is any Instance. If not, create one, else destroy Object.
         if (Instance != null && Instance != this)
         {
             Destroy(this.gameObject);
@@ -32,6 +33,7 @@ public class DataManager : MonoBehaviour
 
     void Init()
     {
+        //Read every data from Json and add them to correct List.
         EnemyList = new List<EnemyJson>();
         CharacterList = new List<CharacterJson>();
         WeaponList = new List<WeaponJson>();

@@ -18,7 +18,7 @@ public class GameManager:MonoBehaviour {
 	public int index;//store index of save file
     private Vector3 currentPlayerPosition = new Vector3();
 	private bool isSceneMenu;
-	public List<int> enemyInMapIndex;
+	public List<string> playerNameDestroy;
 	public bool IsPause { get; set; }
 	//check is player on map scene attack enemy 
 	public bool isPlayerAttackEnemy;
@@ -39,7 +39,7 @@ public class GameManager:MonoBehaviour {
 		index = PlayerPrefs.GetInt("c");
 		isSceneMenu = true;
 		isBattleSceneAnimationLoaded = false;
-		enemyInMapIndex = new List<int>();
+		playerNameDestroy = new List<string>();
     }
 
 	private void Update()

@@ -20,56 +20,60 @@ public class GetPlayerAction : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (BattleManager.instance.callTurn == true && 
-		    BattleManager.instance.isGameOver == false && BattleManager.instance.isVictory == false) {
-			if (BattleManager.instance.currentUnit.transform.position.x == this.gameObject.transform.position.x 
-			    && actionStarted == true)
+		if (BattleManager.instance.isVictory == false) {
+			if (BattleManager.instance.callTurn == true &&
+            BattleManager.instance.isGameOver == false && BattleManager.instance.isVictory == false)
             {
-				//Debug.Log(this.gameObject.name);
-                if (isAttack == false)
+                if (BattleManager.instance.currentUnit.transform.position.x == this.gameObject.transform.position.x
+                    && actionStarted == true)
                 {
-					//if (this.gameObject.GetComponent<PlayerStat>().player.info.type == UnitType.Melee) {
-					//	targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f, 
-					//	                             targetGameObject.transform.position.y, 
-					//	                             targetGameObject.transform.position.z);
-					//}
-					//else if (this.gameObject.GetComponent<PlayerStat>().player.info.type == UnitType.Range) {
-					//	targetPosition = new Vector3(0.0f, 0.0f, 0.0f);
-					//}
-					targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f,
-												 targetGameObject.transform.position.y,
-												 targetGameObject.transform.position.z);
-                    if (this.transform.position == targetPosition) {
-                        Hit(targetGameObject);
-                    }
-                }
-                else
-                {
-                    targetPosition = startPosition;
-                    if (this.transform.position == targetPosition)
+                    //Debug.Log(this.gameObject.name);
+                    if (isAttack == false)
                     {
-                        BattleManager.instance.isPlayerSelectEnemy = false;
-                        BattleManager.instance.isUnitAction = false;
-                        //StopAllCoroutines();
-                        if (BattleManager.instance.isFirstTurn == true)
+                        //if (this.gameObject.GetComponent<PlayerStat>().player.info.type == UnitType.Melee) {
+                        //  targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f, 
+                        //                               targetGameObject.transform.position.y, 
+                        //                               targetGameObject.transform.position.z);
+                        //}
+                        //else if (this.gameObject.GetComponent<PlayerStat>().player.info.type == UnitType.Range) {
+                        //  targetPosition = new Vector3(0.0f, 0.0f, 0.0f);
+                        //}
+                        targetPosition = new Vector3(targetGameObject.transform.position.x - 2.0f,
+                                                     targetGameObject.transform.position.y,
+                                                     targetGameObject.transform.position.z);
+                        if (this.transform.position == targetPosition)
                         {
-                            isAttack = false;
-                            actionStarted = false;
-                            BattleManager.instance.FristTurn();
-                        }
-                        else
-                        {
-                            //BattleManager.instance.unitLists.Enqueue(BattleManager.instance.currentUnit);
-                            isAttack = false;
-                            actionStarted = false;
-                            BattleManager.instance.nextTurn();
+                            Hit(targetGameObject);
                         }
                     }
+                    else
+                    {
+                        targetPosition = startPosition;
+                        if (this.transform.position == targetPosition)
+                        {
+                            BattleManager.instance.isPlayerSelectEnemy = false;
+                            BattleManager.instance.isUnitAction = false;
+                            //StopAllCoroutines();
+                            if (BattleManager.instance.isFirstTurn == true)
+                            {
+                                isAttack = false;
+                                actionStarted = false;
+                                BattleManager.instance.FristTurn();
+                            }
+                            else
+                            {
+                                //BattleManager.instance.unitLists.Enqueue(BattleManager.instance.currentUnit);
+                                isAttack = false;
+                                actionStarted = false;
+                                BattleManager.instance.nextTurn();
+                            }
+                        }
+                    }
+                    this.transform.position = Vector3.MoveTowards(transform.position, targetPosition, 500.0f * Time.deltaTime);
                 }
-                this.transform.position = Vector3.MoveTowards(transform.position, targetPosition, 500.0f * Time.deltaTime);
             }
-		}
 
+		}
 	}
 
 	public void AttackTarget (GameObject target) {
@@ -101,6 +105,13 @@ public class GetPlayerAction : MonoBehaviour {
 		damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk, 
 		                             3.0f,DataManager.Instance.SkillList[skillIndex].power,
                                       targetGameObject.GetComponent<EnemyStat>().enemy.stats.vitality, 1.0f, 1.0f);
+		if (DataManager.Instance.SkillList[skillIndex].effect != null) {
+			if (DataManager.Instance.SkillList[skillIndex].effect.type == EffectType.Debuff && DataManager.Instance.SkillList[skillIndex].effect.affection == EffectAffection.HpChange) {
+				target.GetComponent<EnemyStat>().damageToHp = DataManager.Instance.SkillList[skillIndex].effect.power / 100;
+				target.GetComponent<EnemyStat>().durationTime = DataManager.Instance.SkillList[skillIndex].effect.duration;
+				target.GetComponent<EnemyStat>().isHaveDeBuff = true;
+            }
+		}
 		//if (this.gameObject.GetComponent<PlayerStat>().player.info.totalSkills[skillIndex].isPassive == true) {
 		//	if (this.gameObject.GetComponent<PlayerStat>().player.info.type == SkillType.Buff)
 		//}

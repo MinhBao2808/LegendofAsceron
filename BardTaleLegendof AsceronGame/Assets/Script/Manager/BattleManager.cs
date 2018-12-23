@@ -166,19 +166,22 @@ public class BattleManager : MonoBehaviour {
 		//	                        false, enemySpawnPositions[i].transform.rotation.y, 
 		//	                        false, enemySpawnPositions[i].transform.localScale);
 		//}
+		enemyList = new List<GameObject>();
 		if (playerUnit[0].GetComponent<PlayerStat>().player.level <= 10) {
-			enemyPositionIndex = Random.Range(1, 3);
+			enemyPositionIndex = Random.Range(2, 3);
 		}
 		else {
 			enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);
 		}
 		int enemyDataIndex;
 		for (int i = 0; i < enemyPositionIndex; i++) {
-			enemyDataIndex = Random.Range(0, 1);
+			enemyDataIndex = Random.Range(0, 2);
 			enemiesUnit[i].GetComponent<EnemyStat>().Init(enemyDataIndex);
+			enemiesUnit[i].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(enemiesUnit[enemyDataIndex].GetComponent<EnemyStat>().enemy.facePath);
 			//enemiesUnit[i].GetComponent<EnemyStat>().enemy.stats = enemiesUnit[i].GetComponent<EnemyStat>().enemy.growthStat;
-			enemiesUnit[i] =  Instantiate(enemiesUnit[i], enemySpawnPositions[i].transform.position, 
+			enemiesUnit[i] =  Instantiate(enemiesUnit[enemyDataIndex], enemySpawnPositions[i].transform.position, 
 			            enemySpawnPositions[i].transform.rotation);
+			enemyList.Add(enemiesUnit[i]);
 		}
 	}
 
@@ -264,7 +267,13 @@ public class BattleManager : MonoBehaviour {
 		playerUnit[0] = Instantiate(playerUnit[0], 
 		                            playerSpawnPositions[0].transform.position, 
 		                            playerSpawnPositions[0].transform.rotation);
-		playerPositionIndex = 1;
+		playerUnit[1].GetComponent<PlayerStat>().Init(2);
+		playerUnit[1] = Instantiate(playerUnit[1], playerSpawnPositions[1].transform.position,
+									playerSpawnPositions[1].transform.rotation);
+		playerUnit[2].GetComponent<PlayerStat>().Init(1);
+		playerUnit[2] = Instantiate(playerUnit[2], playerSpawnPositions[2].transform.position,
+									playerSpawnPositions[2].transform.rotation);
+		playerPositionIndex = 3;
 	}
 
 	void Awake() {
@@ -327,12 +336,12 @@ public class BattleManager : MonoBehaviour {
 
     void Start() {
 		//player go firstckEnemy);
-		enemyList = new List<GameObject>();
+		//enemyList = new List<GameObject>();
 		playerList = new List<GameObject>();
 		unitStats = new List<GameObject>();
-		for (int i = 0; i < enemyPositionIndex; i++) {
-			enemyList.Add(enemiesUnit[i]);
-		}
+		//for (int i = 0; i < enemyPositionIndex; i++) {
+		//	enemyList.Add(enemiesUnit[i]);
+		//}
 		enemyList.Sort(delegate (GameObject x, GameObject y) {
 			return y.GetComponent<EnemyStat>().enemy.stats.dexterity
 				    .CompareTo(x.GetComponent<EnemyStat>().enemy.stats.dexterity);
@@ -351,7 +360,7 @@ public class BattleManager : MonoBehaviour {
         }
 		for (int i = 0; i < enemyPositionIndex; i++) {
 			if (enemiesUnit[i].tag == "Enemy") {
-				unitStats.Add(enemiesUnit[i]);
+				unitStats.Add(enemyList[i]);
             }
         }
         unitStats.Sort(delegate (GameObject x, GameObject y) {
@@ -374,11 +383,11 @@ public class BattleManager : MonoBehaviour {
 		if (GameManager.instance.isPlayerAttackEnemy == true) {
 			int j = 0;
             foreach (GameObject player in playerList) {
-                listImageShowUnitTurn[j].sprite = player.GetComponent<SpriteRenderer>().sprite;
+				listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(player.GetComponent<PlayerStat>().player.info.faceImgPath);
                 j++;
             }
             foreach (GameObject enemy in enemyList) {
-                listImageShowUnitTurn[j].sprite = enemy.GetComponent<SpriteRenderer>().sprite;
+				listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(enemy.GetComponent<EnemyStat>().enemy.imgPath);
                 j++;
             }
             int k = 0;
@@ -387,7 +396,12 @@ public class BattleManager : MonoBehaviour {
                     k = 0;
                 }
                 Debug.Log(k);
-                listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
+				if (unitStats[k].gameObject.tag == "PlayerUnit") {
+					listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(unitStats[k].GetComponent<PlayerStat>().player.info.faceImgPath);
+				}
+				else {
+					listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
+				}
                 j++;
                 k++;
             }
@@ -396,19 +410,26 @@ public class BattleManager : MonoBehaviour {
 		if (GameManager.instance.isEnemyAttackPlayer == true) {
 			int j = 0;
 			foreach (GameObject enemy in enemyList) {
-				listImageShowUnitTurn[j].sprite = enemy.GetComponent<SpriteRenderer>().sprite;
+				listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(enemy.GetComponent<EnemyStat>().enemy.imgPath);
                 j++;
 			}
 			foreach (GameObject player in playerList) {
-				listImageShowUnitTurn[j].sprite = player.GetComponent<SpriteRenderer>().sprite;
+				listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(player.GetComponent<PlayerStat>().player.info.faceImgPath);
                 j++;
 			}
 			int k = 0;
-            while (j < 10) {
+            while (j < 10)
+            {
                 if (k == unitStats.Count) {
                     k = 0;
                 }
-                listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
+                Debug.Log(k);
+                if (unitStats[k].gameObject.tag == "PlayerUnit") {
+                    listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(unitStats[k].GetComponent<PlayerStat>().player.info.faceImgPath);
+                }
+                else {
+					listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(unitStats[k].GetComponent<EnemyStat>().enemy.imgPath);
+                }
                 j++;
                 k++;
             }
@@ -476,17 +497,17 @@ public class BattleManager : MonoBehaviour {
                                      playerUnit[0].GetComponent<PlayerStat>().player.level,
                                      playerUnit[0].GetComponent<PlayerStat>().player.experience,
                                                               Expression.GetExpExpression(playerUnit[0].GetComponent<PlayerStat>().player.level + 1));
-				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.info.name,
+				UpdateVictoryPanelUI.instance.UpdatePlayer2Lv(playerUnit[1].GetComponent<PlayerStat>().player.info.name,
                                      playerUnit[1].GetComponent<PlayerStat>().player.level,
                                      playerUnit[1].GetComponent<PlayerStat>().player.experience,
                                                               Expression.GetExpExpression(playerUnit[1].GetComponent<PlayerStat>().player.level + 1));
-				UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[2].GetComponent<PlayerStat>().player.info.name,
+				UpdateVictoryPanelUI.instance.UpdatePlayer3Lv(playerUnit[2].GetComponent<PlayerStat>().player.info.name,
                                      playerUnit[2].GetComponent<PlayerStat>().player.level,
                                      playerUnit[2].GetComponent<PlayerStat>().player.experience,
                                                               Expression.GetExpExpression(playerUnit[2].GetComponent<PlayerStat>().player.level + 1));
 				PlayerManager.Instance.Characters[0] = playerUnit[0].GetComponent<PlayerStat>().player;
 				PlayerManager.Instance.Characters[1] = playerUnit[1].GetComponent<PlayerStat>().player;
-				PlayerManager.Instance.Characters[3] = playerUnit[3].GetComponent<PlayerStat>().player;
+				PlayerManager.Instance.Characters[2] = playerUnit[2].GetComponent<PlayerStat>().player;
 			}
 			//ScreenManager.Instance.TriggerLoadingFadeOut("M0002",false);
 		}
@@ -502,22 +523,34 @@ public class BattleManager : MonoBehaviour {
 			Debug.Log(count);
 			int j = 0;
 			foreach (GameObject enemy in enemyList) {
-				listImageShowUnitTurn[j].sprite = enemy.GetComponent<SpriteRenderer>().sprite;
+				if (enemy.GetComponent<EnemyStat>().isHaveDeBuff == true) {
+					enemy.GetComponent<EnemyStat>().enemy.stats.hp -= enemy.GetComponent<EnemyStat>().damageToHp;
+				}
+				if (enemy.gameObject.tag == "Enemy") {
+					listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(enemy.GetComponent<EnemyStat>().enemy.imgPath);
+				}
 				j++;
 			}
 			foreach (GameObject player in playerList) {
-				listImageShowUnitTurn[j].sprite = player.GetComponent<SpriteRenderer>().sprite;
+				listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(player.GetComponent<PlayerStat>().player.info.faceImgPath);
 				j++;
 			}
 			int k = 0;
-			while (j < 10) {
-				if (k == unitStats.Count) {
-					k = 0;
-				}
-				listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
-				j++;
-				k++;
-			}
+            while (j < 10){
+                if (k == unitStats.Count) {
+                    k = 0;
+                }
+                Debug.Log(k);
+                if (unitStats[k].gameObject.tag == "PlayerUnit") {
+                    listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(unitStats[k].GetComponent<PlayerStat>().player.info.faceImgPath);
+                }
+                else {
+					//listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
+					listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(unitStats[k].GetComponent<EnemyStat>().enemy.imgPath);
+                }
+                j++;
+                k++;
+            }
             //check player turn
 			if (enemyList.Count == 0) {
 				actionMenu.SetActive(true);
@@ -558,7 +591,7 @@ public class BattleManager : MonoBehaviour {
 							}
 							else {
 								currentUnit.GetComponent<GetPlayerAction>().
-                                       AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
+								           AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
 							}
                         }
 					}
@@ -582,19 +615,29 @@ public class BattleManager : MonoBehaviour {
 			Debug.Log("b");
 			int j = 0;
             foreach (GameObject player in playerList) {
-                listImageShowUnitTurn[j].sprite = player.GetComponent<SpriteRenderer>().sprite;
+				listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(player.GetComponent<PlayerStat>().player.info.faceImgPath);
                 j++;
             }
             foreach (GameObject enemy in enemyList) {
-                listImageShowUnitTurn[j].sprite = enemy.GetComponent<SpriteRenderer>().sprite;
+				if (enemy.GetComponent<EnemyStat>().isHaveDeBuff == true) {
+                    enemy.GetComponent<EnemyStat>().enemy.stats.hp -= enemy.GetComponent<EnemyStat>().damageToHp;
+                }
+				listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(enemy.GetComponent<EnemyStat>().enemy.imgPath);
                 j++;
             }
-            int k = 0;
+			int k = 0;
             while (j < 10) {
-                if (k == unitStats.Count) {
+                if (k == unitStats.Count)
+                {
                     k = 0;
                 }
-                listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
+                Debug.Log(k);
+                if (unitStats[k].gameObject.tag == "PlayerUnit") {
+                    listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(unitStats[k].GetComponent<PlayerStat>().player.info.faceImgPath);
+                }
+                else {
+					listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(unitStats[k].GetComponent<EnemyStat>().enemy.imgPath);
+                }
                 j++;
                 k++;
             }
@@ -701,7 +744,8 @@ public class BattleManager : MonoBehaviour {
 		}
 		if (isVictory == true) {
 			if (Input.GetKeyDown(KeyCode.Return)) {
-				ScreenManager.Instance.TriggerLoadingFadeOut("M0002", false);
+				ScreenManager.Instance.TriggerLoadingFadeOut(
+					PlayerManager.Instance.CurrentSceneID, false);
 			}
         }
     }
@@ -711,6 +755,8 @@ public class BattleManager : MonoBehaviour {
         playerAttack = false;
 		callTurn = true;
 		Debug.Log("c");
+		int j = 0;
+        int k = 0;
 		if (isPlayerSelectEnemy == false && isSelectorSpawn == false && isUnitAction == false) {
 			GameObject[] remainEnemyUnit = GameObject.FindGameObjectsWithTag("Enemy");
             if (remainEnemyUnit.Length == 0) {
@@ -767,11 +813,11 @@ public class BattleManager : MonoBehaviour {
                                          playerUnit[0].GetComponent<PlayerStat>().player.level,
                                          playerUnit[0].GetComponent<PlayerStat>().player.experience,
                                                                   Expression.GetExpExpression(playerUnit[0].GetComponent<PlayerStat>().player.level + 1));
-					UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[1].GetComponent<PlayerStat>().player.info.name,
+					UpdateVictoryPanelUI.instance.UpdatePlayer2Lv(playerUnit[1].GetComponent<PlayerStat>().player.info.name,
                                          playerUnit[1].GetComponent<PlayerStat>().player.level,
                                          playerUnit[1].GetComponent<PlayerStat>().player.experience,
                                                                   Expression.GetExpExpression(playerUnit[1].GetComponent<PlayerStat>().player.level + 1));
-					UpdateVictoryPanelUI.instance.UpdatePLayer1Lv(playerUnit[2].GetComponent<PlayerStat>().player.info.name,
+					UpdateVictoryPanelUI.instance.UpdatePlayer3Lv(playerUnit[2].GetComponent<PlayerStat>().player.info.name,
                                          playerUnit[2].GetComponent<PlayerStat>().player.level,
                                          playerUnit[2].GetComponent<PlayerStat>().player.experience,
                                                                   Expression.GetExpExpression(playerUnit[2].GetComponent<PlayerStat>().player.level + 1));
@@ -787,19 +833,32 @@ public class BattleManager : MonoBehaviour {
 				gameOverPanel.SetActive(true);
             }
 		}
-		int j = 0;
-        int k = 0;
         while (j < 10) {
             if (k == unitStats.Count) {
                 k = 0;
             }
-			listImageShowUnitTurn[j].sprite = unitStats[k].GetComponent<SpriteRenderer>().sprite;
+			if (unitStats[k].gameObject.tag == "PlayerUnit") {
+				listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(unitStats[k].GetComponent<PlayerStat>().player.info.faceImgPath);
+			}
+			else {
+				if (unitStats[k].gameObject.tag == "Enemy") {
+					listImageShowUnitTurn[j].sprite = Resources.Load<Sprite>(unitStats[k].GetComponent<EnemyStat>().enemy.imgPath);
+				}
+			}
             j++;
             k++;
+        }
+		foreach (GameObject unit in unitStats) {
+			if (unit.gameObject.tag == "Enemy") {
+				if (unit.GetComponent<EnemyStat>().isHaveDeBuff == true) {
+					unit.GetComponent<EnemyStat>().enemy.stats.hp -= unit.GetComponent<EnemyStat>().damageToHp;
+                }
+			}
         }
 		if (isPlayerSelectEnemy == false && isSelectorSpawn == false && isUnitAction == false) {
 			//currentUnit = unitStats[0];
 			currentUnit = unitLists.Dequeue();
+			unitStats.Remove(currentUnit);
 		}
 		if (currentUnit.tag != "DeadUnit") {
 			if (currentUnit.tag == "PlayerUnit") {
@@ -823,7 +882,6 @@ public class BattleManager : MonoBehaviour {
 					actionMenu.SetActive(true);
                 }
 				if (isPlayerSelectEnemy == true && isSelectorSpawn == true) {
-					unitStats.Remove(currentUnit);
 					unitStats.Add(currentUnit);
 					unitLists.Enqueue(currentUnit);
 					if (isPlayerSelectEnemy == true) {
@@ -834,7 +892,7 @@ public class BattleManager : MonoBehaviour {
                         }
                         else {
                             currentUnit.GetComponent<GetPlayerAction>().
-                                   AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
+							           AttackTarget(enemiesUnit[enemySelectedPositionIndex]);
                         }
                     }
 					}

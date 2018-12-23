@@ -1,6 +1,7 @@
 [
 	{
 		"id": "S0001",
+		"name": "Upperslash",
 		"tooltips": "Deliver an upper cut slash that deal physical damage to 1 enemy.",
 		"isPassive": false,
 		"mpCost": 1,
@@ -19,7 +20,8 @@
 	},
 	{
 		"id": "S0002",
-		"tooltips": "Create a big fire ball and throw at all enemies.",
+		"name": "Firewraith",
+		"tooltips": "Create a fire ball and throw at all enemies.",
 		"isPassive": false,
 		"mpCost": 3,
 		"lvlRequirement": 2,
@@ -42,5 +44,29 @@
 			"affection": "HpChange"
 		},
 		"imgPath": "SkillIcons/S_Forward_cavalierattack"
+	},
+	{
+	"id": "S0003",
+	"name": "Fireball",
+	"tooltips": "Create a big fire ball and throw at one enemies.",
+	"isPassive": false,
+	"mpCost": 4,
+	"lvlRequirement": 3,
+	"target": [
+		"Enemy"
+	],
+	"type": [
+		"Damage"
+	],
+	"power": 90,
+	"effect": {
+		"name": "Burning",
+		"tooltips": "Deals minor damage every turn for 2 turns.",
+		"power": 20,
+		"duration": 2,
+		"type": "Debuff",
+		"affection": "HpChange"
+	},
+	"imgPath": "SkillIcons/S_fire_furious"
 	}
 ]

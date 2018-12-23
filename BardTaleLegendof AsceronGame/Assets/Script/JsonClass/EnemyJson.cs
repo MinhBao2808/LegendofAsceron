@@ -8,6 +8,8 @@ namespace JsonDataClasses
         public UnitStatJson growthStat;
         public Reward baseReward;
         public Reward growthReward;
+        public string imgPath;
+		public string facePath;
     }
 
     [Serializable]

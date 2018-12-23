@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd957cc35c0d4393b94204e3b72f508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSource: {fileID: 0}
+  playerSource: {fileID: 82677239577453830}
 --- !u!114 &114810964860932560
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -243,6 +243,7 @@ MonoBehaviour:
       totalSkills: []
       modelImgPath: 
       faceImgPath: 
+    weaponTypes: 
     weapon:
       weapon:
         id: 
@@ -326,6 +327,7 @@ MonoBehaviour:
           totalSkills: []
           modelImgPath: 
           faceImgPath: 
+        weaponTypes: 
         weapon:
           weapon:
             id: 
@@ -409,6 +411,7 @@ MonoBehaviour:
               totalSkills: []
               modelImgPath: 
               faceImgPath: 
+            weaponTypes: 
             weapon:
               weapon:
                 id: 
@@ -475,12 +478,17 @@ MonoBehaviour:
                   type: 0
                   modelImgPath: 
                   faceImgPath: 
+                weaponTypes: 
                 weapon:
                   durability: 0
                 armors: []
+                bodyPower: 0
             armors: []
+            bodyPower: 0
         armors: []
+        bodyPower: 0
     armors: []
+    bodyPower: 0
 --- !u!212 &212653481344098786
 SpriteRenderer:
   m_ObjectHideFlags: 1

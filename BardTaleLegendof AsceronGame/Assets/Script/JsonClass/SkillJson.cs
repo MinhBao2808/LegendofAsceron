@@ -6,6 +6,7 @@ namespace JsonDataClasses
     public class SkillJson
     {
         public string id;
+        public string name;
         public string tooltips;
         public bool isPassive;
         public int mpCost;

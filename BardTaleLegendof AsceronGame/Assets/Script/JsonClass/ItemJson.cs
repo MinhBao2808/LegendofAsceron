@@ -11,6 +11,7 @@ namespace JsonDataClasses
         public ItemType type;
         public string tooltips;
         public string imgPath;
+        public int gold;
     }
 
     [Serializable]

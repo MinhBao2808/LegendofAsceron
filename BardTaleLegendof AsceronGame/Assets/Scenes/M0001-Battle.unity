@@ -1284,7 +1284,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 602.0001, y: 9.000122}
+  m_AnchoredPosition: {x: 602, y: 9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &328262766
@@ -6390,7 +6390,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 602.00006, y: 9.000061}
+  m_AnchoredPosition: {x: 602, y: 9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1182398709
@@ -7694,6 +7694,8 @@ MonoBehaviour:
   - {fileID: 1716112910176024, guid: ba1b697935e3a4bb1b0edbaadfccc72f, type: 2}
   playerUnit:
   - {fileID: 1256116698446774, guid: 0872ef7f00f2c4f898ac72d2b2b3ae2a, type: 2}
+  - {fileID: 1967417227280614, guid: 6c5e9e3d8f434496fac42d76cee8fcff, type: 2}
+  - {fileID: 1168624199485248, guid: 48d1e522412254a3f873bbba06b4b20d, type: 2}
   itemButton:
   - {fileID: 1204874725}
   - {fileID: 1267652153}
@@ -7926,7 +7928,7 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
+            m_IntArgument: 1
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -7979,7 +7981,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0
@@ -9952,7 +9954,7 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
+            m_IntArgument: 2
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -10005,7 +10007,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: Uppercut
           m_BoolArgument: 0

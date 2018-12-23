@@ -11,7 +11,7 @@ public class DialogManager : MonoBehaviour
     public static DialogManager Instance { get; private set; }
 
     public List<DialogsJson> dialogList = new List<DialogsJson>();
-
+    
     [SerializeField]
     TextMeshProUGUI charName;
     [SerializeField]
@@ -55,18 +55,22 @@ public class DialogManager : MonoBehaviour
         return null;
     }
 
-    public void RunDialog(DialogsJson dialogs)
+    public void RunDialog(string id)
     {
-        if (runningDialogs == null)
+        DialogsJson dialogs = SearchDialogID(id);
+        if (dialogs != null)
         {
-            dialogCount = 0;
-            runningDialogs = dialogs;
-            SetActive(true);
-            ContinueDialog();
-        }
-        else
-        {
-            Debug.LogError("A dialog is currently running. Please wait!");
+            if (runningDialogs == null)
+            {
+                dialogCount = 0;
+                runningDialogs = dialogs;
+                SetActive(true);
+                ContinueDialog();
+            }
+            else
+            {
+                Debug.LogError("A dialog is currently running. Please wait!");
+            }
         }
     }
 
@@ -119,7 +123,7 @@ public class DialogManager : MonoBehaviour
 
     void SetCharImage(string _imgName)
     {
-        Sprite texture = Resources.Load<Sprite>("DialogImg/" + _imgName);
+        Sprite texture = Resources.Load<Sprite>( _imgName);
         if (texture)
         {
             charFace.sprite = texture;

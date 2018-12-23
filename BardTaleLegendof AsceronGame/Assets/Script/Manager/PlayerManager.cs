@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 using JsonDataClasses;
 using System.Collections;
 
@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour {
     public int Difficulty { get; set; }
     public List<PlayerWeapon> Weapons { get; private set; }
     public List<PlayerArmor> Armors { get; private set; }
-    public List<UsableJson> Usables { get; private set; }
+    public List<PlayerUsable> Usables { get; private set; }
     public int Currency { get; set; }
     public float PosX { get; set; }
     public float PosY { get; set; }
@@ -23,6 +23,7 @@ public class PlayerManager : MonoBehaviour {
     public float RotY { get; set; }
     public float RotZ { get; set; }
     public string CurrentSceneID { get; set; }
+    public bool CheckNewGame { get; set; }
     public List<PlayerCharacter> Characters { get; private set; }
     public List<string> PartyMemberID { get; private set; }
 
@@ -54,12 +55,15 @@ public class PlayerManager : MonoBehaviour {
         while(true)
         {
             PlayTime += (int)timeInterval;
-            PosX = player.transform.position.x;
-            PosY = player.transform.position.y;
-            PosZ = player.transform.position.z;
-            RotX = player.transform.rotation.eulerAngles.x;
-            RotY = player.transform.rotation.eulerAngles.y;
-            RotZ = player.transform.rotation.eulerAngles.z;
+            if (SceneManager.GetActiveScene().name != "M0001-Battle")
+            {
+                PosX = player.transform.position.x;
+                PosY = player.transform.position.y;
+                PosZ = player.transform.position.z;
+                RotX = player.transform.rotation.eulerAngles.x;
+                RotY = player.transform.rotation.eulerAngles.y;
+                RotZ = player.transform.rotation.eulerAngles.z;
+            }
             yield return new WaitForSeconds(timeInterval);
         }
     }
@@ -70,30 +74,48 @@ public class PlayerManager : MonoBehaviour {
         Difficulty = diff;
         Weapons = new List<PlayerWeapon>();
         Armors = new List<PlayerArmor>();
+        Usables = new List<PlayerUsable>();
         Currency = 0;
+        CheckNewGame = true;
         Characters = new List<PlayerCharacter>
         {
-            new PlayerCharacter(DataManager.Instance.CharacterList[0], 1)
+            new PlayerCharacter(DataManager.Instance.CharacterList[0], 1),
+            new PlayerCharacter(DataManager.Instance.CharacterList[1], 1),
+            new PlayerCharacter(DataManager.Instance.CharacterList[2], 1)
         };
         PartyMemberID = new List<string>
         {
-            Characters[0].info.id
+            Characters[0].info.id,
+            Characters[1].info.id,
+            Characters[2].info.id
         };
+
         PosX = 0;
         PosY = 0;
         PosZ = 0;
         RotX = 0;
         RotY = 0;
         RotZ = 0;
-        AddItem("armor", "IA0001");
-        AddItem("armor", "IA0002");
-        AddItem("armor", "IA0003");
-        AddItem("armor", "IA0004");
-        AddItem("usables", "IU0001");
+
+        AddItem("armor", "IA0001", 1);
+        AddItem("armor", "IA0002", 1);
+        AddItem("armor", "IA0003", 1);
+        AddItem("armor", "IA0004", 1);
+        AddItem("usable", "IU0001", 1);
+
         PlayerCharacter character = Characters[0];
         EquipEquipment("armor", "IA0001", ref character);
         Characters[0] = character;
+
+        character = Characters[1];
+        EquipEquipment("armor", "IA0002", ref character);
+        EquipEquipment("armor", "IA0003", ref character);
+        Characters[1] = character;
+
+        CurrentSceneID = "M0000";
         //Characters[0].UnequipArmor(ArmorPiece.Head);
+
+        Debug.Log("Check");
     }
 
     public void AddCharacter(CharacterJson character, int level)
@@ -139,13 +161,21 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    public void AddItem(string type, string id)
+    public void AddItem(string type, string id, int quantity)
     {
         if (type.ToLower() == "usable")
         {
             if (DataManager.Instance.SearchUsableID(id) != null)
             {
-                Usables.Add(DataManager.Instance.SearchUsableID(id));
+                for (int i=0; i<Usables.Count;i++)
+                {
+                    if (Usables[i].usable.id == id)
+                    {
+                        Usables[i].amount += quantity;
+                        return;
+                    }
+                }
+                Usables.Add(new PlayerUsable(id, quantity));
             }
             else
             {
@@ -238,6 +268,7 @@ public class PlayerManager : MonoBehaviour {
         RotY = data.rotY;
         RotZ = data.rotZ;
         CurrentSceneID = data.sceneID;
+        CheckNewGame = data.newGame;
     }
 
     public void UpdateCurrentSceneID(string scene)
@@ -255,7 +286,7 @@ public class PlayerData
     public List<string> partyMemberIds;
     public List<PlayerWeapon> weapons;
     public List<PlayerArmor> armors;
-    public List<UsableJson> usables;
+    public List<PlayerUsable> usables;
     public int currency;
     public float posX;
     public float posY;
@@ -264,6 +295,7 @@ public class PlayerData
     public float rotY;
     public float rotZ;
     public string sceneID;
+    public bool newGame;
 
     public PlayerData()
     {
@@ -282,6 +314,7 @@ public class PlayerData
         rotY = PlayerManager.Instance.RotY;
         rotZ = PlayerManager.Instance.RotZ;
         sceneID = PlayerManager.Instance.CurrentSceneID;
+        newGame = PlayerManager.Instance.CheckNewGame;
     }
 }
 
@@ -297,6 +330,7 @@ public class PlayerCharacter
     public WeaponType[] weaponTypes;
     public PlayerWeapon weapon;
     public List<PlayerArmor> armors;
+    public int bodyPower;
 
     public PlayerCharacter(CharacterJson json, int targetLevel)
     {
@@ -331,6 +365,8 @@ public class PlayerCharacter
         //}
 
         SetStatByLevel(targetLevel, json);
+
+        bodyPower = 0;
 
         availableAttributes = 0;
         availableSkillPoints = 0;
@@ -382,6 +418,8 @@ public class PlayerCharacter
         level = target.level;
         experience = target.experience;
 
+        bodyPower = target.bodyPower;
+
         availableAttributes = target.availableAttributes;
         availableSkillPoints = target.availableSkillPoints;
 
@@ -423,6 +461,7 @@ public class PlayerCharacter
             equipment.owner.CalculateBattleStat();
         }
         equipment.owner = this;
+        weapon = equipment;
     }
 
     public void EquipArmor(ref PlayerArmor piece)
@@ -564,6 +603,7 @@ public class PlayerCharacter
     public void CalculateBattleStat()
     {
         PlayerCharBattleStat tempBattleStats = new PlayerCharBattleStat();
+        bodyPower = 0;
 
         if (battleStats != null)
         {
@@ -617,6 +657,21 @@ public class PlayerCharacter
         {
             battleStats.mp = battleStats.maxMp;
         }
+
+        bodyPower += (int)battleStats.maxHp * BodyPower.HP;
+        bodyPower += (int)battleStats.maxMp * BodyPower.MP;
+        bodyPower += (int)battleStats.eva * BodyPower.EVA;
+        bodyPower += (int)battleStats.crit * BodyPower.CRIT;
+        bodyPower += (int)battleStats.spd * BodyPower.SPD;
+        bodyPower += (int)battleStats.patk * BodyPower.PATK;
+        bodyPower += (int)battleStats.matk * BodyPower.MATK;
+        bodyPower += (int)battleStats.pdef * BodyPower.PDEF;
+        bodyPower += (int)battleStats.mdef * BodyPower.MDEF;
+        bodyPower += (int)battleStats.fireRes * BodyPower.ELE_RES;
+        bodyPower += (int)battleStats.lightningRes * BodyPower.ELE_RES;
+        bodyPower += (int)battleStats.iceRes * BodyPower.ELE_RES;
+        bodyPower += (int)battleStats.holyRes * BodyPower.MORAL_RES;
+        bodyPower += (int)battleStats.darkRes * BodyPower.MORAL_RES;
     }
 
     public void IncreaseAttributes(int amount)
@@ -634,6 +689,41 @@ public class PlayerCharacter
         level += increaseAmount;
         IncreaseAttributes(GameConfigs.ATTRIBUTES_PER_LVL * increaseAmount);
         IncreaseSkillPoints(GameConfigs.SKILLPOINTS_PER_LVL * increaseAmount);
+    }
+
+    public bool IsSkillLeanred(string skillId)
+    {
+        for (int i=0; i< info.learnedSkills.Length; i++)
+        {
+            if (info.learnedSkills[i] == skillId)
+                return true;
+        }
+        return false;
+    }
+
+    public bool IsSkillAvailable(string skillId)
+    {
+        for (int i=0; i< info.totalSkills.Length; i++)
+        {
+            if (info.totalSkills[i] == skillId)
+                return true;
+        }
+        return false;
+    }
+
+    public void AddSkill(string skillId)
+    {
+        if (IsSkillAvailable(skillId))
+        {
+            string[] temp = new string[info.learnedSkills.Length+1];
+            for (int i=0; i<info.learnedSkills.Length; i++)
+            {
+                temp[i] = info.learnedSkills[i];
+            }
+            temp[info.learnedSkills.Length] = skillId;
+            info.learnedSkills = temp;
+            availableSkillPoints--;
+        }
     }
 
     public void SetStatByLevel(int lvl, CharacterJson character)
@@ -702,6 +792,12 @@ public class PlayerUsable
 {
     public UsableJson usable;
     public int amount;
+
+    public PlayerUsable(string usableID, int quantity)
+    {
+        usable = DataManager.Instance.SearchUsableID(usableID);
+        amount = quantity;
+    }
 }
 
 [Serializable]

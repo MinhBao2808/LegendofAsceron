@@ -106,7 +106,12 @@ public class ScreenManager : MonoBehaviour {
     IEnumerator LoadAsynchronously(string sceneID, string trigger)
     {
         int loadingScene = MapManager.Instance.mapList[sceneID].sceneId;
-        AsyncOperation operation = SceneManager.LoadSceneAsync(loadingScene);
+		AsyncOperation operation = SceneManager.LoadSceneAsync(loadingScene);
+        PlayerManager.Instance.player.transform.position = new Vector3(
+            PlayerManager.Instance.PosX,
+            PlayerManager.Instance.PosY,
+            PlayerManager.Instance.PosZ
+        );
         while (!operation.isDone)
         {
             yield return null;
