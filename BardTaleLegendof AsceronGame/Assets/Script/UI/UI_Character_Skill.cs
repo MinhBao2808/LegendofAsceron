@@ -45,6 +45,7 @@ public class UI_Character_Skill : MonoBehaviour {
             {
                 skillItemList[i].gameObject.SetActive(false);
             }
+            skillPointsText.text = "Skill Points: " + playerCharacter.availableSkillPoints;
             gameObject.SetActive(true);
         }
         else
@@ -57,5 +58,6 @@ public class UI_Character_Skill : MonoBehaviour {
     {
         int pos = PlayerManager.Instance.ReturnCharacterPosById(charId);
         PlayerManager.Instance.Characters[pos].AddSkill(skillid);
+        skillPointsText.text = "Skill Points: " + PlayerManager.Instance.Characters[pos].availableSkillPoints;
     }
 }
