@@ -103,7 +103,7 @@ public class GetPlayerAction : MonoBehaviour {
 		//skillPlayerName = this.gameObject.GetComponent<PlayerStat>().player.info.learnedSkills[skillIndex];
 		this.gameObject.GetComponent<PlayerStat>().player.battleStats.mp -= DataManager.Instance.SkillList[skillIndex].mpCost;
 		damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk, 
-		                             3.0f,DataManager.Instance.SkillList[skillIndex].power,
+		                             3.0f,DataManager.Instance.SkillList[skillIndex].power / 100,
                                       targetGameObject.GetComponent<EnemyStat>().enemy.stats.vitality, 1.0f, 1.0f);
 		if (DataManager.Instance.SkillList[skillIndex].effect != null) {
 			if (DataManager.Instance.SkillList[skillIndex].effect.type == EffectType.Debuff && DataManager.Instance.SkillList[skillIndex].effect.affection == EffectAffection.HpChange) {

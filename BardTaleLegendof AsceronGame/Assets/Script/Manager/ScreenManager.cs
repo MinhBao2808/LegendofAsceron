@@ -109,7 +109,7 @@ public class ScreenManager : MonoBehaviour {
 		AsyncOperation operation = SceneManager.LoadSceneAsync(loadingScene);
         PlayerManager.Instance.player.transform.position = new Vector3(
             PlayerManager.Instance.PosX,
-            PlayerManager.Instance.PosY,
+			PlayerManager.Instance.PosY,
             PlayerManager.Instance.PosZ
         );
         while (!operation.isDone)

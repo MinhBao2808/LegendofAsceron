@@ -174,8 +174,8 @@ public class BattleManager : MonoBehaviour {
 		//}
 		enemyList = new List<GameObject>();
 		if (playerUnit[0].GetComponent<PlayerStat>().player.level <= 10) {
-			//enemyPositionIndex = Random.Range(2, 3);
-			enemyPositionIndex = 3;
+			enemyPositionIndex = Random.Range(2, 3);
+			//enemyPositionIndex = 3;
 		}
 		else {
 			enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);

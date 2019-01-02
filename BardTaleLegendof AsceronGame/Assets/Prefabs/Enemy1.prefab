@@ -178,68 +178,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy:
-    id: E0003
-    name: Gnax the Incubus
+    id: E0002
+    name: Big Ghoul
     description: Lorem Ipsum
     race: 0
-    type: 1
+    type: 0
     stats:
-      level: 10
-      hp: 300
-      mp: 100
-      strength: 20
-      dexterity: 8
-      intelligence: 12
-      vitality: 25
-      endurance: 15
-      wisdom: 15
-      fireRes: 10
-      lightningRes: 10
-      iceRes: 10
-      holyRes: -10
-      darkRes: 20
+      level: 4
+      hp: 72
+      mp: 0
+      strength: 5
+      dexterity: 1
+      intelligence: 2
+      vitality: 5
+      endurance: 3
+      wisdom: 3
+      fireRes: -25
+      lightningRes: 0
+      iceRes: 20
+      holyRes: -5
+      darkRes: 0
     learnedSkills: []
-    totalSkills:
-    - S0002
+    totalSkills: []
     modelImgPath: 
     faceImgPath: 
     growthStat:
       level: 1
-      hp: 25
-      mp: 5
-      strength: 2
-      dexterity: 0.5
-      intelligence: 1
-      vitality: 1.5
-      endurance: 1
-      wisdom: 1
+      hp: 10
+      mp: 2.5
+      strength: 1.5
+      dexterity: 0.2
+      intelligence: 0.1
+      vitality: 1
+      endurance: 0.5
+      wisdom: 0.5
       fireRes: 0
       lightningRes: 0
       iceRes: 0
       holyRes: 0
       darkRes: 0
     baseReward:
-      gold: 100
-      exp: 150
+      gold: 14
+      exp: 18
       item:
-      - itemID: IA0001
-        procChance: 0.2
-      - itemID: IA0002
-        procChance: 0.2
       - itemID: IW0001
         procChance: 0.2
-      - itemID: IU0001
-        procChance: 0.2
-      - itemID: IA0003
-        procChance: 0.2
-      - itemID: IW0002
-        procChance: 0.2
     growthReward:
-      gold: 15
-      exp: 10
+      gold: 4
+      exp: 5
       item: []
-    imgPath: Enemy/E0003_face
-    facePath: Enemy/E0003_model
+    imgPath: Enemy/E0002_face
+    facePath: Enemy/E0002_model
   damageToHp: 0
   durationTime: 0
   isHaveDeBuff: 0
@@ -278,7 +267,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2154ea48e44dc4fdfaccea3f71b34c19, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 667bc5d788bd64a84b45b6286acda5aa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

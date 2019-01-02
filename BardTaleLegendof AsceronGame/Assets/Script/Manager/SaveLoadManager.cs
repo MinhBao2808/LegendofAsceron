@@ -78,10 +78,10 @@ public class SaveLoadManager : MonoBehaviour {
             stream.Close();
 
             PlayerManager.Instance.SetPlayerData(data);
+			PlayerManager.Instance.SetPlayerPos();
             Debug.Log(data.posX + " " + data.posY + " " + data.posZ);
             Debug.Log(data.characters);
             ScreenManager.Instance.TriggerLoadingFadeOut("M0002", false);
-            PlayerManager.Instance.SetPlayerPos();
         }
     }
 
