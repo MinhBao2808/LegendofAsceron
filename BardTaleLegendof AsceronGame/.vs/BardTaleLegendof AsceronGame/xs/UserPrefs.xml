@@ -1,6 +1,6 @@
 ﻿<Properties StartupConfiguration="{5740844B-10B4-2404-B194-D815115ADC54}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Behaviors/MapStartEntry.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Manager/BattleManager.cs">
     <Files>
       <File FileName="Assets/Script/Manager/BattleManager.cs" Line="155" Column="52" />
       <File FileName="Assets/Script/Behaviors/Character movement/SelectorMovement.cs" Line="93" Column="60" />
@@ -16,6 +16,7 @@
       <File FileName="Assets/Script/MapTransition.cs" Line="39" Column="44" />
       <File FileName="Assets/Script/Manager/SaveLoadManager.cs" Line="81" Column="27" />
       <File FileName="Assets/Script/Utilities/ButtonNewGame.cs" Line="11" Column="32" />
+      <File FileName="Assets/Script/UI/MainMenuScripts.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

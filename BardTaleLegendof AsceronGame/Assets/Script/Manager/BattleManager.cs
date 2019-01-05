@@ -90,6 +90,11 @@ public class BattleManager : MonoBehaviour {
 	public void PressActionButton () {
 		actionMenu.SetActive(true);
 		attack_DefendMenu.SetActive(true);
+		larsSkillPanel.SetActive(false);
+		BrannSkillPanel.SetActive(false);
+		AghmundSkillPanel.SetActive(false);
+		itemPanel.SetActive(false);
+		toolTips.gameObject.SetActive(false);
 	}
 
 	public void PressAttackButton () {
@@ -196,6 +201,7 @@ public class BattleManager : MonoBehaviour {
 		itemPanel.SetActive(true);
 		attack_DefendMenu.SetActive(false);
 		larsSkillPanel.SetActive(false);
+		toolTips.gameObject.SetActive(false);
 		if (DataManager.Instance.UsableList.Count > 0) {
 			for (int i = 0; i < DataManager.Instance.UsableList.Count; i++) {
 				//get item from data
