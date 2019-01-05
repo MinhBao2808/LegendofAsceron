@@ -245,6 +245,13 @@ public class PlayerManager : MonoBehaviour {
 
     }
 
+    public void SetPlayerXYZ(float x, float y, float z)
+    {
+        PosX = x;
+        PosY = y;
+        PosZ = z;
+    }
+
     public void SetPlayerPos()
     {
         player.transform.position = new Vector3(PosX,PosY,PosZ);

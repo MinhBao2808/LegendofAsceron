@@ -122,26 +122,29 @@ public class BattleManager : MonoBehaviour {
 		larsSkillPanel.SetActive(true);
 		if (currentUnit.transform.position == playerUnit[0].transform.position) {
 			larsSkillPanel.SetActive(true);
+			SkillToolTips(0);
 			BrannSkillPanel.SetActive(false);
 			AghmundSkillPanel.SetActive(false);
 		}
 		if (currentUnit.transform.position == playerUnit[1].transform.position) {
 			BrannSkillPanel.SetActive(true);
+			SkillToolTips(1);
 			larsSkillPanel.SetActive(false);
 			AghmundSkillPanel.SetActive(false);
 		}
 		if (currentUnit.transform.position == playerUnit[2].transform.position) {
 			AghmundSkillPanel.SetActive(true);
+			SkillToolTips(2);
 			larsSkillPanel.SetActive(false);
 			BrannSkillPanel.SetActive(false);
 		}
-		for (int i = 0; i < currentUnit.GetComponent<PlayerStat>().player.info.learnedSkills.Length;i++) {
-			//get name of skill and add to all button
-			skillButton[i].GetComponentInChildren<Text>().text = "" + currentUnit.GetComponent<PlayerStat>().player.info.learnedSkills[i];
-			skillIconImage[i].sprite = Resources.Load<Sprite>(DataManager.Instance.SkillList[i].imgPath) as Sprite;
-			//skillButton[i].GetComponentInChildren<Image>().sprite = Resources.Load(DataManager.Instance.SkillList[i].imgPath) as Sprite;
-			SkillToolTips(i);
-		}
+		//for (int i = 0; i < currentUnit.GetComponent<PlayerStat>().player.info.learnedSkills.Length;i++) {
+		//	//get name of skill and add to all button
+		//	SkillToolTips(i);
+		//	skillButton[i].GetComponentInChildren<Text>().text = "" + currentUnit.GetComponent<PlayerStat>().player.info.learnedSkills[i];
+		//	skillIconImage[i].sprite = Resources.Load<Sprite>(DataManager.Instance.SkillList[i].imgPath) as Sprite;
+		//	//skillButton[i].GetComponentInChildren<Image>().sprite = Resources.Load(DataManager.Instance.SkillList[i].imgPath) as Sprite;
+		//}
 	}
 
 	public void PressSkillButton (int index) {

@@ -23,8 +23,8 @@ GameObject:
   - component: {fileID: 212168674439009192}
   - component: {fileID: 114663431328588760}
   - component: {fileID: 114810162298655906}
-  - component: {fileID: 95842888779449268}
   - component: {fileID: 82813412156553870}
+  - component: {fileID: 95268420790499526}
   m_Layer: 0
   m_Name: C02 - Bran
   m_TagString: PlayerUnit
@@ -140,7 +140,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &95842888779449268
+--- !u!95 &95268420790499526
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
@@ -169,6 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd957cc35c0d4393b94204e3b72f508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillPlayerName: 
+  explosion: {fileID: 1408850259485832, guid: ad215eba63afc40feba4dddb3250d184, type: 2}
   playerSource: {fileID: 82813412156553870}
 --- !u!114 &114663431328588760
 MonoBehaviour:
@@ -251,6 +253,7 @@ MonoBehaviour:
         type: 0
         tooltips: 
         imgPath: 
+        gold: 0
         ilvl: 0
         rarity: 0
         modification:
@@ -335,6 +338,7 @@ MonoBehaviour:
             type: 0
             tooltips: 
             imgPath: 
+            gold: 0
             ilvl: 0
             rarity: 0
             modification:
@@ -419,6 +423,7 @@ MonoBehaviour:
                 type: 0
                 tooltips: 
                 imgPath: 
+                gold: 0
                 ilvl: 0
                 rarity: 0
                 modification:

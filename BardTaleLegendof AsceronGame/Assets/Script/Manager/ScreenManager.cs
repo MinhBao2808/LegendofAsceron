@@ -90,6 +90,11 @@ public class ScreenManager : MonoBehaviour {
             isTransitFromMap = false;
             isBattle = true;
             isAvailable = false;
+            PlayerManager.Instance.SetPlayerXYZ(
+                PlayerManager.Instance.player.transform.position.x,
+                PlayerManager.Instance.player.transform.position.y,
+                PlayerManager.Instance.player.transform.position.z);
+            Debug.Log(PlayerManager.Instance.player.transform.position);
         }
     }
 
@@ -107,16 +112,29 @@ public class ScreenManager : MonoBehaviour {
     {
         int loadingScene = MapManager.Instance.mapList[sceneID].sceneId;
 		AsyncOperation operation = SceneManager.LoadSceneAsync(loadingScene);
-        PlayerManager.Instance.player.transform.position = new Vector3(
-            PlayerManager.Instance.PosX,
-			PlayerManager.Instance.PosY,
-            PlayerManager.Instance.PosZ
-        );
         while (!operation.isDone)
         {
             yield return null;
         }
 		anim.SetTrigger(trigger);
+        if (PlayerManager.Instance.CheckNewGame == false)
+        {
+            PlayerManager.Instance.player.transform.position = new Vector3(
+                PlayerManager.Instance.PosX,
+                PlayerManager.Instance.PosY,
+                PlayerManager.Instance.PosZ
+            );
+        }
+        else
+        {
+            PlayerManager.Instance.player.transform.position = new Vector3(
+                48f,
+                6f,
+                287.6f
+            );
+            PlayerManager.Instance.CheckNewGame = false;
+        }
+        Debug.Log(PlayerManager.Instance.player.transform.position);
         if (level == MapManager.Instance.BattleSceneID)
         {
             AudioManager.Instance.ChangeBgm(AudioManager.Instance.battleBgms[0]);

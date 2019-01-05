@@ -29,7 +29,7 @@ public class HUDController : MonoBehaviour {
     TextMeshProUGUI goldText;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         DontDestroyOnLoad(this);
         pauseMenu.SetActive(false);
         inventoryMenu.SetActive(false);

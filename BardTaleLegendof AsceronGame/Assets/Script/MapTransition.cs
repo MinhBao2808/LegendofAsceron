@@ -25,13 +25,13 @@ public class MapTransition : MonoBehaviour {
 
     public void GoToMap()
     {
-        if (PlayerManager.Instance.CheckNewGame && mapId == "M0001")
-        {
-            PlayerManager.Instance.player.transform.position = entrancePoints[0].transform.position;
-            PlayerManager.Instance.CheckNewGame = false;
-        }
-        else
-        {
+        //if (PlayerManager.Instance.CheckNewGame && mapId == "M0001")
+        //{
+        //    PlayerManager.Instance.player.transform.position = entrancePoints[0].transform.position;
+        //    PlayerManager.Instance.CheckNewGame = false;
+        //}
+        //else
+        //{
             for (int i=0; i< entranceMapIds.Length; i++)
             {
                 if (PlayerManager.Instance.CurrentSceneID == entranceMapIds[i])
@@ -40,6 +40,6 @@ public class MapTransition : MonoBehaviour {
                     return;
                 }
             }
-        }
+        //}
     }
 }

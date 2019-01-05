@@ -35,6 +35,11 @@ public class SaveLoadManager : MonoBehaviour {
 
     public void Save(bool isAutosave)
     {
+        PlayerManager.Instance.SetPlayerXYZ(
+            PlayerManager.Instance.player.transform.position.x,
+            PlayerManager.Instance.player.transform.position.y,
+            PlayerManager.Instance.player.transform.position.z);
+
         if(!Directory.Exists(savePath))
         {
             Directory.CreateDirectory(savePath);

@@ -9,7 +9,9 @@ public class GetPlayerAction : MonoBehaviour {
 	private Vector3 targetPosition;
 	private GameObject targetGameObject;
 	private Animator animator;
-	private string skillPlayerName;
+	public string skillPlayerName;
+	public GameObject explosion;
+	private int indexSkill;
 	[SerializeField] private AudioSource playerSource;
 	private float damage;
 
@@ -102,9 +104,17 @@ public class GetPlayerAction : MonoBehaviour {
 		skillPlayerName = this.gameObject.GetComponent<PlayerStat>().player.info.totalSkills[skillIndex];
 		//skillPlayerName = this.gameObject.GetComponent<PlayerStat>().player.info.learnedSkills[skillIndex];
 		this.gameObject.GetComponent<PlayerStat>().player.battleStats.mp -= DataManager.Instance.SkillList[skillIndex].mpCost;
-		damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk, 
-		                             3.0f,DataManager.Instance.SkillList[skillIndex].power / 100,
+		if (skillIndex ==0) {
+			damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.patk,
+                                     3.0f, DataManager.Instance.SkillList[skillIndex].power / 100,
                                       targetGameObject.GetComponent<EnemyStat>().enemy.stats.vitality, 1.0f, 1.0f);
+		}
+		if (skillIndex == 1) {
+			indexSkill = 1;
+			damage = Expression.SkillATK(this.gameObject.GetComponent<PlayerStat>().player.battleStats.matk,
+                                     3.0f, DataManager.Instance.SkillList[skillIndex].power / 20,
+                                      targetGameObject.GetComponent<EnemyStat>().enemy.stats.vitality, 1.0f, 1.0f);
+		}
 		if (DataManager.Instance.SkillList[skillIndex].effect != null) {
 			if (DataManager.Instance.SkillList[skillIndex].effect.type == EffectType.Debuff && DataManager.Instance.SkillList[skillIndex].effect.affection == EffectAffection.HpChange) {
 				target.GetComponent<EnemyStat>().damageToHp = DataManager.Instance.SkillList[skillIndex].effect.power / 100;
@@ -120,6 +130,9 @@ public class GetPlayerAction : MonoBehaviour {
 	private void Hit (GameObject target) {
 		if (isPerformSkill == true) {
 			animator.SetBool(skillPlayerName,true);
+			if (indexSkill == 1) {
+				Instantiate(explosion, target.transform.position, target.transform.rotation);
+			}
 			playerSource.clip = AudioManager.Instance.battleBgms[1];
 			playerSource.Play();
 		}
