@@ -57,9 +57,6 @@ public class PlayerManager : MonoBehaviour {
             PlayTime += (int)timeInterval;
             if (SceneManager.GetActiveScene().name != "M0001-Battle")
             {
-                PosX = player.transform.position.x;
-                PosY = player.transform.position.y;
-                PosZ = player.transform.position.z;
                 RotX = player.transform.rotation.eulerAngles.x;
                 RotY = player.transform.rotation.eulerAngles.y;
                 RotZ = player.transform.rotation.eulerAngles.z;
@@ -276,6 +273,7 @@ public class PlayerManager : MonoBehaviour {
         RotZ = data.rotZ;
         CurrentSceneID = data.sceneID;
         CheckNewGame = data.newGame;
+		Debug.Log(PosX + " " + PosY + " " + PosZ + "Check Load");
     }
 
     public void UpdateCurrentSceneID(string scene)

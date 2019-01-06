@@ -25,6 +25,7 @@ public class GameManager:MonoBehaviour {
 	//check is enemy on map scene attack player
 	public bool isEnemyAttackPlayer;
 	public bool isBattleSceneAnimationLoaded;
+	public bool isBossFight;
 
 
     void Awake() {
@@ -39,6 +40,7 @@ public class GameManager:MonoBehaviour {
 		index = PlayerPrefs.GetInt("c");
 		isSceneMenu = true;
 		isBattleSceneAnimationLoaded = false;
+		isBossFight = false;
 		playerNameDestroy = new List<string>();
     }
 

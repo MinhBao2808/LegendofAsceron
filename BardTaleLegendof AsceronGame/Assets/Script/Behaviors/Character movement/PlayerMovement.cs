@@ -15,7 +15,6 @@ public class PlayerMovement : MovingObject {
 	[SerializeField] private float speed;
 	[SerializeField] private float rotateSpeed = 3.0f;
 	[SerializeField] private float turnSmoothTime;
-	[SerializeField] private GameObject gameSaveObject;
 	private float turnSmoothVelocity;
 	public float speedSmoothTime = 0.01f;
     float speedSmoothVelocity;
@@ -108,15 +107,17 @@ public class PlayerMovement : MovingObject {
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.tag == "Save") {
-			SaveLoadManager.Instance.Save(false);
-			gameSaveObject.SetActive(true);
+			if (Input.GetKeyDown(KeyCode.Return)) {
+				SaveLoadManager.Instance.Save(false);
+                MapTransition.instance.saveText.SetActive(true);
+			}
 		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
 		if (other.gameObject.tag == "Save") {
-			gameSaveObject.SetActive(false);
+			MapTransition.instance.saveText.SetActive(false);
 		}
 	}
 }

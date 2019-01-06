@@ -58,8 +58,12 @@ public class SaveLoadManager : MonoBehaviour {
         string path = savePath + fileName;
         BinaryFormatter bf = new BinaryFormatter();
         FileStream stream = new FileStream(path + FILE_EXTENSION, FileMode.Create);
-        PlayerData data = new PlayerData();
-        bf.Serialize(stream, data);
+		PlayerData data = new PlayerData();
+		bf.Serialize(stream, data);
+		Debug.Log("Check: " + PlayerManager.Instance.PosX + " " +
+				  PlayerManager.Instance.PosY + " " +
+				  PlayerManager.Instance.PosZ);
+        Debug.Log(data.posX + " " + data.posY + " " + data.posZ);
         stream.Close();
         SaveScreenshot(path);
     }
@@ -83,9 +87,6 @@ public class SaveLoadManager : MonoBehaviour {
             stream.Close();
 
             PlayerManager.Instance.SetPlayerData(data);
-			PlayerManager.Instance.SetPlayerPos();
-            Debug.Log(data.posX + " " + data.posY + " " + data.posZ);
-            Debug.Log(data.characters);
             ScreenManager.Instance.TriggerLoadingFadeOut("M0002", false);
         }
     }

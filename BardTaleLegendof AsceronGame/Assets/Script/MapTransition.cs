@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MapTransition : MonoBehaviour {
 
+	public static MapTransition instance = null;
     [SerializeField]
     GameObject[] entrancePoints;
     [SerializeField]
@@ -14,8 +15,15 @@ public class MapTransition : MonoBehaviour {
     string[] exitMapIds;
     [SerializeField]
     string mapId;
+	public GameObject saveText;
 
-    private void Start()
+	private void Awake()
+	{
+		if (instance == null) {
+			instance = this;
+		}
+	}
+	private void Start()
     {
         GoToMap();
         //Camera.main.GetComponent<RTS_Cam.RTS_Camera>().targetFollow

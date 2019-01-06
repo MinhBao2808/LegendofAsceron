@@ -18,4 +18,11 @@ public class CreditsSceneScripts : MonoBehaviour {
             gameObject.SetActive(false);
 		}
     }
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Return)) {
+			OnFinishAnimation();
+		}
+	}
 }

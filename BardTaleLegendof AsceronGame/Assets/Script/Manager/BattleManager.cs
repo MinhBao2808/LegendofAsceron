@@ -181,22 +181,33 @@ public class BattleManager : MonoBehaviour {
 		//	                        false, enemySpawnPositions[i].transform.localScale);
 		//}
 		enemyList = new List<GameObject>();
-		if (playerUnit[0].GetComponent<PlayerStat>().player.level <= 10) {
-			enemyPositionIndex = Random.Range(2, 3);
-			//enemyPositionIndex = 3;
+		if (GameManager.instance.isBossFight == true) {
+			enemyPositionIndex = 1;
+			int enemyDataIndex = 2;
+			enemiesUnit[0].GetComponent<EnemyStat>().Init(enemyDataIndex);
+			enemiesUnit[0].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(enemiesUnit[enemyDataIndex].GetComponent<EnemyStat>().enemy.facePath);
+			enemiesUnit[0] = Instantiate(enemiesUnit[enemyDataIndex], enemySpawnPositions[0].transform.position,
+										 enemySpawnPositions[0].transform.rotation);
+			enemyList.Add(enemiesUnit[0]);
 		}
 		else {
-			enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);
-		}
-		int enemyDataIndex = 0;
-		for (int i = 0; i < enemyPositionIndex; i++) {
-			enemiesUnit[i].GetComponent<EnemyStat>().Init(enemyDataIndex);
-			enemiesUnit[i].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(enemiesUnit[enemyDataIndex].GetComponent<EnemyStat>().enemy.facePath);
-			//enemiesUnit[i].GetComponent<EnemyStat>().enemy.stats = enemiesUnit[i].GetComponent<EnemyStat>().enemy.growthStat;
-			enemiesUnit[i] =  Instantiate(enemiesUnit[enemyDataIndex], enemySpawnPositions[i].transform.position, 
-			            enemySpawnPositions[i].transform.rotation);
-			enemyList.Add(enemiesUnit[i]);
-			enemyDataIndex++;
+			if (playerUnit[0].GetComponent<PlayerStat>().player.level <= 10) {
+                enemyPositionIndex = Random.Range(2, 3);
+                //enemyPositionIndex = 3;
+            }
+			else {
+                enemyPositionIndex = Random.Range(1, enemySpawnPositions.Length);
+            }
+            int enemyDataIndex = 0;
+            for (int i = 0; i < enemyPositionIndex; i++) {
+                enemiesUnit[i].GetComponent<EnemyStat>().Init(enemyDataIndex);
+                enemiesUnit[i].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(enemiesUnit[enemyDataIndex].GetComponent<EnemyStat>().enemy.facePath);
+                //enemiesUnit[i].GetComponent<EnemyStat>().enemy.stats = enemiesUnit[i].GetComponent<EnemyStat>().enemy.growthStat;
+                enemiesUnit[i] = Instantiate(enemiesUnit[enemyDataIndex], enemySpawnPositions[i].transform.position,
+                            enemySpawnPositions[i].transform.rotation);
+                enemyList.Add(enemiesUnit[i]);
+                enemyDataIndex++;
+            }
 		}
 	}
 
@@ -733,7 +744,6 @@ public class BattleManager : MonoBehaviour {
 		timerSlider.value = time / timer;
 		if (enemyTurn == false && callTurn == true) {
 			time -= Time.deltaTime;
-            Debug.Log(time);
             if (time <= 0.0f) {
 				isTurnSkip = true;
 				time = timer;
