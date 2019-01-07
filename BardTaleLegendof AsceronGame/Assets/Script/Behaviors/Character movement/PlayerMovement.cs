@@ -19,6 +19,7 @@ public class PlayerMovement : MovingObject {
 	public float speedSmoothTime = 0.01f;
     float speedSmoothVelocity;
     float currentSpeed;
+	private bool _isAtSavePoint;
 	private bool isPlayerPressAttack;
     
 	private void Awake() {
@@ -36,6 +37,7 @@ public class PlayerMovement : MovingObject {
 		characterController = GetComponent<CharacterController>();
 		isPlayerPressAttack = false;
         DontDestroyOnLoad(this);
+		_isAtSavePoint = false;
         DontDestroyOnLoad(Camera.main);
 	}
 
@@ -91,6 +93,12 @@ public class PlayerMovement : MovingObject {
             ani.SetFloat("Speed", 0);
             //ani.PlayQueued("idle", QueueMode.PlayNow);
         }
+		if (_isAtSavePoint == true) {
+			if (Input.GetKeyDown(KeyCode.Return)) {
+                SaveLoadManager.Instance.Save(false);
+                MapTransition.instance.saveText.SetActive(true);
+            }
+		}
 	}
 
 	public Vector2 ReturnPlayerPosition() {
@@ -107,10 +115,7 @@ public class PlayerMovement : MovingObject {
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.tag == "Save") {
-			if (Input.GetKeyDown(KeyCode.Return)) {
-				SaveLoadManager.Instance.Save(false);
-                MapTransition.instance.saveText.SetActive(true);
-			}
+			_isAtSavePoint = true;
 		}
 	}
 
@@ -118,6 +123,7 @@ public class PlayerMovement : MovingObject {
 	{
 		if (other.gameObject.tag == "Save") {
 			MapTransition.instance.saveText.SetActive(false);
+			_isAtSavePoint = false;
 		}
 	}
 }

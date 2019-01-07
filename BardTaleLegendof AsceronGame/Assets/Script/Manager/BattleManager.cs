@@ -97,6 +97,15 @@ public class BattleManager : MonoBehaviour {
 		toolTips.gameObject.SetActive(false);
 	}
 
+	public void HoldButton () {
+		attack_DefendMenu.SetActive(false);
+		larsSkillPanel.SetActive(false);
+		BrannSkillPanel.SetActive(false);
+		AghmundSkillPanel.SetActive(false);
+		itemPanel.SetActive(false);
+		toolTips.gameObject.SetActive(false);
+	}
+
 	public void PressAttackButton () {
 		//choose enemy
 		attack_DefendMenu.SetActive(false);
@@ -133,8 +142,9 @@ public class BattleManager : MonoBehaviour {
 			AghmundSkillPanel.SetActive(false);
 		}
 		if (currentUnit.transform.position == playerUnit[2].transform.position) {
-			AghmundSkillPanel.SetActive(true);
-			SkillToolTips(2);
+			AghmundSkillPanel.SetActive(false);
+			//SkillToolTips(2);
+			toolTips.text = "";
 			larsSkillPanel.SetActive(false);
 			BrannSkillPanel.SetActive(false);
 		}
@@ -200,13 +210,14 @@ public class BattleManager : MonoBehaviour {
             }
             int enemyDataIndex = 0;
             for (int i = 0; i < enemyPositionIndex; i++) {
+				enemyDataIndex = Random.Range(0, 2);
                 enemiesUnit[i].GetComponent<EnemyStat>().Init(enemyDataIndex);
                 enemiesUnit[i].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(enemiesUnit[enemyDataIndex].GetComponent<EnemyStat>().enemy.facePath);
                 //enemiesUnit[i].GetComponent<EnemyStat>().enemy.stats = enemiesUnit[i].GetComponent<EnemyStat>().enemy.growthStat;
                 enemiesUnit[i] = Instantiate(enemiesUnit[enemyDataIndex], enemySpawnPositions[i].transform.position,
                             enemySpawnPositions[i].transform.rotation);
                 enemyList.Add(enemiesUnit[i]);
-                enemyDataIndex++;
+                //enemyDataIndex++;
             }
 		}
 	}
